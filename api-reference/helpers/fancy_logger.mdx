@@ -1,0 +1,72 @@
+---
+title: Fancy Logger
+sidebar_label: Fancy Logger
+---
+
+# Module: `fancy_logger`
+
+Hendrik's Fancy Logger.
+
+## Classes
+
+### `class RESTHandler`
+
+RESTHandler for logging.
+
+#### Methods
+
+##### `__init__(self, api_url, method, headers)`
+
+Initializes a RESTHandler; uses application/json by default.
+
+-----
+
+##### `emit(self, record)`
+
+Attempts to emit a record to FLOG, or silently fails.
+
+-----
+
+---
+
+### `class JsonFormatter`
+
+Logging formatter for JSON.
+
+#### Methods
+
+##### `format(self, record)`
+
+Formats record as a JSON serializable object.
+
+-----
+
+---
+
+### `class CustomFormatter`
+
+A nice custom formatter copied from [https://stackoverflow.com/questions/384076/how-can-i-color-python-logging-output](Sergey Pleshakov's post on StackOvervlow).
+
+#### Methods
+
+##### `format(self, record)`
+
+The format fn.
+
+-----
+
+---
+
+### `class FancyLogger`
+
+A fancy logger.
+
+#### Methods
+
+##### `get_logger()`
+
+Returns a FancyLogger.logger and sets level based upon env vars.
+
+-----
+
+---

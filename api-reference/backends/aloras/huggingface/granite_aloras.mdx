@@ -1,0 +1,46 @@
+---
+title: Granite Aloras
+sidebar_label: Granite Aloras
+---
+
+# Module: `granite_aloras`
+
+Huggingface implementations for IBM's "starter pack" of Activated LoRAs.
+
+## Functions
+
+### `add_granite_aloras(backend)`
+
+Adds the IBM Granite "starter pack" ALoras to a backend.
+
+---
+
+## Classes
+
+### `class HFConstraintAlora`
+
+The [Requirement Checking ALora for Granite 3.2 8B](https://huggingface.co/ibm-granite/granite-3.2-8b-alora-requirement-check) checks if the specified requirement was satisfied by the most recent model generation. Only one requirement is checked at a time.
+
+#### Methods
+
+##### `__init__(self, name, path_or_model_id, generation_prompt, backend)`
+
+Initialize after checking that the backend is correct.
+
+-----
+
+##### `generate_using_strings(self, input, response, constraint, force_yn)`
+
+Generates a constraint response from the ALora.
+
+-----
+
+##### `_generate_using_cache(self, cache_hit, constraint, force_yn)`
+
+-----
+
+##### `_generate_not_using_cache(self, input, response, constraint, force_yn)`
+
+-----
+
+---

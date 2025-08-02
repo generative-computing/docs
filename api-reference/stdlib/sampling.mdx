@@ -1,0 +1,95 @@
+---
+title: Sampling
+sidebar_label: Sampling
+---
+
+# Module: `sampling`
+
+sampling methods go here.
+
+## Classes
+
+### `class SamplingResult`
+
+Stores the results from a sampling operation. This includes successful and failed samplings.
+
+#### Methods
+
+##### `__init__(self, result, success)`
+
+Initialize a new instance of sampling results.
+
+Args:
+result: The final output or result from applying the sampling strategy.
+success: A boolean indicating whether the operation was successful.
+sample_generations: A list containing intermediate generations produced during the process.
+sample_validations: For each generation a list of a requirement and a boolean value indicating whether the requirement was met.
+
+-----
+
+---
+
+### `class SamplingStrategy`
+
+A SamplingStrategy class defines an abstract base class for implementing various sampling strategies.
+
+This class provides a template for creating concrete sampling strategies that can be used to generate model outputs based on given instructions.
+It allows setting custom validation and generation functions through properties.
+
+#### Methods
+
+##### `sample(self, instruction)`
+
+This method is the abstract method for sampling a given instruction.
+
+It must be implemented by any concrete subclasses to provide specific sampling logic.
+
+Args:
+instruction (Instruction): The instruction object to be sampled.
+generate_logs: Optional list of GenerateLog objects. If None, no collection happens.
+
+-----
+
+---
+
+### `class RejectionSamplingStrategy`
+
+Sampling strategy that rejects samples based on given instructions.
+
+#### Methods
+
+##### `__init__(self)`
+
+Initialize a new instance of the class with default parameters.
+
+Args:
+loop_budget: Number of times to iterate through the process. Must be greater than 0.
+repair: Function to apply "repairs" to an instruction based on its requirements and validation results.
+select_from_failure: Function to select a model output thunk from failed attempts.
+validate: Function to validate the results against requirements. If None, validation is provided later through setter.
+generate: Function to generate new model output thunks. If None, generate is provided later through setter.
+requirements: List of requirements to test against. If None, test all requirements attached to the given instruction.
+
+Raises:
+AssertionError: If loop_budget is not greater than 0.
+
+-----
+
+##### `sample(self, instruction)`
+
+This method performs a sampling operation based on the given instruction.
+
+Args:
+instruction: The Instruction object containing the instruction to generate a valid model output thunk.
+show_progress: if true, a tqdm progress bar is used. Otherwise messages will still be sent to flog.
+generate_logs: If provided, the generations will be logged.
+
+Returns:
+SamplingResult: A result object indicating the success or failure of the sampling process.
+
+Raises:
+AssertionError: Asserts that all required components (repair, select_from_failure, validate, and generate) are provided before proceeding with the sampling.
+
+-----
+
+---

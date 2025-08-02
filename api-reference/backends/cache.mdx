@@ -1,0 +1,70 @@
+---
+title: Cache
+sidebar_label: Cache
+---
+
+# Module: `cache`
+
+Caching strategies.
+
+## Classes
+
+### `class Cache`
+
+A Cache for storing model state (e.g., kv cache).
+
+#### Methods
+
+##### `put(self, key, value)`
+
+Inserts into the cache. May result in eviction of other cached values.
+
+-----
+
+##### `get(self, key)`
+
+Retrieves a value from the cache. Returns `None` if the `id` has no cached value. May impact which cache values are evicted.
+
+-----
+
+##### `current_size(self)`
+
+Returns the number of things currently in the cache. Mostly useful for debugging.
+
+-----
+
+---
+
+### `class SimpleLRUCache`
+
+A simple [LRU](https://en.wikipedia.org/wiki/Cache_replacement_policies#Least_Recently_Used_(LRU)) cache.
+
+#### Methods
+
+##### `__init__(self, capacity)`
+
+Initializes the LRU cache with a certain capacity.
+
+The `SimpleLRUCache` either contains a value or it doesn't. There is no cache hierarchy. Take care when choosing `capacity`. In practice usually a small value will be fine, but ideally you should try to choose a capacity based upon your available device memory and the context size of your model.
+
+-----
+
+##### `current_size(self)`
+
+Just return the size of the key set. This isn't necessarily safe.
+
+-----
+
+##### `get(self, key)`
+
+Gets a value from the cache.
+
+-----
+
+##### `put(self, key, value)`
+
+Put a value into the cache.
+
+-----
+
+---

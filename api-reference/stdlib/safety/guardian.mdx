@@ -1,0 +1,60 @@
+---
+title: Guardian
+sidebar_label: Guardian
+---
+
+# Module: `guardian`
+
+Risk checking with Guardian models.
+
+## Classes
+
+### `class GuardianRisk`
+
+Risk definitions as defined in https://github.com/ibm-granite/granite-guardian/blob/main/cookbooks/granite-guardian-3.2/quick_start_vllm.ipynb .
+
+---
+
+### `class GuardianCheck`
+
+A Check for Risks based on local huggingface backend.
+
+#### Methods
+
+##### `__init__(self, risk)`
+
+Initializes a GuardianModel instance with the specified risk definition, model version, and device.
+
+Args:
+risk: The risk definition to check for, defaults to GuardianRisk.HARM.
+model_version:  The version of the model, defaults to "ibm-granite/granite-guardian-3.2-3b-a800m".
+device: The computational device to use ("cuda" for GPU, "mps" for Apple Silicon, or "cpu"), defaults to None. If not specified, the best available device will be automatically selected.
+
+-----
+
+##### `_parse_output(output, input_len, tokenizer)`
+
+Parse the output of a guardian model and determine whether if the risk is present or not.
+
+Args:
+output: The model's output containing sequences from which predictions are made.
+input_len: The length of the original input sequence used for alignment with the model's output.
+tokenizer: The tokenizer associated with the model, used to decode the tokens back into text.
+
+-----
+
+##### `_guardian_validate(self, ctx)`
+
+Validates the last turn of a conversation context using wrt given risk.
+
+Code is adopted from https://huggingface.co/ibm-granite/granite-guardian-3.2-3b-a800m#quickstart-example
+
+Args:
+ctx (Context): The context object containing the last turn of the conversation.
+
+Returns:
+bool: True if there is no identified risk, False otherwise.
+
+-----
+
+---

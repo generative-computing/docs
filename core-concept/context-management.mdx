@@ -1,0 +1,56 @@
+---
+title: "Context Management"
+description: "Conext management using Mellea sessions"
+---
+
+Mellea manages context using two complementary mechanisms:
+
+1. `Component`s themselves, which generally contain all of the context needed for a single-turn request. MObjects manage context using fields and methods, Instructions have a grounding_context for RAG-style requests, etc.
+
+2. The `Context`, which stores and represents a (sometimes partial) history of all previous requests to the LLM made during the current session.
+
+We have already seen a lot about how Components can be used to define the context of an LLM request, so in this chapter we will focus on the `Context` mechanism.
+
+When you use the `start_session()` method, you are actually instantiating a `Mellea` with a default inference engine, a default model choice, and a default context manager. The following code is equivalent to `m.start_session()`:
+
+<CodeGroup>
+
+```python Python
+m = mellea.MelleaSession(
+    backend=OllamaBackend(model_id=IBM_GRANITE_3_3_8B)
+    context=SimpleContext()
+)
+```
+
+</CodeGroup>
+The `SimpleContext` -- which is the only context we have used so far -- is a context manager that resets the chat message history on each model call. That is, the model's context is entirely determined by the current Component. Mellea also provides a `LinearContext`, which behaves like a chat history. We can use the LinearContext to interact with cat hmodels:
+
+<CodeGroup>
+
+```python Python
+m = mellea.start_session(ctx=LinearContext())
+m.chat("Make up a math problem.")
+m.chat("Solve your math problem.")
+```
+
+</CodeGroup>
+
+The `Context` object provides a few useful hepfuls for introspecting on the current model context; for example, you can always get the last model output:
+
+<CodeGroup>
+
+```python Python
+print(m.last_output())
+```
+
+</CodeGroup>
+
+or the entire last turn (user query + assistant response):
+
+<CodeGroup>
+
+```python Python
+print(m.last_turn())
+```
+
+</CodeGroup>

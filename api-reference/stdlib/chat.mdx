@@ -1,0 +1,83 @@
+---
+title: Chat
+sidebar_label: Chat
+---
+
+# Module: `chat`
+
+Chat primitives.
+
+## Classes
+
+### `class Message`
+
+A single Message in a Chat history.
+
+#### Methods
+
+##### `__init__(self, role, content)`
+
+Initializer for Chat messages.
+
+Args:
+role (str): The role that this message came from (e.g., user, assistant).
+content (str): The content of the message.
+
+-----
+
+##### `parts(self)`
+
+Returns all of the constituent parts of an Instruction.
+
+-----
+
+##### `format_for_llm(self)`
+
+Formats the content for a Language Model.
+
+Returns:
+The formatted output suitable for language models.
+
+-----
+
+##### `__str__(self)`
+
+Pretty representation of messages, because they are a special case.
+
+-----
+
+---
+
+### `class ToolMessage`
+
+Adds the name field for function name.
+
+#### Methods
+
+##### `__init__(self, role, content, tool_output, name, args, tool)`
+
+Initializer for Chat messages.
+
+Args:
+role: the role of this message. Most backends/models use something like tool.
+content: The content of the message; should be a stringified version of the tool_output.
+name: The name of the tool/function.
+args: The args required to call the function.
+tool_output: the output of the tool/function call.
+tool: the ModelToolCall representation.
+
+-----
+
+##### `format_for_llm(self)`
+
+The same representation as Message with a name field added to args.
+
+-----
+
+##### `__str__(self)`
+
+Pretty representation of messages, because they are a special case.
+
+-----
+
+---

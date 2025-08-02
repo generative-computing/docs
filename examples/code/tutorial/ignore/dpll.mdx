@@ -1,0 +1,391 @@
+---
+title: dpll
+---
+
+This is the code for `dpll.py`:
+<CodeGroup>
+
+```python Python
+# type: ignore
+# ruff: noqa E402
+"""This file demonstrates how to solve combinatorial scheduling task presented in natural language using "verbalized DPLL".
+
+Verbalized algorithms is a style of algorithms that uses LLM to perform
+high-level reasoning tasks such as sorting, clustering, etc.
+Given an informal representation of a formal task,
+it operates by replacing some basic atomic operations in a classical algorithm
+with a LLM-driven text-based one while retaining the high-level control flow,
+thereby largely retaining the theoretical guarantees of the original algorithm.
+
+Imagine receiving hundreds of customer complaints and one must quickly
+sort and select 5 customers who most urgently need supports.
+Feeding such a large set of input strings blindly into an LLM is ineffective and impractical
+both due to the limited context length and its limited ability to perform sorting task
+--- LLMs provide no guarantees on the correctness of their outputs for a computational reasoning task such as sorting,
+other than anecdotal, empirical observations that they sometimes do.
+
+In contrast, traditional disciplines of computer science approach this task
+using algorithms that involve task decomposition.
+For example, a merge sort decomposes the entire sorting task into several sorting tasks over individual sublists
+and combines the results, where at the limit, there is an elementary binary comparison operator that is applied to
+individual pair of objects in the list.
+
+"""
+
+import random
+
+import mellea
+from mellea.backends import Backend, CBlock, Component, Context, ModelOutputThunk
+from mellea.backends.types import ModelOption
+from mellea.stdlib.base import LinearContext, SimpleContext
+from mellea.stdlib.requirement import Requirement
+
+m = mellea.start_session()
+
+import json
+from typing import Literal, Optional, Type, TypeVar  # noqa: UP035
+
+from pydantic import BaseModel
+
+M = TypeVar("M", bound=BaseModel)
+
+
+def askdata(query: list[str] | str, cls: type[M], n=5, verbose=True) -> M | list[M]:
+    """Poor-man's structured decoding"""
+
+    system_message = (
+        " You are an assistant that must always return a json string that follows a given json schema."
+        + " The schema is this: "
+        + json.dumps(cls.model_json_schema())
+    )
+
+    if isinstance(query, str):
+        queries, need_unbatch = [query], True
+    else:
+        queries, need_unbatch = query, False
+
+    results = []
+    for q in queries:
+        res = m.instruct(
+            q, model_options={ModelOption.SYSTEM_PROMPT: system_message}, format=cls
+        )
+        obj = cls.model_validate_json(res.value)  # type:ignore
+        results.append(obj)
+        if verbose:
+            print(f"{q} -> ")
+            print(obj.model_dump_json(indent=2))
+
+    if need_unbatch:
+        return results[0]
+    else:
+        return results
+
+
+def askchoice(query: list[str] | str, choices=list[str], verbose=True):
+    """Poor-man's constraint decoding"""
+
+    class Choice(BaseModel):
+        think: str
+        answer: Literal[*choices]
+
+    answers = askdata(query, Choice, verbose=verbose)
+    if isinstance(answers, list):
+        return [c.answer for c in answers]
+    else:
+        return answers.answer
+
+
+# printer facility
+
+import textwrap
+from collections.abc import Callable, Iterable
+
+
+def wrapped(text: str | Iterable[str], width: int = 100, fn: Callable = print):
+    """
+    Print a text string in a reasonable screen width (100).
+    Swapping fn with a custom function (e.g. yp, rp, ....) is handy.
+    """
+    if not isinstance(text, str):
+        for elem in text:
+            for subline in textwrap.wrap(
+                str(elem), width=width, initial_indent="* ", subsequent_indent="  "
+            ):
+                fn(subline)
+    else:
+        for line in text.split("\n"):
+            for subline in textwrap.wrap(line, width=width):
+                fn(subline)
+
+
+from colors import blue, cyan, green, magenta, red, yellow
+
+
+def yp(line):
+    "Print the line in yellow."
+    print(yellow(line), flush=True)
+
+
+def rp(line):
+    "Print the line in red."
+    print(red(line), flush=True)
+
+
+def gp(line):
+    "Print the line in green."
+    print(green(line), flush=True)
+
+
+def bp(line):
+    "Print the line in blue."
+    print(blue(line), flush=True)
+
+
+def mp(line):
+    "Print the line in magenta."
+    print(magenta(line), flush=True)
+
+
+def cp(line):
+    "Print the line in cyan."
+    print(cyan(line), flush=True)
+
+
+# verbalized dpll.
+
+
+def dpll(problem):
+    class Conflict(Exception):
+        pass
+
+    class SolutionFound(Exception):
+        solution: list[str]
+
+    class Variable(BaseModel):
+        name: str
+        domain: list[str]
+
+    class Variables(BaseModel):
+        variables: list[Variable]
+
+    class AnswerWithReason(BaseModel):
+        reason: str
+        answer: Literal["yes", "no"]
+
+    class UpdatedSituation(BaseModel):
+        situation: str
+
+    def rec(situation, assumptions, variables):
+        # variable selection heuristics inspired by VSIDS
+        name = askchoice(
+            (
+                "Pick a variable whose values are most likely to cause issues, by name."
+                + f"\nSituation: {situation}"
+                + "".join([f"\nVariable({v})" for v in variables])
+            ),
+            [v.name for v in variables],
+        )
+        yp(f"selected variable: {name}")
+        variable = None
+        for v in variables:
+            if v.name == name:
+                variable = v
+
+        def assumption(variable, value):
+            return f"{variable.name} is {value}."
+
+        def propagate(variables, variable, value):
+            gp(f"new assumption: {assumption(variable, value)}")
+            new_assumptions = [assumption(variable, value)]
+
+            finished = False
+            while not finished:
+                answers = askdata(
+                    [
+                        (
+                            "Combine the situation with the assumption below. "
+                            + f"If {assumption(_variable, _value)}, does it violate any constraint, or cause any logical contradiction? "
+                            + "Answer yes or no. "
+                            f"\nSituation: {situation}"
+                            + "\nAssumption: "
+                            + " ".join(new_assumptions)
+                        )
+                        for _variable in variables
+                        for _value in _variable.domain
+                        if variable != _variable
+                    ],
+                    AnswerWithReason,
+                )
+                variables2 = []
+                i = -1
+                for _variable in variables:
+                    if variable != _variable:
+                        domain = []
+                        for _value in _variable.domain:
+                            i += 1
+                            print(
+                                f"{assumption(_variable, _value)} : {answers[i].answer} -- {answers[i].reason}"
+                            )
+                            if answers[i].answer == "no":
+                                domain.append(_value)
+                        variables2.append(Variable(name=_variable.name, domain=domain))
+
+                yp("variables after constraint propagation:")
+                wrapped(variables2)
+
+                finished = True
+                for v in variables2:
+                    if len(v.domain) == 0:
+                        rp(
+                            f"Conflict detected: there is no value that {v.name} can take"
+                        )
+                        raise Conflict()
+                    elif len(v.domain) == 1 and (
+                        assumption(v, v.domain[0]) not in new_assumptions
+                    ):
+                        finished = False
+                        gp(f"New assumption detected: {assumption(v, v.domain[0])}")
+                        new_assumptions.append(assumption(v, v.domain[0]))
+
+                yp("removing variables with a single value:")
+                variables = [v for v in variables2 if len(v.domain) >= 2]
+                wrapped(variables)
+                if not variables:
+                    raise SolutionFound(assumptions + new_assumptions)
+
+            return new_assumptions, variables
+
+        for value in variable.domain:
+            try:
+                new_assumptions, new_variables = propagate(variables, variable, value)
+            except Conflict:
+                continue
+
+            new_assumption = " ".join(new_assumptions)
+            new_situation = askdata(
+                (
+                    "Combine the situation description with the assumption below and form a new, succinct situation description, "
+                    + "eliminating the range of possibility of some unknowns. "
+                    f"\nSituation: {situation}" + f"\nAssumption: {new_assumption}"
+                ),
+                UpdatedSituation,
+            )
+            mp("New situation:")
+            wrapped(new_situation.situation)
+            rec(new_situation.situation, assumptions + new_assumptions, new_variables)
+
+        # if SolutionFound was not raised, then this variable has no satisfying assignments
+        raise Conflict()
+
+    variables = askdata(
+        "Generate a list of unknowns, "
+        + "where each unknown represents a remaining distinct unknown factor in the situation. "
+        + "Each unknown acts like a variable, has a name and a domain, where the domain is a list of its possible values. "
+        + "For each name X and the value Y, 'X is Y.' must form a full coherent English sentence. "
+        + "X can be a noun phrase beginning with when/where/what/who/why/whether. "
+        + "Remember that if a domain contains only one element, there is no uncertainty, therefore it should not be listed. "
+        + f"\nSituation: {problem}",
+        Variables,
+    ).variables
+    yp("variables:")
+    wrapped(variables)
+    yp("removing variables with a single value:")
+    variables = [v for v in variables if len(v.domain) >= 2]
+    wrapped(variables)
+
+    try:
+        rec(problem, [], variables)
+        rp("UNSAT")
+        return None  # unsatisfiable
+    except SolutionFound as e:
+        solution = e.args[0]
+        yp("Solution found:")
+        wrapped(solution)
+        rp("SAT")
+        return solution
+
+
+def main():
+    problem = """
+    Anna, Ben, Chloe, and Daniel all need to get to the office in the morning, and they can coordinate using two cars.
+    There are three possible departure times: 7:00 AM, 7:30 AM, and 8:00 AM.
+    Each person has their own availability:
+    Anna can leave at 7:00 or 7:30,
+    Ben at 7:30 or 8:00,
+    Chloe at 7:00 or 8:00,
+    and Daniel at 7:00 or 7:30.
+    The goal is to assign each person to exactly one departure time,
+    using no more than two different times total (since there are only two cars),
+    such that everyone is assigned a time they are available for.
+    """
+    problem = " ".join(problem.split())
+    for _ in range(5):
+        try:
+            solution = dpll(problem)
+            if solution is not None:
+                break
+        except:
+            pass
+
+    # problem = """
+    # Ben has a meeting from 14:00 to 15:00 in the office.
+    # Ben's son must be picked up from the school between 16:00 and 18:00.
+    # It takes 30 minutes to move between the house and the school.
+    # It takes 30 minutes to move between the house and the office.
+    # It takes 30 minutes to move between the school and the office.
+    # Ben must buy grocery before 19:00.
+    # Ben must be home before 19:00.
+    # Ben's son must be home before 19:00.
+    # Grocery shopping takes 60 minutes.
+    # Ben needs a half-hourly schedule after 13:00.
+    # """
+    # problem = " ".join(problem.split())
+    # solution = dpll(problem)
+
+    # problem = """ You are given a group of 8 people, labeled P1 through
+    # P8. Your goal is to form 4 disjoint pairs (i.e., everyone is paired with
+    # exactly one other person) such that no pair contains two people who dislike
+    # each other. Lets call them Pair1, Pair2, Pair3, Pair4.
+    #
+    # Here are the incompatibilities (i.e., people who do not want to be paired together):
+    # P1 dislikes P2 and P5
+    # P2 dislikes P3
+    # P3 dislikes P4 and P6
+    # P4 dislikes P7
+    # P5 dislikes P8
+    # P6 dislikes P3
+    # P7 dislikes P1
+    # P8 dislikes P4
+    # """
+    # solution = dpll(problem)
+    # solution = dpll(problem)
+    # solution = dpll(problem)
+    #
+    # problem = """ You are given a group of 8 people, labeled P1 through
+    # P8. Your goal is to form 4 disjoint pairs (i.e., everyone is paired with
+    # exactly one other person) such that no pair contains two people who dislike
+    # each other.
+    #
+    # Here are the incompatibilities (i.e., people who do not want to be paired together):
+    # P1 dislikes P2, P5, P8
+    # P2 dislikes P1, P3
+    # P3 dislikes P2, P4, P6
+    # P4 dislikes P3, P7
+    # P5 dislikes P1, P6, P8
+    # P6 dislikes P3, P5
+    # P7 dislikes P4, P8
+    # P8 dislikes P1, P5, P7
+    # """
+    # solution = dpll(problem)
+    # solution = dpll(problem)
+    # solution = dpll(problem)
+
+
+if __name__ == "__main__":
+    # import fattrace
+    # fattrace.install(include_external=True)
+
+    main()
+
+```
+</CodeGroup>

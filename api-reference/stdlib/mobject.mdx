@@ -1,0 +1,198 @@
+---
+title: Mobject
+sidebar_label: Mobject
+---
+
+# Module: `mobject`
+
+MObject.
+
+## Classes
+
+### `class Query`
+
+A Query component.
+
+#### Methods
+
+##### `__init__(self, obj, query)`
+
+Initializes a new instance of Query with the provided object and query.
+
+Args:
+obj : The object to be queried.
+query:  The query string used for querying the object.
+
+-----
+
+##### `parts(self)`
+
+Get the parts of the query.
+
+-----
+
+##### `format_for_llm(self)`
+
+Format the query for llm.
+
+-----
+
+---
+
+### `class Transform`
+
+A Transform component.
+
+#### Methods
+
+##### `__init__(self, obj, transformation)`
+
+Initializes a new instance of Transform with the provided object and transformation description.
+
+Args:
+obj : The object to be queried.
+transformation:  The string used for transforming the object.
+
+-----
+
+##### `parts(self)`
+
+Get the parts of the transform.
+
+-----
+
+##### `format_for_llm(self)`
+
+Format the transform for llm.
+
+-----
+
+---
+
+### `class MObjectProtocol`
+
+Protocol to describe the necessary functionality of a MObject. Implementers should prefer inheriting from MObject than MObjectProtocol.
+
+#### Methods
+
+##### `parts(self)`
+
+Returns a list of parts for MObject.
+
+-----
+
+##### `get_query_object(self, query)`
+
+Returns the instantiated query object.
+
+Args:
+query : The query string.
+
+-----
+
+##### `get_transform_object(self, transformation)`
+
+Returns the instantiated transform object.
+
+Args:
+transformation: the transform string
+
+-----
+
+##### `content_as_string(self)`
+
+Returns the content of MObject as a string.
+
+The default value is just `str(self)`.
+Subclasses should override this method.
+
+-----
+
+##### `_get_all_members(self)`
+
+Returns a list of all methods from the MObject except methods of the super class.
+
+Undocumented and methods with [no-index] in doc string are ignored.
+
+-----
+
+##### `format_for_llm(self)`
+
+The template representation used by the formatter.
+
+The default `TemplateRepresentation` uses an automatic
+parsing for tools and fields. The content is retrieved
+from `content_as_string()`.
+
+-----
+
+---
+
+### `class MObject`
+
+An extension of `Component` for adding query and transform operations.
+
+#### Methods
+
+##### `__init__(self)`
+
+Initializes a new instance of MObject with a specified query type and transformation type.
+
+Args:
+query_type : The type of query to be used, defaults to Query if not provided.
+transform_type : The type of transform to be used, defaults to Transform if not provided.
+
+-----
+
+##### `parts(self)`
+
+Returns a list of parts for MObject.
+
+-----
+
+##### `get_query_object(self, query)`
+
+Returns the instantiated query object.
+
+Args:
+query : The query string.
+
+-----
+
+##### `get_transform_object(self, transformation)`
+
+Returns the instantiated transform object.
+
+Args:
+transformation: the transform string
+
+-----
+
+##### `content_as_string(self)`
+
+Returns the content of MObject as a string.
+
+The default value is just `str(self)`.
+Subclasses should override this method.
+
+-----
+
+##### `_get_all_members(self)`
+
+Returns a list of all methods from the MObject except methods of the super class.
+
+Undocumented and methods with [no-index] in doc string are ignored.
+
+-----
+
+##### `format_for_llm(self)`
+
+The template representation used by the formatter.
+
+The default `TemplateRepresentation` uses an automatic
+parsing for tools and fields. The content is retrieved
+from `content_as_string()`.
+
+-----
+
+---

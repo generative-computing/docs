@@ -1,0 +1,162 @@
+---
+title: Richdocument
+sidebar_label: Richdocument
+---
+
+# Module: `richdocument`
+
+Representations of Docling Documents.
+
+## Classes
+
+### `class RichDocument`
+
+A `RichDocument` is a block of content with an underlying DoclingDocument.
+
+It has helper functions for working with the document and extracting parts of it.
+
+#### Methods
+
+##### `__init__(self, doc)`
+
+A `RichDocument` is a block of content with an underlying DoclingDocument.
+
+-----
+
+##### `parts(self)`
+
+A `RichDocument` has no parts.
+
+-----
+
+##### `format_for_llm(self)`
+
+Return Document content as Markdown.
+
+No template needed here.
+
+-----
+
+##### `docling(self)`
+
+Get the underlying Docling Document.
+
+-----
+
+##### `to_markdown(self)`
+
+Get the full text of the document as markdown.
+
+-----
+
+##### `get_tables(self)`
+
+Return the `Table`s that are a part of this document.
+
+-----
+
+##### `save(self, filename)`
+
+Save the underlying DoclingDocument for reuse later.
+
+-----
+
+##### `load(cls, filename)`
+
+Load a DoclingDocument from a file. The file must already be a DoclingDocument.
+
+-----
+
+##### `from_document_file(cls, source)`
+
+Process a document with Docling.
+
+-----
+
+---
+
+### `class TableQuery`
+
+Table-specific query.
+
+#### Methods
+
+##### `__init__(self, obj, query)`
+
+Initializes a new instance of the `TableQuery` class.
+
+Args:
+obj : The table object to which the query applies.
+query : The query string.
+
+-----
+
+##### `format_for_llm(self)`
+
+Template arguments for Formatter.
+
+-----
+
+---
+
+### `class TableTransform`
+
+Table-specific transform.
+
+#### Methods
+
+##### `__init__(self, obj, transformation)`
+
+Initializes a new instance of the `TableTransform` class.
+
+Args:
+obj : The table object to which the transform applies.
+transformation : The transformation description string.
+
+-----
+
+##### `format_for_llm(self)`
+
+Template arguments for Formatter.
+
+-----
+
+---
+
+### `class Table`
+
+A `Table` represents a single table within a larger Docling Document.
+
+#### Methods
+
+##### `__init__(self, ti, doc)`
+
+If you pass doc=None, the underlying docling functions to extract data from tables may fail due to lack of context and docling deprecations.
+
+-----
+
+##### `from_markdown(cls, md)`
+
+Creates a fake document from the markdown and attempts to extract the first table found.
+
+-----
+
+##### `to_markdown(self)`
+
+Get the `Table` as markdown.
+
+-----
+
+##### `transpose(self)`
+
+Transposes the table. Will return a new transposed `Table` if successful.
+
+-----
+
+##### `format_for_llm(self)`
+
+Return Table representation for Formatter.
+
+-----
+
+---

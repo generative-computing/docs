@@ -1,0 +1,29 @@
+---
+title: 101_email_with_requirements
+---
+
+This is the code for `101_email_with_requirements.py`:
+<CodeGroup>
+
+```python Python
+from docs.examples.helper import w
+from mellea import start_session
+from mellea.backends.types import ModelOption
+
+# create a session using Granite 3.3 8B on Ollama and a simple context [see below]
+m = start_session(model_options={ModelOption.MAX_NEW_TOKENS: 200})
+
+# write an email
+email_v1 = m.instruct(
+    "Write an email to invite all interns to the office party.",
+    requirements=["be formal", "Use 'Dear interns' as greeting."],
+)
+
+# print result
+print(f"***** email ****\n{w(email_v1)}\n*******")
+
+# # optionally, for debugging.. print last prompt
+# print(f"Prompt:\n{w(m.last_prompt())}")
+
+```
+</CodeGroup>

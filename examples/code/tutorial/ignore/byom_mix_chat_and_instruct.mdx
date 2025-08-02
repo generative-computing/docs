@@ -1,0 +1,70 @@
+---
+title: byom_mix_chat_and_instruct
+---
+
+This is the code for `byom_mix_chat_and_instruct.py`:
+<CodeGroup>
+
+```python Python
+from mellea import MelleaSession
+from mellea.backends.ollama import OllamaModelBackend
+from mellea.backends.types import ModelOption
+from mellea.stdlib.base import Context, LinearContext
+from mellea.stdlib.requirement import Requirement, req, simple_validate
+from mellea.stdlib.sampling import RejectionSamplingStrategy
+
+# Create session based on llama and a LinearContext. Linear contexts collect
+# inputs and outputs on them. Think of them as "chat history". This chat
+# history is what we will utilize in this example.
+
+m = MelleaSession(
+    backend=OllamaModelBackend(model_id="llama3.2:latest"), ctx=LinearContext()
+)
+# ------------------
+# Turn 1: Sent a simple query to the model. The string is sent 1:1 as a user message to the model and executed
+# ------------------
+print("\n")
+print(
+    m.chat(
+        "Hi, meta! Tell me about Mark Zuckerberg in 100 words max.",
+        model_options={ModelOption.MAX_NEW_TOKENS: 100},
+    )
+)
+
+# ------------------
+# Turn 2: Sent an instruction to the model. The task and requirements are represented as a user message using a
+# specific template. The model is asked up to three times for a response that fulfills all requirements.
+# ------------------
+
+
+# function to determine if the last output of the model started with yes/no or not.
+def yes_no_answers(o: str):
+    out = o.lower()
+    return out.startswith(("yes", "no"))
+
+
+# run the instruction as second turn
+print(
+    m.instruct(
+        "Was he at Harvard?",  # What to do?
+        requirements=[
+            req(
+                "Answer with 'yes' or 'no'.",
+                validation_fn=simple_validate(yes_no_answers),
+            )
+        ],  # list of conditions that the output should fulfill to be valid.
+        strategy=RejectionSamplingStrategy(loop_budget=3),  # a sampling strategy
+    )
+)
+# print(m.ctx.last_turn())
+
+# ------------------
+# Turn 3: Run a simple chat user message again to see if the previous messages are in the context
+# expected answer is: Mark Zuckerberg
+# ------------------
+print(m.chat("What was his name again?"))
+
+# Todo @hen : show last turn and length of context
+
+```
+</CodeGroup>

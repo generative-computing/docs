@@ -1,0 +1,121 @@
+---
+title: Requirement
+sidebar_label: Requirement
+---
+
+# Module: `requirement`
+
+Requirements are a special type of Component used as input to the "validate" step in Instruct/Validate/Repair design patterns.
+
+## Functions
+
+### `default_output_to_bool(x)`
+
+Checks if a given output should be marked converted to `True`.
+
+Checks if the output is exactly equal to "yes" or "y" (case-insensitive). If not, it will also
+check if any of the words in the output are "yes" (case-insensitive).
+
+---
+
+### `reqify(r)`
+
+Maps strings to Requirements.
+
+This is a utility method for functions that allow you to pass in Requirements as either explicit Requirement objects or strings that you intend to be interpreted as requirements.
+
+---
+
+### `req(*args, **kwargs)`
+
+Shorthand for Requirement.__init__.
+
+---
+
+### `check(*args, **kwargs)`
+
+Shorthand for Requirement.__init__(..., check_only=True).
+
+---
+
+### `simple_validate(fn)`
+
+Syntactic sugar for writing validation functions that only operate over the last output from the model (interpreted as a string).
+
+This is useful when your validation logic only depends upon the most recent model output. For example:
+
+`Requirement("Answer 'yes' or 'no'", simple_validate(lambda x: x == 'yes' or x == 'no')`
+
+Validation functions operate over `Context`. Often you do not care about the entire context, and just want to consider the most recent output from the model.
+
+Important notes:
+- this operates over the more recent _model output_, not the most recent message.
+- Model outputs are sometimes parsed into more complex types (eg by a `Formatter.parse` call or an OutputProcessor). This validation logic will interpret the most recent output as a string, regardless of whether it has a more complex parsed representation.
+
+---
+
+## Classes
+
+### `class Requirement`
+
+Requirements are a special type of Component used as input to the Validate step in Instruct/Validate/Repair patterns.
+
+#### Methods
+
+##### `__init__(self, description, validation_fn)`
+
+A Requirement, interpreted over a Context.
+
+By default, requirements are validated by the model using LLM-as-a-Judge (or a `constraint` LoRA when available). However, you can also provide a `validate` function with arbitrary behavior.
+
+Args:
+description: A natural-language description of the requirement. This will sometimes be included in `Instruction` prompts; if you do not want the requirement to be included in the prompt to avoid [Purple Elephant Effects](https://${PROJECT_URL}/llm-requirement-engineering-and-purple-elephants/) use check_only=True.
+validation_fn: If provided, this function will be executed instead of using LLM-as-a-Judge. The `bool()` for the function's output defines whether the requirement passes.
+output_to_bool: An `output_to_bool` may be provided so that the library can translate the LLM-as-a-judge or ALora output into a boolean value. If none is provided, we will look for 'yes' (case-insensitive) in the LLMaJ output.
+check_only: If set, then `Instruction` will not include this requirement in its prompt.
+
+-----
+
+##### `validate(self, backend, ctx)`
+
+Chooses the appropriate validation strategy and applies that strategy.
+
+-----
+
+##### `parts(self)`
+
+Returns all of the constituent parts of a Requirement.
+
+-----
+
+##### `format_for_llm(self)`
+
+Some object protocol magic happens here with management of the output.
+
+-----
+
+---
+
+### `class LLMaJRequirement`
+
+A requirement that always uses LLM-as-a-Judge. Any available constraint ALoRA will be ignored.
+
+---
+
+### `class ALoraRequirement`
+
+A requirement that always uses an (possibly specified) ALora. If an exception is thrown during the ALora execution path, `mellea` will fall back to LLMaJ. But that is the only case where LLMaJ will be used.
+
+#### Methods
+
+##### `__init__(self, description, alora)`
+
+A requirement that is validated by an ALora.
+
+Args:
+description: See `Requirement.__init__`
+alora: if None, the ALora with name "constraint" will be used.
+
+-----
+
+---

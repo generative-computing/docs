@@ -1,0 +1,41 @@
+---
+title: "Welcome"
+description: "Mellea is a library for writing generative programs."
+---
+
+A _generative program_ is any computer program that contains calls to an LLM. As we will see throughout the tutorial, LLMs can be incorporated into software in a wide variety of ways. Some ways of incorporating LLMs into programs tend to result in robust and performant systems, while others result in software that is brittle and error-prone.
+
+**Generative programs should circumscribe LLM calls**
+
+Generative programming requires careful control over where and how LLMs are invoked. Like calling out to a database or an external API, LLM calls introduce a zone of uncertainty into your system. To manage this uncertainty, programs should make the boundaries of LLM interaction explicit. This means placing LLM calls behind clearly defined interfaces and wrapping them with pre-conditions (which validate inputs before the call), post-conditions (which check outputs), and—in more complex flows—loop invariants that preserve correctness over repeated interactions. By isolating LLMs in this way, we can reason about their behavior, validate their contributions, and recover gracefully from failure.
+
+**Generative programs should use simple and composable prompting styles.**
+
+Prompting is the most basic form of programming with LLMs, but it is also one of the most fragile. Long, monolithic prompts tend to be brittle: LLMs struggle with deep control flow, and prompt length comes at the cost of valuable context tokens. Instead, prompts should be short, modular, and built up step-by-step in code. This modularity enables ablation testing (removing or altering parts of the prompt to measure impact) and makes it easier to refactor or move logic elsewhere (e.g., into post-validation checks). When possible, rely on prompt formats that were explicitly included in post-training; models are more reliable when operating in familiar terrain.
+
+**Generative programs should carefully manage context**
+
+LLMs operate over a rolling window of context, and good generative programs must treat that context as a first-class concern. Each prompt and response becomes part of a conversation history that shapes future outputs. Without deliberate context management, programs risk losing important information or overwhelming the model with irrelevant text. The Mellea framework offers explicit tools—like mobjects and RichDocuments—for organizing and curating context. These allow developers to track, summarize, and manipulate conversation state in a structured way, ensuring that LLMs have access to the right information at the right time.
+
+Mellea provides a toolkit for building Generative Programs which are structured,
+maintainable implementations of AI agents and generative tasks.
+
+- **Declarative Abstractions**: Define behavior via instructions, constraints, generation strategies,
+  and safety protocols.
+- **Backend Flexibility**: Supports vLLM/llm-d, watsonx.ai, Ollama,
+  TGI, MCP, A2A, BeeAI, and more.
+- **Standardized Deployment**: Exposes programs as OpenAI/LlamaStack-compatible
+  endpoints.
+- **Multi-Inference Orchestration**: Compiles complex workflows behind single
+  API calls.
+
+Mellea solves critical pain points in agent-driven AI:
+
+- **Maintainability**: Replaces brittle monolithic prompts with modular, version-controllable code.
+- **Efficiency**: Optimizes multi-step tasks (e.g., agents, reasoning) via orchestrated inferences.
+- **Security**: Enforces constraints/safety at the framework level.
+- **Adoption**: Meets developers where they are – works with existing OpenAI/LlamaStack tooling.
+
+**Conclusion**
+
+Although good generative programs can be written in any language and framework, getting it right is not trivial. Mellea is just one point in the design space of LLM libraries, but we think it is a good one. Our hope is that Mellea will help you write generative programs that are robust, performant, and fit-for-purpose.

@@ -1,0 +1,121 @@
+---
+title: "Adapters"
+description: " Command-line tool for adapting base models like IBM Granite to custom tasks."
+---
+
+One of the main principles of generative programming is that you should prompt models in the same way that the models were aligned. But what if you are introducing a custom Component that is not covered in the model's training data?
+
+Mellea provides a command-line interface for training and uploading [LoRA](https://arxiv.org/abs/2106.09685) or [aLoRA](https://github.com/IBM/alora) adapters. This tool is useful for adapting base models like IBM Granite to custom tasks. For example, you can train custom validators on proprietary datasets for Requirement checking, or train custom models that are activated whenever generating from a specific type of Component.
+
+### Training Data Format
+
+Mellea expects training data in a `.jsonl` file, where each line contains exactly these keys:
+
+- `item`: A user prompt or message
+- `label`: A string classification label
+
+#### Example `data.jsonl`
+
+<CodeGroup>
+
+```json JSON
+{"item": "The stembolt doesn't adjust at high RPM.", "label": "F"}
+{"item": "Normal sensor readings but inconsistent throttle.", "label": "T"}
+{"item": "Sluggish acceleration from idle.", "label": "T"}
+```
+
+</CodeGroup>
+
+### Train a Model
+
+Use the `m alora train` command to fine-tune a LoRA or aLoRA adapter requirement validator.
+
+<CodeGroup>
+
+```bash Bash
+m alora train path/to/data.jsonl \
+  --basemodel ibm-granite/granite-3.2-8b-instruct \
+  --outfile ./checkpoints/alora_adapter \
+  --adapter alora \
+  --epochs 6 \
+  --learning-rate 6e-6 \
+  --batch-size 2 \
+  --max-length 1024 \
+  --grad-accum 4
+```
+
+</CodeGroup>
+
+#### Parameters
+
+| Flag              | Type    | Default    | Description                               |
+| ----------------- | ------- | ---------- | ----------------------------------------- |
+| `--basemodel`     | `str`   | _required_ | Hugging Face model ID or local path       |
+| `--outfile`       | `str`   | _required_ | Directory to save the adapter weights     |
+| `--adapter`       | `str`   | `"alora"`  | Choose between `alora` or standard `lora` |
+| `--epochs`        | `int`   | `6`        | Number of training epochs                 |
+| `--learning-rate` | `float` | `6e-6`     | Learning rate                             |
+| `--batch-size`    | `int`   | `2`        | Per-device batch size                     |
+| `--max-length`    | `int`   | `1024`     | Max tokenized input length                |
+| `--grad-accum`    | `int`   | `4`        | Gradient accumulation steps               |
+
+### Upload to Hugging Face
+
+Use the `m alora upload` command to publish your trained adapter:
+
+<CodeGroup>
+
+```bash Bash
+m alora upload ./checkpoints/alora_adapter \
+  --name acme/carbchecker-alora
+```
+
+</CodeGroup>
+
+This will:
+
+- Create the Hugging Face model repo (if it doesn't exist)
+- Upload the contents of the `outfile` directory
+- Requires a valid `HF_TOKEN` via `huggingface-cli login`
+
+If you get a permissions error, make sure you are logged in to Huggingface:
+
+<CodeGroup>
+
+```bash Bash
+huggingface-cli login  # Optional: only needed for uploads
+```
+
+</CodeGroup>
+
+### Example Datasets for Testing
+
+To verify the `alora-train` and `alora-upload` functionality, we tested the CLI using two well-known benchmark datasets: **TREC** and **SST-2**. These datasets are small, well-structured, and suitable for validating training pipelines.
+
+#### Example: TREC (Question Classification)
+
+- **Link**: [Hugging Face: TREC Dataset](https://huggingface.co/datasets/trec)
+- **Description**: The TREC dataset consists of open-domain, fact-based questions divided into broad semantic categories. Each example contains a question and a label such as `DESC`, `HUM`, `LOC`, etc.
+- **Example Item**:
+
+<CodeGroup>
+
+```json JSON
+{ "item": "What is the capital of France?", "label": "LOC" }
+```
+
+</CodeGroup>
+
+#### Example: SST-2 (Stanford Sentiment Treebank v2)
+
+- **Link**: [Hugging Face: sst-2 Dataset](https://huggingface.co/datasets/stanfordnlp/sst2)
+- **Description**: SST-2 is a binary sentiment classification dataset based on movie review sentences. Each entry is labeled as either `POSITIVE` or `NEGATIVE`.
+- **Example Item**:
+
+<CodeGroup>
+
+```json JSON
+{ "item": "A beautiful, poetic piece of cinema.", "label": "POSITIVE" }
+```
+
+</CodeGroup>

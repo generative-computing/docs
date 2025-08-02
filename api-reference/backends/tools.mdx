@@ -1,0 +1,50 @@
+---
+title: Tools
+sidebar_label: Tools
+---
+
+# Module: `tools`
+
+Utilities for dealing with tools.
+
+## Functions
+
+### `get_tools_from_action(action)`
+
+If an object is a Component with a TemplateRepresentation, grabs it's tools field.
+
+Returns:
+dict: mapping function names to callables
+
+---
+
+### `convert_tools_to_json(tools)`
+
+Convert tools to json dict representation.
+
+Notes:
+- Huggingface transformers library lets you pass in an array of functions but doesn't like methods.
+- WatsonxAI uses `from langchain_ibm.chat_models import convert_to_openai_tool` in their demos, but it gives the same values.
+- OpenAI uses the same format / schema.
+
+---
+
+### `json_extraction(text)`
+
+Yields the next valid json object in a given string.
+
+---
+
+### `find_func(d)`
+
+Find the first function in a json-like dictionary.
+
+Most llms output tool requests in the form `...{"name": string, "arguments": {}}...`
+
+---
+
+### `parse_tools(llm_response)`
+
+A simple parser that will scan a string for tools and attempt to extract them.
+
+---

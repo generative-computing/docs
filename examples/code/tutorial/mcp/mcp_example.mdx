@@ -1,0 +1,52 @@
+---
+title: mcp_example
+---
+
+This is the code for `mcp_example.py`:
+<CodeGroup>
+
+```python Python
+# You cannot run this file on its own. Use the `m serve` command.
+from mcp.server.fastmcp import FastMCP
+
+from mellea import MelleaSession
+from mellea.backends import model_ids
+from mellea.backends.ollama import OllamaModelBackend
+from mellea.stdlib.base import ModelOutputThunk
+from mellea.stdlib.requirement import Requirement, simple_validate
+from mellea.stdlib.sampling import RejectionSamplingStrategy
+
+# #################
+# run MCP debug UI with: uv run mcp dev docs/examples/mcp/mcp_example.py
+# ##################
+
+
+# Create an MCP server
+mcp = FastMCP("Demo")
+
+
+@mcp.tool()
+def write_a_poem(word_limit: int) -> str:
+    """Write a poem with a word limit."""
+    m = MelleaSession(OllamaModelBackend(model_ids.QWEN3_8B))
+    wl_req = Requirement(
+        f"Use only {word_limit} words.",
+        validation_fn=simple_validate(lambda x: len(x.split(" ")) < word_limit),
+    )
+
+    res = m.instruct(
+        "Write a poem",
+        requirements=[wl_req],
+        strategy=RejectionSamplingStrategy(loop_budget=4),
+    )
+    assert isinstance(res, ModelOutputThunk)
+    return str(res.value)
+
+
+@mcp.resource("greeting://{name}")
+def get_greeting(name: str) -> str:
+    """Get a personalized greeting"""
+    return f"Hello, {name}!"
+
+```
+</CodeGroup>

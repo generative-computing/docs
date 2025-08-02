@@ -1,0 +1,16 @@
+---
+title: "Interoperability"
+description: "Using `m serve` to connect with agent frameworks."
+---
+
+Mellea programs are, at last, just Python programs. Mellea programs can be shared via the Model Context Protocol or via the A2A protocol. Mellea programs can also consume tools and agents that implement these protocols. See the `docs/` directory for some simple examples.
+
+We also provide an expiermental `m serve` utility for serving up an OpenAI-compatible **chat** endpoint. This allows you to write `m` programs that masquerade as a "model". To learn more about this functionality, run:
+
+<CodeGroup>
+
+```shell Shell
+m serve --help
+```
+
+</CodeGroup>

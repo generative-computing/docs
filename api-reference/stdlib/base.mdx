@@ -1,0 +1,392 @@
+---
+title: Base
+sidebar_label: Base
+---
+
+# Module: `base`
+
+Basic stdlib data structures.
+
+## Functions
+
+### `blockify(s)`
+
+`blockify` is a helper function that turns raw strings into CBlocks.
+
+---
+
+## Classes
+
+### `class CBlock`
+
+A `CBlock` is a block of content that can serve as input to or output from an LLM.
+
+#### Methods
+
+##### `__init__(self, value, meta)`
+
+Initializes the CBlock with a string and some metadata.
+
+-----
+
+##### `value(self)`
+
+Gets the value of the block.
+
+-----
+
+##### `value(self, v)`
+
+Sets the value of the block.
+
+-----
+
+##### `__str__(self)`
+
+Stringifies the block.
+
+-----
+
+##### `__repr__(self)`
+
+Provides a python-parsable representation of the block (usually).
+
+-----
+
+---
+
+### `class Component`
+
+A `Component` is a composite data structure that is intended to be represented to an LLM.
+
+#### Methods
+
+##### `parts(self)`
+
+The set of all the constituent parts of the `Component`.
+
+-----
+
+##### `format_for_llm(self)`
+
+Formats the `Component` into a `TemplateRepresentation` or string.
+
+Returns: a `TemplateRepresentation` or string
+
+-----
+
+---
+
+### `class ModelOutputThunk`
+
+A `ModelOutputThunk` is a special type of `CBlock` that we know came from a model's output. It is possible to instantiate one without the output being computed yet.
+
+#### Methods
+
+##### `__init__(self, value, meta, parsed_repr, tool_calls)`
+
+Initializes as a cblock, optionally also with a parsed representation from an output formatter.
+
+-----
+
+##### `is_computed(self)`
+
+Returns true only if this Thunk has already been filled.
+
+-----
+
+---
+
+### `class ContextTurn`
+
+A turn of model input and model output.
+
+---
+
+### `class Context`
+
+A `Context` is used to track the state of a `MelleaSession`.
+
+#### Methods
+
+##### `reset(self)`
+
+Resets the context to a fresh state.
+
+Note: resetting a context does NOT free memory or clear cache. For this reason, you probably want to be calling this method from a `Session`.
+
+-----
+
+##### `insert(self, value)`
+
+Each `Context` must define its own semantics for inserting something into the context.
+
+Args:
+value (CBlock | Component): the thing to insert.
+key (Optional[Any]): a key by which the value is indexed to. This is optional and only needed for fairly sophisticated Context types. Note that this is NOT necessarily a key that can be used for KV cache lookups!
+generate_logs: Adding log information about the insertion. Should only be used for output objects.
+
+-----
+
+##### `insert_turn(self, turn)`
+
+Insert a turn into the chat history.
+
+Args:
+turn: the turn to insert.
+generate_logs: Adding log information about the insertion. Will be bound to the output part of the turn.
+
+Returns:
+None
+
+-----
+
+##### `copy(self)`
+
+Produces a deep copy of the current Context's contents, allowing for branch-and-merge style semantics over a Context.
+
+-----
+
+##### `_hash_for_kv_cache(self)`
+
+A `Context` is responsible for maintaining a hash representation of itself. This hash is used by backends to refer to a Context's state.
+
+-----
+
+##### `linearize(self)`
+
+Provides a linear list of context components. This is not always possible, or None if that is not possible to construct.
+
+-----
+
+##### `last_output(self)`
+
+The last output thunk of the context.
+
+-----
+
+##### `last_turn(self)`
+
+The last input/output turn of the context.
+
+-----
+
+##### `logs(self)`
+
+Returns a list of all logs in the context.
+
+-----
+
+##### `get_logs_by_index(self, index)`
+
+Returns a `GenerateLog` for the given index.
+
+-----
+
+##### `last_output_and_logs(self, all_intermediate_results)`
+
+Returns a `ModelOutputThunk` for the last output and the corresponding `GenerateLog`.
+
+Args:
+all_intermediate_results: if False (default), only returns the Log for the that led to the final output, if True, a list of all intermediate results (including the final one) is returned.
+
+-----
+
+---
+
+### `class BasicContext`
+
+Implementing some common functionality for Contexts.
+
+#### Methods
+
+##### `__init__(self)`
+
+Constructs a basic context.
+
+-----
+
+##### `last_output(self)`
+
+The last output thunk of the context.
+
+-----
+
+##### `logs(self)`
+
+Returns a list of all logs in the context.
+
+-----
+
+##### `get_logs_by_index(self, index)`
+
+Returns the log of a given index from the context.
+
+-----
+
+##### `last_output_and_logs(self, all_intermediate_results)`
+
+The last output thunk of the context and the corresponding log.
+
+-----
+
+##### `last_turn(self)`
+
+The last input/output turn of the context.
+
+-----
+
+##### `__str__(self)`
+
+Pretty prints the context. For debugging.
+
+-----
+
+---
+
+### `class LinearContext`
+
+Initializes a linear context with unbounded window_size and is_chat=True by default.
+
+#### Methods
+
+##### `__init__(self)`
+
+Initializes a linear context with unbounded window_size (log_window_size = 10) and is_chat=True by default.
+
+-----
+
+##### `reset(self)`
+
+Resets the context to a fresh state.
+
+Note: resetting a context does NOT free memory or clear cache. For this reason, you probably want to be calling this method from a `Session`.
+
+-----
+
+##### `insert(self, value)`
+
+Inserts into the context and then shifts the window forward if necessary.
+
+-----
+
+##### `insert_turn(self, turn)`
+
+Insert a turn into the context.
+
+-----
+
+##### `linearize(self)`
+
+Returns the underlying _ctx list.
+
+-----
+
+##### `is_chat_history(self)`
+
+Returns true if everything in the LinearContext is a chat `Message`.
+
+-----
+
+##### `_hash_for_kv_cache(self)`
+
+Constructs a hash that corresponds to the string contents of the KV cache associated with this context.
+
+-----
+
+##### `copy(self)`
+
+Constructs a deep copy of this Context.
+
+-----
+
+---
+
+### `class SimpleContext`
+
+A `SimpleContext` is a context in which each interaction is a separate and independent turn. The history of all previous turns is NOT saved.
+
+This context is intended for applications where each LLM call is (mostly) a stand-alone request. Patterns like instruct-validate-repair fall into this category.
+
+It is possible for a single turn to have many different CBlocks/Components. This can happen for a variety of reasons:
+1. Instruct/Repair is actually up to 3 (not 4!) turns: a system, a user, an assistant, and then the ALora output.
+2. It's possible to have a Component with a bunch of other stuff in it. We haven't decided how to represent this in Span world yet, but it's possible that one approach would be to have any causal dependency structure represented in terms of a linearization or poset.
+
+#### Methods
+
+##### `__init__(self)`
+
+Initializes a SimpleContext which contains at max one turn. with is_chat_context=True.
+
+-----
+
+##### `linearize(self)`
+
+Uses _ctx ordering.
+
+-----
+
+##### `reset(self)`
+
+Resets the context to a fresh state.
+
+Note: resetting a context does NOT free memory or clear cache. For this reason, you probably want to be calling this method from a `Session`.
+
+-----
+
+##### `insert(self, value)`
+
+Adds the value to the context.
+
+-----
+
+##### `insert_turn(self, turn)`
+
+Removes the previous turn and starts a new one.
+
+-----
+
+##### `_hash_for_kv_cache(self)`
+
+Constructs a hash that corresponds to the string contents of the KV cache associated with this context.
+
+-----
+
+##### `copy(self)`
+
+Constructs a deep copy of this Context.
+
+-----
+
+---
+
+### `class TemplateRepresentation`
+
+Representing a component as a set of important attributes that can be consumed by the formatter.
+
+---
+
+### `class GenerateLog`
+
+A dataclass for capturing log entries.
+
+GenerateLog provides a structured way to include various details in log entries, making it useful for maintaining detailed
+records of events or operations where context and additional data are significant.
+
+---
+
+### `class ModelToolCall`
+
+A dataclass for capturing the tool calls a model wants to make.
+
+Provides a unified way to call tools post generation.
+
+#### Methods
+
+##### `call_func(self)`
+
+A helper function for calling the function/tool represented by this object.
+
+-----
+
+---

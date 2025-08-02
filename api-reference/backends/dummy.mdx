@@ -1,0 +1,33 @@
+---
+title: Dummy
+sidebar_label: Dummy
+---
+
+# Module: `dummy`
+
+This module holds shim backends used for smoke tests.
+
+## Classes
+
+### `class DummyBackend`
+
+A backend for smoke testing.
+
+#### Methods
+
+##### `__init__(self, responses)`
+
+Initializes the dummy backend, optionally with a list of dummy responses.
+
+Args:
+responses: If `None`, then the dummy backend always returns "dummy". Otherwise, returns the next item from responses. The generate function will throw an exception if a generate call is made after the list is exhausted.
+
+-----
+
+##### `generate_from_context(self, action, ctx)`
+
+See constructor for an exmplanation of how DummyBackends work.
+
+-----
+
+---
