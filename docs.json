@@ -265,7 +265,7 @@
     "navbar": {
         "primary": {
             "type": "button",
-            "label": "Get Started",
+            "label": "GitHub",
             "href": "http://github.com/generative-computing/mellea"
         }
     },
