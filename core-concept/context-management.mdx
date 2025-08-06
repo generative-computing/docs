@@ -1,11 +1,11 @@
 ---
 title: "Context Management"
-description: "Conext management using Mellea sessions"
+description: "Context management using Mellea sessions"
 ---
 
 Mellea manages context using two complementary mechanisms:
 
-1. `Component`s themselves, which generally contain all of the context needed for a single-turn request. MObjects manage context using fields and methods, Instructions have a grounding_context for RAG-style requests, etc.
+1. `Component`s themselves, which generally contain all of the context needed for a single-turn request. MObjects manage context using fields and methods, and Instructions have a grounding_context for RAG-style requests.
 
 2. The `Context`, which stores and represents a (sometimes partial) history of all previous requests to the LLM made during the current session.
 
