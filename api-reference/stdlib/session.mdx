@@ -1,36 +1,38 @@
 ---
-title: Session
+title: mellea.stdlib.session
 sidebar_label: Session
 ---
 
-# Module: `session`
+# Module: `mellea.stdlib.session`
 
 Mellea Sessions.
 
 ## Functions
 
-### `backend_name_to_class(name)`
+### `mellea.stdlib.session.backend_name_to_class(name: str)`
 
 Resolves backend names to Backend classes.
 
 ---
 
-### `start_session(backend_name, model_id, ctx, **backend_kwargs)`
+### `mellea.stdlib.session.start_session(backend_name: Literal['ollama', 'hf', 'openai', 'watsonx'] = 'ollama', model_id: str | ModelIdentifier = IBM_GRANITE_3_3_8B, ctx: Context | None = SimpleContext(), model_options: dict | None = None, **backend_kwargs)`
 
 Helper for starting a new mellea session.
 
-Args:
-backend_name (str): ollama | hf | openai
-model_id (ModelIdentifier): a `ModelIdentifier` from the mellea.backends.model_ids module
-ctx (Optional[Context]): If not provided, a `LinearContext` is used.
-model_options (Optional[dict]): Backend will be instantiated with these as its default, if provided.
-backend_kwargs: kwargs that will be passed to the backend for instantiation.
+
+## Arguments
+
+* `backend_name`: `str`: ollama | hf | openai
+* `model_id`: `ModelIdentifier`: a `ModelIdentifier` from the mellea.backends.model_ids module
+* `ctx`: `Optional[Context]`: If not provided, a `LinearContext` is used.
+* `model_options`: `Optional[dict]`: Backend will be instantiated with these as its default, if provided.
+* `backend_kwargs`: kwargs that will be passed to the backend for instantiation.
 
 ---
 
 ## Classes
 
-### `class MelleaSession`
+### `class mellea.stdlib.session.MelleaSession(backend: Backend, ctx: Context | None = None)`
 
 Mellea sessions are a THIN wrapper around `m` convenience functions with NO special semantics.
 
@@ -44,20 +46,20 @@ If you are doing complicating programming (e.g., non-trivial inference scaling) 
 
 Note: we put the `instruct`, `validate`, and other convenience functions here instead of in `Context` or `Backend` to avoid import resolution issues.
 
-#### Methods
-
-##### `__init__(self, backend, ctx)`
+#### Constructor
 
 Initializes a new Mellea session with the provided backend and context.
 
-Args:
-backend (Backend): This is always required.
-ctx (Context): The way in which the model's context will be managed. By default, each interaction with the model is a stand-alone interaction, so we use SimpleContext as the default.
-model_options (Optional[dict]): model options, which will upsert into the model/backend's defaults.
 
------
+## Arguments
 
-##### `_push_model_state(self, new_backend, new_model_opts)`
+* `backend`: `Backend`: This is always required.
+* `ctx`: `Context`: The way in which the model's context will be managed. By default, each interaction with the model is a stand-alone interaction, so we use SimpleContext as the default.
+* `model_options`: `Optional[dict]`: model options, which will upsert into the model/backend's defaults.
+
+#### Methods
+
+##### `mellea.stdlib.session.MelleaSession._push_model_state(new_backend: Backend, new_model_opts: dict)`
 
 The backend and model options used within a `Context` can be temporarily changed. This method changes the model's backend and model_opts, while saving the current settings in the `self._backend_stack`.
 
@@ -65,7 +67,7 @@ Question: should this logic be moved into context? I really want to keep `Sessio
 
 -----
 
-##### `_pop_model_state(self)`
+##### `mellea.stdlib.session.MelleaSession._pop_model_state()`
 
 Pops the model state.
 
@@ -76,131 +78,140 @@ Question: should this logic be moved into context? I really want to keep `Sessio
 
 -----
 
-##### `reset(self)`
+##### `mellea.stdlib.session.MelleaSession.reset()`
 
 Reset the context state.
 
 -----
 
-##### `summarize(self)`
+##### `mellea.stdlib.session.MelleaSession.summarize()`
 
 Summarizes the current context.
 
 -----
 
-##### `instruct(self, description)`
+##### `mellea.stdlib.session.MelleaSession.instruct(description: str, requirements: list[Requirement | str] | None = None, icl_examples: list[str | CBlock] | None = None, grounding_context: dict[str, str | CBlock | Component] | None = None, user_variables: dict[str, str] | None = None, prefix: str | CBlock | None = None, output_prefix: str | CBlock | None = None, strategy: SamplingStrategy | None = None, return_sampling_results: bool = False, format: type[BaseModelSubclass] | None = None, model_options: dict | None = None, tool_calls: bool = False)`
 
 Generates from an instruction.
 
-Args:
-description: The description of the instruction.
-requirements: A list of requirements that the instruction can be validated against.
-icl_examples: A list of in-context-learning examples that the instruction can be validated against.
-grounding_context: A list of grounding contexts that the instruction can use. They can bind as variables using a (key: str, value: str | ContentBlock) tuple.
-user_variables: A dict of user-defined variables used to fill in Jinja placeholders in other parameters. This requires that all other provided parameters are provided as strings.
-prefix: A prefix string or ContentBlock to use when generating the instruction.
-output_prefix: A string or ContentBlock that defines a prefix for the output generation. Usually you do not need this.
-strategy: A SamplingStrategy that describes the strategy for validating and repairing/retrying for the instruct-validate-repair pattern. None means that no particular sampling strategy is used.
-return_sampling_results: attach the (successful and failed) sampling attempts to the results.
-format: If set, the BaseModel to use for constrained decoding.
-model_options: Additional model options, which will upsert into the model/backend's defaults.
-tool_calls: If true, tool calling is enabled.
+
+## Arguments
+
+* `description`: The description of the instruction.
+* `requirements`: A list of requirements that the instruction can be validated against.
+* `icl_examples`: A list of in-context-learning examples that the instruction can be validated against.
+* `grounding_context`: `A list of grounding contexts that the instruction can use. They can bind as variables using a (key`: str, value: str | ContentBlock) tuple.
+* `user_variables`: A dict of user-defined variables used to fill in Jinja placeholders in other parameters. This requires that all other provided parameters are provided as strings.
+* `prefix`: A prefix string or ContentBlock to use when generating the instruction.
+* `output_prefix`: A string or ContentBlock that defines a prefix for the output generation. Usually you do not need this.
+* `strategy`: A SamplingStrategy that describes the strategy for validating and repairing/retrying for the instruct-validate-repair pattern. None means that no particular sampling strategy is used.
+* `return_sampling_results`: attach the (successful and failed) sampling attempts to the results.
+* `format`: If set, the BaseModel to use for constrained decoding.
+* `model_options`: Additional model options, which will upsert into the model/backend's defaults.
+* `tool_calls`: If true, tool calling is enabled.
 
 -----
 
-##### `chat(self, content, role)`
+##### `mellea.stdlib.session.MelleaSession.chat(content: str, role: Message.Role = 'user', user_variables: dict[str, str] | None = None, format: type[BaseModelSubclass] | None = None, model_options: dict | None = None, tool_calls: bool = False)`
 
 Sends a simple chat message and returns the response. Adds both messages to the Context.
 
 -----
 
-##### `act(self, c, tool_calls)`
+##### `mellea.stdlib.session.MelleaSession.act(c: Component, tool_calls: bool = False)`
 
 Runs a generic action, and adds both the action and the result to the context.
 
 -----
 
-##### `validate(self, reqs)`
+##### `mellea.stdlib.session.MelleaSession.validate(reqs: Requirement | list[Requirement], output: CBlock | None = None, return_full_validation_results: bool = False, format: type[BaseModelSubclass] | None = None, model_options: dict | None = None, generate_logs: list[GenerateLog] | None = None)`
 
 Validates a set of requirements over the output (if provided) or the current context (if the output is not provided).
 
 -----
 
-##### `req(self, *args, **kwargs)`
+##### `mellea.stdlib.session.MelleaSession.req(*args, **kwargs)`
 
 Shorthand for Requirement.__init__(...).
 
 -----
 
-##### `check(self, *args, **kwargs)`
+##### `mellea.stdlib.session.MelleaSession.check(*args, **kwargs)`
 
 Shorthand for Requirement.__init__(..., check_only=True).
 
 -----
 
-##### `load_default_aloras(self)`
+##### `mellea.stdlib.session.MelleaSession.load_default_aloras()`
 
 Loads the default Aloras for this model, if they exist and if the backend supports.
 
 -----
 
-##### `genslot(self, gen_slot, model_options, format, tool_calls)`
+##### `mellea.stdlib.session.MelleaSession.genslot(gen_slot: Component, model_options: dict | None = None, format: type[BaseModelSubclass] | None = None, tool_calls: bool = False)`
 
 Call generative Slot on a GenerativeSlot Component.
 
-Args:
-gen_slot (GenerativeSlot Component): A generative slot
 
-Returns:
-ModelOutputThunk: Output thunk
+## Arguments
+
+* `gen_slot`: `GenerativeSlot Component`: A generative slot
+
+
+## Returns
+
+* `ModelOutputThunk`: Output thunk
 
 -----
 
-##### `query(self, obj, query)`
+##### `mellea.stdlib.session.MelleaSession.query(obj: Any, query: str, format: type[BaseModelSubclass] | None = None, model_options: dict | None = None, tool_calls: bool = False)`
 
 Query method for retrieving information from an object.
 
-Args:
-obj : The object to be queried. It should be an instance of MObject or can be converted to one if necessary.
-query:  The string representing the query to be executed against the object.
-format:  format for output parsing.
-model_options: Model options to pass to the backend.
-tool_calls: If true, the model may make tool calls. Defaults to False.
 
-Returns:
-ModelOutputThunk: The result of the query as processed by the backend.
+## Arguments
+
+* `obj`: The object to be queried. It should be an instance of MObject or can be converted to one if necessary.
+* `query`: The string representing the query to be executed against the object.
+* `format`: format for output parsing.
+* `model_options`: Model options to pass to the backend.
+* `tool_calls`: If true, the model may make tool calls. Defaults to False.
+
+
+## Returns
+
+* `ModelOutputThunk`: The result of the query as processed by the backend.
 
 -----
 
-##### `transform(self, obj, transformation)`
+##### `mellea.stdlib.session.MelleaSession.transform(obj: Any, transformation: str, format: type[BaseModelSubclass] | None = None, model_options: dict | None = None)`
 
 Transform method for creating a new object with the transformation applied.
 
-Args:
-obj : The object to be queried. It should be an instance of MObject or can be converted to one if necessary.
-transformation:  The string representing the query to be executed against the object.
 
-Returns:
+## Arguments
+
+* `obj`: The object to be queried. It should be an instance of MObject or can be converted to one if necessary.
+* `transformation`: The string representing the query to be executed against the object.
+
 ModelOutputThunk|Any: The result of the transformation as processed by the backend. If no tools were called,
 the return type will be always be ModelOutputThunk. If a tool was called, the return type will be the return type
 of the function called, usually the type of the object passed in.
 
 -----
 
-##### `_call_tools(self, result)`
+##### `mellea.stdlib.session.MelleaSession._call_tools(result: ModelOutputThunk)`
 
 Call all the tools requested in a result's tool calls object.
 
-Returns:
 list[ToolMessage]: A list of tool messages that can be empty.
 
 -----
 
-##### `last_prompt(self)`
+##### `mellea.stdlib.session.MelleaSession.last_prompt()`
 
 Returns the last prompt that has been called from the session context.
 
-Returns:
 A string if the last prompt was a raw call to the model OR a list of messages (as role-msg-dicts). Is None if none could be found.
 
 -----

@@ -27,7 +27,7 @@
                             "overview/project-mellea",
                             "overview/quick-start",
                             "overview/requirements",
-                            "overview/architeture"
+                            "overview/architecture"
                         ]
                     },
                     {
@@ -48,54 +48,44 @@
                 "tab": "Cookbook",
                 "groups": [
                     {
-                        "group": "aLora › Basics",
+                        "group": "aLoRA",
                         "pages": [
                             "examples/code/tutorial/aLora/101_example"
                         ]
                     },
                     {
-                        "group": "Agents › React",
+                        "group": "agents",
                         "pages": [
                             "examples/code/tutorial/agents/react",
                             "examples/code/tutorial/agents/react_instruct"
                         ]
                     },
                     {
-                        "group": "Generative Slots › Basics",
+                        "group": "generative_slots",
                         "pages": [
                             "examples/code/tutorial/generative_slots/generate_with_context",
                             "examples/code/tutorial/generative_slots/generative_cot",
                             "examples/code/tutorial/generative_slots/generative_slots",
+                            "examples/code/tutorial/generative_slots/inter_module_composition/decision_aides",
+                            "examples/code/tutorial/generative_slots/inter_module_composition/summarize_and_decide",
+                            "examples/code/tutorial/generative_slots/inter_module_composition/summarizers",
                             "examples/code/tutorial/generative_slots/investment_advice"
                         ]
                     },
                     {
-                        "group": "Generative Slots › Inter-Module Composition",
-                        "pages": [
-                            "examples/code/tutorial/generative_slots/inter_module_composition/decision_aides",
-                            "examples/code/tutorial/generative_slots/inter_module_composition/summarize_and_decide",
-                            "examples/code/tutorial/generative_slots/inter_module_composition/summarizers"
-                        ]
-                    },
-                    {
-                        "group": "Information Extraction",
+                        "group": "information_extraction",
                         "pages": [
                             "examples/code/tutorial/information_extraction/101_with_gen_slots",
                             "examples/code/tutorial/information_extraction/advanced_with_m_instruct"
                         ]
                     },
                     {
-                        "group": "Instruct Validate Repair › Basics",
+                        "group": "instruct_validate_repair",
                         "pages": [
                             "examples/code/tutorial/instruct_validate_repair/101_email",
                             "examples/code/tutorial/instruct_validate_repair/101_email_comparison",
                             "examples/code/tutorial/instruct_validate_repair/101_email_with_requirements",
-                            "examples/code/tutorial/instruct_validate_repair/101_email_with_validate"
-                        ]
-                    },
-                    {
-                        "group": "Instruct Validate Repair › Advanced",
-                        "pages": [
+                            "examples/code/tutorial/instruct_validate_repair/101_email_with_validate",
                             "examples/code/tutorial/instruct_validate_repair/advanced_email_with_validate_function"
                         ]
                     },
@@ -103,18 +93,11 @@
                         "group": "m_serve",
                         "pages": [
                             "examples/code/tutorial/m_serve/best_of_n",
-                            "examples/code/tutorial/m_serve/client",
-                            "examples/code/tutorial/m_serve/example"
+                            "examples/code/tutorial/m_serve/client"
                         ]
                     },
                     {
-                        "group": "MCP",
-                        "pages": [
-                            "examples/code/tutorial/mcp/mcp_example"
-                        ]
-                    },
-                    {
-                        "group": "Mify",
+                        "group": "mify",
                         "pages": [
                             "examples/code/tutorial/mify/mify",
                             "examples/code/tutorial/mify/rich_document_advanced",
@@ -122,51 +105,49 @@
                         ]
                     },
                     {
-                        "group": "Mini Researcher",
+                        "group": "mini_researcher",
                         "pages": [
                             "examples/code/tutorial/mini_researcher/context_docs",
                             "examples/code/tutorial/mini_researcher/researcher"
                         ]
                     },
                     {
-                        "group": "MObject",
+                        "group": "mobject",
                         "pages": [
                             "examples/code/tutorial/mobject/table"
                         ]
                     },
                     {
-                        "group": "RAG",
+                        "group": "rag",
                         "pages": [
                             "examples/code/tutorial/rag/simple_rag_with_filter"
                         ]
                     },
                     {
-                        "group": "Safety.py",
+                        "group": "safety.py",
                         "pages": [
                             "examples/code/tutorial/safety.py/guardian"
                         ]
                     },
                     {
-                        "group": "Sessions",
+                        "group": "sessions",
                         "pages": [
                             "examples/code/tutorial/sessions/creating_a_new_type_of_session"
                         ]
                     },
                     {
-                        "group": "Tutorials › Core",
-                        "pages": [
-                            "examples/code/tutorial/tutorial/context_example",
-                            "examples/code/tutorial/tutorial/model_options_example",
-                            "examples/code/tutorial/tutorial/sentiment_classifier",
-                            "examples/code/tutorial/tutorial/simple_email"
-                        ]
-                    },
-                    {
-                        "group": "Tutorials › Composition & Docs",
+                        "group": "tutorial",
                         "pages": [
                             "examples/code/tutorial/tutorial/compositionality_with_generative_slots",
+                            "examples/code/tutorial/tutorial/context_example",
                             "examples/code/tutorial/tutorial/document_mobject",
+                            "examples/code/tutorial/tutorial/example",
                             "examples/code/tutorial/tutorial/instruct_validate_repair",
+                            "examples/code/tutorial/tutorial/m_serve_example",
+                            "examples/code/tutorial/tutorial/mcp_example",
+                            "examples/code/tutorial/tutorial/model_options_example",
+                            "examples/code/tutorial/tutorial/sentiment_classifier",
+                            "examples/code/tutorial/tutorial/simple_email",
                             "examples/code/tutorial/tutorial/table_mobject"
                         ]
                     }
@@ -178,25 +159,11 @@
                     {
                         "group": "Overview",
                         "pages": [
-                            "api-reference/index"                            
+                            "api-reference/index"
                         ]
                     },
                     {
-                        "group": "Backends › Aloras › HuggingFace",
-                        "pages": [
-                            "api-reference/backends/aloras/huggingface/index",
-                            "api-reference/backends/aloras/huggingface/granite_aloras"
-                        ]
-                    },
-                    {
-                        "group": "Backends › Aloras › OpenAI",
-                        "pages": [
-                            "api-reference/backends/aloras/openai/index",
-                            "api-reference/backends/aloras/openai/granite_aloras"
-                        ]
-                    },
-                    {
-                        "group": "Backends › Core",
+                        "group": "Backends",
                         "pages": [
                             "api-reference/backends/index",
                             "api-reference/backends/cache",
@@ -212,6 +179,20 @@
                         ]
                     },
                     {
+                        "group": "Backends \u203a aLoRA \u203a Huggingface",
+                        "pages": [
+                            "api-reference/backends/aloras/huggingface/index",
+                            "api-reference/backends/aloras/huggingface/granite_aloras"
+                        ]
+                    },
+                    {
+                        "group": "Backends \u203a aLoRA \u203a Openai",
+                        "pages": [
+                            "api-reference/backends/aloras/openai/index",
+                            "api-reference/backends/aloras/openai/granite_aloras"
+                        ]
+                    },
+                    {
                         "group": "Helpers",
                         "pages": [
                             "api-reference/helpers/index",
@@ -219,7 +200,7 @@
                         ]
                     },
                     {
-                        "group": "Stdlib › Core",
+                        "group": "Stdlib",
                         "pages": [
                             "api-reference/stdlib/index",
                             "api-reference/stdlib/base",
@@ -234,21 +215,21 @@
                         ]
                     },
                     {
-                        "group": "Stdlib › Docs",
+                        "group": "Stdlib \u203a Docs",
                         "pages": [
                             "api-reference/stdlib/docs/index",
                             "api-reference/stdlib/docs/richdocument"
                         ]
                     },
                     {
-                        "group": "Stdlib › Reqlib",
+                        "group": "Stdlib \u203a Reqlib",
                         "pages": [
                             "api-reference/stdlib/reqlib/index",
                             "api-reference/stdlib/reqlib/md"
                         ]
                     },
                     {
-                        "group": "Stdlib › Safety",
+                        "group": "Stdlib \u203a Safety",
                         "pages": [
                             "api-reference/stdlib/safety/index",
                             "api-reference/stdlib/safety/guardian"
@@ -267,43 +248,23 @@
             "type": "button",
             "label": "GitHub",
             "href": "http://github.com/generative-computing/mellea"
-        }
-    },
-    "footer": {
+        },
         "links": [
             {
-                "header": "Resources",
-                "items": [
-                    {
-                        "label": "Main Site",
-                        "href": "http://mellea.ai/"
-                    },
-                    {
-                        "label": "Docs",
-                        "href": "http://docs.mellea.ai/"
-                    },
-                    {
-                        "label": "GitHub",
-                        "href": "http://github.com/generative-computing/mellea"
-                    },
-                    {
-                        "label": "Community",
-                        "href": "http://github.com/generative-computing/mellea/dicussions"
-                    },
-                    {
-                        "label": "Support",
-                        "href": "http://github.com/generative-computing/mellea/issues"
-                    }
-                ]
+                "label": "Blog",
+                "href": "https://research.ibm.com/blog"
             },
             {
-                "header": "More",
-                "items": [
-                    {
-                        "label": "Blog",
-                        "href": "https://research.ibm.com/blog"
-                    }
-                ]
+                "label": "Community",
+                "href": "http://github.com/generative-computing/mellea/dicussions"
+            },
+            {
+                "label": "Support",
+                "href": "http://github.com/generative-computing/mellea/issues"
+            },
+            {
+                "label": "Contribution Guide",
+                "href": "https://github.com/granite-runtime/mellea/blob/main/docs/tutorial.md#appendix-contributing-to-mellea"
             }
         ]
     },

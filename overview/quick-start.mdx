@@ -5,38 +5,40 @@ description: "Get up and running with Mellea"
 
 Before we get started, you will need to download and install [ollama](https://ollama.com/). Mellea can work with many different types of backends, but everything in this tutorial will "just work" on a Macbook running IBM's Granite 3.3 8B model.
 
-We also recommend that you download and install [uv](https://docs.astral.sh/uv/#installation)
+We also recommend that you download and install [uv](https://docs.astral.sh/uv/#installation). You can run any of the examples in the tutorial with:
+
+<CodeGroup>
+
+```bash Bash
+uv run example_name.py --with mellea
+```
+
+</CodeGroup>
+
+> [!NOTE]
+> If running on an Intel mac, you may get errors related to torch/torchvision versions. Conda maintains updated versions of these packages. You will need to create a conda environment and run `conda install 'torchvision>=0.22.0'` (this should also install pytorch and torchvision-extra). Then, you should be able to run `uv pip install .`. To run the examples, you will need to use `python <filename>` inside the conda environment instead of `uv run --with mellea <filename>`.
+
+> [!NOTE]
+> If you are using python >= 3.13, you may encounter an issue where outlines cannot be installed due to rust compiler issues (`error: can't find Rust compiler`). You can either downgrade to python 3.12 or install the [rust compiler](https://www.rust-lang.org/tools/install) to build the wheel for outlines locally.
 
 Once you have ollama installed and running, we can get started with our first generative piece of code:
 
 <CodeGroup>
 
 ```python Python
+# file: https://github.com/generative-computing/mellea/blob/main/docs/examples/tutorial/simple_email.py#L1-L8
 import mellea
 
-# WARNING: this line will download IBM's Granite 3.3 8B model.
-
+# INFO: this line will download IBM's Granite 3.3 8B model.
 m = mellea.start_session()
 
-email = m.instruct(
-"Write an email inviting interns to an office party at 3:30pm.")
-print(email.value)
-
+email = m.instruct("Write an email inviting interns to an office party at 3:30pm.")
+print(str(email))
 ```
 
 </CodeGroup>
 
-You can run this program using uv:
-
-<CodeGroup>
-
-```bash Bash
-uv run docs/examples/tutorial/example_1.py
-```
-
-</CodeGroup>
-
-We initialized a backend running Ollama on a local machine using the granite3.3-chat model.
+Here, we initialized a backend running Ollama on a local machine using the granite3.3-chat model.
 We then ask the model to generate an email and print it to the console.
 
 > [!NOTE]
@@ -47,23 +49,25 @@ Before continuing, let's wrap this call into a function with some arguments:
 <CodeGroup>
 
 ```python Python
+# file: https://github.com/generative-computing/mellea/blob/main/docs/examples/tutorial/simple_email.py#L13-L27
 import mellea
 
 def write_email(m: mellea.MelleaSession, name: str, notes: str) -> str:
-email = m.instruct(
-"Write an email to {{name}} using the notes following: {{notes}}.",
-user_dict={"name": name, "notes": notes},
-)
-return email.value # str(email) also works.
+  email = m.instruct(
+    "Write an email to {{name}} using the notes following: {{notes}}.",
+    user_variables={"name": name, "notes": notes},
+  )
+  return email.value  # str(email) also works.
 
 m = mellea.start_session()
 print(write_email(m, "Olivia",
-"Olivia helped the lab over the last few weeks by organizing intern events, advertising the speaker series, and handling issues with snack delivery."))
-
+                  "Olivia helped the lab over the last few weeks by organizing intern events, advertising the speaker series, and handling issues with snack delivery."))
 ```
 
 </CodeGroup>
 
-Viola, we now have an email-writing function!
+Voila, we now have an email-writing function!
 
-Notice how the instruct method can take a dictionary of variables as `user_dict`. These are filled by treating the instruction description as a jinja template.
+Notice how the instruct method can take a dictionary of variables as `user_variables`. These are filled by treating the instruction description as a jinja template.
+
+The `m.instruct()` function returns a `ModelOutputThunk` per default, which has the model output string bound to the field `.value`.

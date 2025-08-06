@@ -1,51 +1,51 @@
 ---
-title: Openai
+title: mellea.backends.openai
 sidebar_label: Openai
 ---
 
-# Module: `openai`
+# Module: `mellea.backends.openai`
 
 A generic OpenAI compatible backend that wraps around the openai python sdk.
 
 ## Functions
 
-### `_server_type(url)`
+### `mellea.backends.openai._server_type(url: str)`
 
 ---
 
 ## Classes
 
-### `class _ServerType`
+### `class mellea.backends.openai._ServerType()`
 
 ---
 
-### `class OpenAIBackend`
+### `class mellea.backends.openai.OpenAIBackend(model_id: str | ModelIdentifier = model_ids.IBM_GRANITE_3_3_8B, formatter: Formatter | None = None, base_url: str | None = None, model_options: dict | None = None, default_to_constraint_checking_alora: bool = True, api_key: str | None = None, **kwargs)`
 
 A generic OpenAI compatible backend.
 
-#### Methods
-
-##### `__init__(self, model_id, formatter, base_url, model_options, **kwargs)`
+#### Constructor
 
 Initialize and OpenAI compatible backend. For any additional kwargs that you need to pass the the client, pass them as a part of **kwargs.
 
-Args:
-model_id : A generic model identifier or OpenAI compatible string. Defaults to model_ids.IBM_GRANITE_3_3_8B.
-formatter: A custom formatter based on backend.If None, defaults to TemplateFormatter
-base_url : Base url for LLM API. Defaults to None.
-model_options : Generation options to pass to the LLM. Defaults to None.
-default_to_constraint_checking_alora: If set to False then aloras will be deactivated. This is primarily for performance benchmarking and debugging.
-api_key : API key for generation. Defaults to None.
 
------
+## Arguments
 
-##### `filter_openai_client_kwargs(**kwargs)`
+* `model_id`: A generic model identifier or OpenAI compatible string. Defaults to model_ids.IBM_GRANITE_3_3_8B.
+* `formatter`: A custom formatter based on backend.If None, defaults to TemplateFormatter
+* `base_url`: Base url for LLM API. Defaults to None.
+* `model_options`: Generation options to pass to the LLM. Defaults to None.
+* `default_to_constraint_checking_alora`: If set to False then aloras will be deactivated. This is primarily for performance benchmarking and debugging.
+* `api_key`: API key for generation. Defaults to None.
+
+#### Methods
+
+##### `mellea.backends.openai.OpenAIBackend.filter_openai_client_kwargs(**kwargs)`
 
 Filter kwargs to only include valid OpenAI client parameters.
 
 -----
 
-##### `filter_chat_completions_kwargs(self, model_options)`
+##### `mellea.backends.openai.OpenAIBackend.filter_chat_completions_kwargs(model_options: dict)`
 
 Filter kwargs to only include valid OpenAI chat.completions.create parameters.
 
@@ -53,7 +53,7 @@ https://platform.openai.com/docs/api-reference/chat/create
 
 -----
 
-##### `filter_completions_kwargs(self, model_options)`
+##### `mellea.backends.openai.OpenAIBackend.filter_completions_kwargs(model_options: dict)`
 
 Filter kwargs to only include valid OpenAI completions.create parameters.
 
@@ -61,7 +61,7 @@ https://platform.openai.com/docs/api-reference/completions
 
 -----
 
-##### `_simplify_and_merge(self, model_options, is_chat_context)`
+##### `mellea.backends.openai.OpenAIBackend._simplify_and_merge(model_options: dict[str, Any] | None, is_chat_context: bool)`
 
 Simplifies model_options to use the Mellea specific ModelOption.Option and merges the backend's model_options with those passed into this call.
 
@@ -72,78 +72,82 @@ Rules:
 Because this function simplifies and then merges, non-Mellea keys from the passed in model_options will replace
 Mellea specific keys from the backend's model_options.
 
-Args:
-model_options: the model_options for this call
 
-Returns:
+## Arguments
+
+* `model_options`: the model_options for this call
+
 a new dict
 
 -----
 
-##### `_make_backend_specific_and_remove(self, model_options, is_chat_context)`
+##### `mellea.backends.openai.OpenAIBackend._make_backend_specific_and_remove(model_options: dict[str, Any], is_chat_context: bool)`
 
 Maps specified Mellea specific keys to their backend specific version and removes any remaining Mellea keys.
 
-Args:
-model_options: the model_options for this call
 
-Returns:
+## Arguments
+
+* `model_options`: the model_options for this call
+
 a new dict
 
 -----
 
-##### `generate_from_context(self, action, ctx)`
+##### `mellea.backends.openai.OpenAIBackend.generate_from_context(action: Component | CBlock, ctx: Context, format: type[BaseModelSubclass] | None = None, model_options: dict | None = None, generate_logs: list[GenerateLog] | None = None, tool_calls: bool = False)`
 
 See `generate_from_chat_context`.
 
 -----
 
-##### `generate_from_chat_context(self, action, ctx)`
+##### `mellea.backends.openai.OpenAIBackend.generate_from_chat_context(action: Component | CBlock, ctx: Context, format: type[BaseModelSubclass] | None = None, model_options: dict | None = None, generate_logs: list[GenerateLog] | None = None, tool_calls: bool = False)`
 
 Generates a new completion from the provided Context using this backend's `Formatter`.
 
 -----
 
-##### `_generate_from_chat_context_alora(self, action, ctx)`
+##### `mellea.backends.openai.OpenAIBackend._generate_from_chat_context_alora(action: Component | CBlock, ctx: Context, format: type[BaseModelSubclass] | None = None, model_options: dict | None = None, generate_logs: list[GenerateLog] | None = None)`
 
 -----
 
-##### `_generate_from_chat_context_standard(self, action, ctx)`
+##### `mellea.backends.openai.OpenAIBackend._generate_from_chat_context_standard(action: Component | CBlock, ctx: Context, format: type[BaseModelSubclass] | None = None, model_options: dict | None = None, generate_logs: list[GenerateLog] | None = None, tool_calls: bool = False)`
 
 -----
 
-##### `_generate_from_raw(self, actions)`
+##### `mellea.backends.openai.OpenAIBackend._generate_from_raw(actions: list[Component | CBlock], format: type[BaseModelSubclass] | None = None, model_options: dict | None = None, generate_logs: list[GenerateLog] | None = None)`
 
 Generate using the completions api. Gives the input provided to the model without templating.
 
 -----
 
-##### `_extract_model_tool_requests(self, tools, chat_response)`
+##### `mellea.backends.openai.OpenAIBackend._extract_model_tool_requests(tools: dict[str, Callable], chat_response: ChatCompletion)`
 
 -----
 
-##### `add_alora(self, alora)`
+##### `mellea.backends.openai.OpenAIBackend.add_alora(alora: 'OpenAIAlora')`
 
 Loads an ALora for this backend.
 
-Args:
-alora (str): identifier for the ALora adapter
+
+## Arguments
+
+* `alora`: `str`: identifier for the ALora adapter
 
 -----
 
-##### `get_alora(self, alora_name)`
+##### `mellea.backends.openai.OpenAIBackend.get_alora(alora_name: str)`
 
 Returns the ALora by name, or None if that ALora isn't loaded.
 
 -----
 
-##### `get_aloras(self)`
+##### `mellea.backends.openai.OpenAIBackend.get_aloras()`
 
 Returns a list of all loaded ALora adapters.
 
 -----
 
-##### `apply_chat_template(self, chat)`
+##### `mellea.backends.openai.OpenAIBackend.apply_chat_template(chat: list[dict[str, str]])`
 
 Apply the chat template for the model, if such a model is available (e.g., when it can deduce the huggingface model id).
 
@@ -151,22 +155,20 @@ Apply the chat template for the model, if such a model is available (e.g., when 
 
 ---
 
-### `class OpenAIAlora`
+### `class mellea.backends.openai.OpenAIAlora(name: str, path: str, generation_prompt: str, backend: OpenAIBackend)`
 
 ALoras that work with OpenAI backend.
 
-#### Methods
-
-##### `__init__(self, name, path, generation_prompt, backend)`
+#### Constructor
 
 Initialize an ALora that should work with OpenAI backends that support ALoras.
 
-Args:
-name (str): An arbitrary name/label to assign to an ALora. This is irrelevant from the alora's (huggingface) model id.
-path (str): A local path to ALora's weights or a Huggingface model_id to an ALora.
-generation_prompt (str): A prompt used to "activate" the Lora. This string goes between the pre-activation context and the aLora generate call. This needs to be provided by the entity that trained the ALora.
-backend (OpenAIBackend): Mained as a pointer to the backend to which this this ALora is attached.
 
------
+## Arguments
+
+* `name`: `str`: An arbitrary name/label to assign to an ALora. This is irrelevant from the alora's (huggingface) model id.
+* `path`: `str`: A local path to ALora's weights or a Huggingface model_id to an ALora.
+* `generation_prompt`: `str`: A prompt used to "activate" the Lora. This string goes between the pre-activation context and the aLora generate call. This needs to be provided by the entity that trained the ALora.
+* `backend`: `OpenAIBackend`: Mained as a pointer to the backend to which this this ALora is attached.
 
 ---

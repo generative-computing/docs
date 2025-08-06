@@ -1,15 +1,15 @@
 ---
-title: Base
+title: mellea.stdlib.base
 sidebar_label: Base
 ---
 
-# Module: `base`
+# Module: `mellea.stdlib.base`
 
 Basic stdlib data structures.
 
 ## Functions
 
-### `blockify(s)`
+### `mellea.stdlib.base.blockify(s: str | CBlock | Component)`
 
 `blockify` is a helper function that turns raw strings into CBlocks.
 
@@ -17,37 +17,35 @@ Basic stdlib data structures.
 
 ## Classes
 
-### `class CBlock`
+### `class mellea.stdlib.base.CBlock(value: str | None, meta: dict[str, Any] | None = None)`
 
 A `CBlock` is a block of content that can serve as input to or output from an LLM.
 
-#### Methods
-
-##### `__init__(self, value, meta)`
+#### Constructor
 
 Initializes the CBlock with a string and some metadata.
 
------
+#### Methods
 
-##### `value(self)`
+##### `mellea.stdlib.base.CBlock.value()`
 
 Gets the value of the block.
 
 -----
 
-##### `value(self, v)`
+##### `mellea.stdlib.base.CBlock.value(v: str)`
 
 Sets the value of the block.
 
 -----
 
-##### `__str__(self)`
+##### `mellea.stdlib.base.CBlock.__str__()`
 
 Stringifies the block.
 
 -----
 
-##### `__repr__(self)`
+##### `mellea.stdlib.base.CBlock.__repr__()`
 
 Provides a python-parsable representation of the block (usually).
 
@@ -55,41 +53,37 @@ Provides a python-parsable representation of the block (usually).
 
 ---
 
-### `class Component`
+### `class mellea.stdlib.base.Component()`
 
 A `Component` is a composite data structure that is intended to be represented to an LLM.
 
 #### Methods
 
-##### `parts(self)`
+##### `mellea.stdlib.base.Component.parts()`
 
 The set of all the constituent parts of the `Component`.
 
 -----
 
-##### `format_for_llm(self)`
+##### `mellea.stdlib.base.Component.format_for_llm()`
 
 Formats the `Component` into a `TemplateRepresentation` or string.
-
-Returns: a `TemplateRepresentation` or string
 
 -----
 
 ---
 
-### `class ModelOutputThunk`
+### `class mellea.stdlib.base.ModelOutputThunk(value: str | None, meta: dict[str, Any] | None = None, parsed_repr: CBlock | Component | Any | None = None, tool_calls: dict[str, ModelToolCall] | None = None)`
 
 A `ModelOutputThunk` is a special type of `CBlock` that we know came from a model's output. It is possible to instantiate one without the output being computed yet.
 
-#### Methods
-
-##### `__init__(self, value, meta, parsed_repr, tool_calls)`
+#### Constructor
 
 Initializes as a cblock, optionally also with a parsed representation from an output formatter.
 
------
+#### Methods
 
-##### `is_computed(self)`
+##### `mellea.stdlib.base.ModelOutputThunk.is_computed()`
 
 Returns true only if this Thunk has already been filled.
 
@@ -97,19 +91,19 @@ Returns true only if this Thunk has already been filled.
 
 ---
 
-### `class ContextTurn`
+### `class mellea.stdlib.base.ContextTurn()`
 
 A turn of model input and model output.
 
 ---
 
-### `class Context`
+### `class mellea.stdlib.base.Context()`
 
 A `Context` is used to track the state of a `MelleaSession`.
 
 #### Methods
 
-##### `reset(self)`
+##### `mellea.stdlib.base.Context.reset()`
 
 Resets the context to a fresh state.
 
@@ -117,126 +111,129 @@ Note: resetting a context does NOT free memory or clear cache. For this reason, 
 
 -----
 
-##### `insert(self, value)`
+##### `mellea.stdlib.base.Context.insert(value: CBlock | Component, key: Any | None = None, generate_logs: list[GenerateLog] | None = None)`
 
 Each `Context` must define its own semantics for inserting something into the context.
 
-Args:
-value (CBlock | Component): the thing to insert.
-key (Optional[Any]): a key by which the value is indexed to. This is optional and only needed for fairly sophisticated Context types. Note that this is NOT necessarily a key that can be used for KV cache lookups!
-generate_logs: Adding log information about the insertion. Should only be used for output objects.
+
+## Arguments
+
+* `value`: `CBlock | Component`: the thing to insert.
+* `key`: `Optional[Any]`: a key by which the value is indexed to. This is optional and only needed for fairly sophisticated Context types. Note that this is NOT necessarily a key that can be used for KV cache lookups!
+* `generate_logs`: Adding log information about the insertion. Should only be used for output objects.
 
 -----
 
-##### `insert_turn(self, turn)`
+##### `mellea.stdlib.base.Context.insert_turn(turn: ContextTurn, generate_logs: list[GenerateLog] | None = None)`
 
 Insert a turn into the chat history.
 
-Args:
-turn: the turn to insert.
-generate_logs: Adding log information about the insertion. Will be bound to the output part of the turn.
 
-Returns:
+## Arguments
+
+* `turn`: the turn to insert.
+* `generate_logs`: Adding log information about the insertion. Will be bound to the output part of the turn.
+
 None
 
 -----
 
-##### `copy(self)`
+##### `mellea.stdlib.base.Context.copy()`
 
 Produces a deep copy of the current Context's contents, allowing for branch-and-merge style semantics over a Context.
 
 -----
 
-##### `_hash_for_kv_cache(self)`
+##### `mellea.stdlib.base.Context._hash_for_kv_cache()`
 
 A `Context` is responsible for maintaining a hash representation of itself. This hash is used by backends to refer to a Context's state.
 
 -----
 
-##### `linearize(self)`
+##### `mellea.stdlib.base.Context.linearize()`
 
 Provides a linear list of context components. This is not always possible, or None if that is not possible to construct.
 
 -----
 
-##### `last_output(self)`
+##### `mellea.stdlib.base.Context.last_output()`
 
 The last output thunk of the context.
 
 -----
 
-##### `last_turn(self)`
+##### `mellea.stdlib.base.Context.last_turn()`
 
 The last input/output turn of the context.
 
 -----
 
-##### `logs(self)`
+##### `mellea.stdlib.base.Context.logs()`
 
 Returns a list of all logs in the context.
 
 -----
 
-##### `get_logs_by_index(self, index)`
+##### `mellea.stdlib.base.Context.get_logs_by_index(index: int)`
 
 Returns a `GenerateLog` for the given index.
 
 -----
 
-##### `last_output_and_logs(self, all_intermediate_results)`
+##### `mellea.stdlib.base.Context.last_output_and_logs(all_intermediate_results: bool = False)`
 
 Returns a `ModelOutputThunk` for the last output and the corresponding `GenerateLog`.
 
-Args:
-all_intermediate_results: if False (default), only returns the Log for the that led to the final output, if True, a list of all intermediate results (including the final one) is returned.
+
+## Arguments
+
+* `all_intermediate_results`: if False (default), only returns the Log for the that led to the final output, if True, a list of all intermediate results (including the final one) is returned.
 
 -----
 
 ---
 
-### `class BasicContext`
+### `class mellea.stdlib.base.BasicContext()`
 
 Implementing some common functionality for Contexts.
 
-#### Methods
-
-##### `__init__(self)`
+#### Constructor
 
 Constructs a basic context.
 
------
+#### Methods
 
-##### `last_output(self)`
+##### `mellea.stdlib.base.BasicContext.last_output()`
 
 The last output thunk of the context.
 
 -----
 
-##### `logs(self)`
+##### `mellea.stdlib.base.BasicContext.logs()`
 
 Returns a list of all logs in the context.
 
 -----
 
-##### `get_logs_by_index(self, index)`
+##### `mellea.stdlib.base.BasicContext.get_logs_by_index(index: int)`
 
 Returns the log of a given index from the context.
 
 -----
 
-##### `last_output_and_logs(self, all_intermediate_results)`
+##### `mellea.stdlib.base.BasicContext.last_output_and_logs(all_intermediate_results: bool = False)`
 
 The last output thunk of the context and the corresponding log.
 
 -----
 
-##### `last_turn(self)`
+##### `mellea.stdlib.base.BasicContext.last_turn()`
 
 The last input/output turn of the context.
 
 -----
 
-##### `__str__(self)`
+##### `mellea.stdlib.base.BasicContext.__str__()`
 
 Pretty prints the context. For debugging.
 
@@ -244,19 +241,17 @@ Pretty prints the context. For debugging.
 
 ---
 
-### `class LinearContext`
+### `class mellea.stdlib.base.LinearContext(window_size: int | None = None, log_window_size: int | None = 10, is_chat_context = True)`
 
 Initializes a linear context with unbounded window_size and is_chat=True by default.
 
-#### Methods
-
-##### `__init__(self)`
+#### Constructor
 
 Initializes a linear context with unbounded window_size (log_window_size = 10) and is_chat=True by default.
 
------
+#### Methods
 
-##### `reset(self)`
+##### `mellea.stdlib.base.LinearContext.reset()`
 
 Resets the context to a fresh state.
 
@@ -264,37 +259,37 @@ Note: resetting a context does NOT free memory or clear cache. For this reason, 
 
 -----
 
-##### `insert(self, value)`
+##### `mellea.stdlib.base.LinearContext.insert(value: CBlock | Component, key: Any | None = None, generate_logs: list[GenerateLog] | None = None)`
 
 Inserts into the context and then shifts the window forward if necessary.
 
 -----
 
-##### `insert_turn(self, turn)`
+##### `mellea.stdlib.base.LinearContext.insert_turn(turn: ContextTurn, generate_logs: list[GenerateLog] | None = None)`
 
 Insert a turn into the context.
 
 -----
 
-##### `linearize(self)`
+##### `mellea.stdlib.base.LinearContext.linearize()`
 
 Returns the underlying _ctx list.
 
 -----
 
-##### `is_chat_history(self)`
+##### `mellea.stdlib.base.LinearContext.is_chat_history()`
 
 Returns true if everything in the LinearContext is a chat `Message`.
 
 -----
 
-##### `_hash_for_kv_cache(self)`
+##### `mellea.stdlib.base.LinearContext._hash_for_kv_cache()`
 
 Constructs a hash that corresponds to the string contents of the KV cache associated with this context.
 
 -----
 
-##### `copy(self)`
+##### `mellea.stdlib.base.LinearContext.copy()`
 
 Constructs a deep copy of this Context.
 
@@ -302,7 +297,7 @@ Constructs a deep copy of this Context.
 
 ---
 
-### `class SimpleContext`
+### `class mellea.stdlib.base.SimpleContext()`
 
 A `SimpleContext` is a context in which each interaction is a separate and independent turn. The history of all previous turns is NOT saved.
 
@@ -312,21 +307,19 @@ It is possible for a single turn to have many different CBlocks/Components. This
 1. Instruct/Repair is actually up to 3 (not 4!) turns: a system, a user, an assistant, and then the ALora output.
 2. It's possible to have a Component with a bunch of other stuff in it. We haven't decided how to represent this in Span world yet, but it's possible that one approach would be to have any causal dependency structure represented in terms of a linearization or poset.
 
-#### Methods
-
-##### `__init__(self)`
+#### Constructor
 
 Initializes a SimpleContext which contains at max one turn. with is_chat_context=True.
 
------
+#### Methods
 
-##### `linearize(self)`
+##### `mellea.stdlib.base.SimpleContext.linearize()`
 
 Uses _ctx ordering.
 
 -----
 
-##### `reset(self)`
+##### `mellea.stdlib.base.SimpleContext.reset()`
 
 Resets the context to a fresh state.
 
@@ -334,25 +327,25 @@ Note: resetting a context does NOT free memory or clear cache. For this reason, 
 
 -----
 
-##### `insert(self, value)`
+##### `mellea.stdlib.base.SimpleContext.insert(value: CBlock | Component, key: Any | None = None, generate_logs: list[GenerateLog] | None = None)`
 
 Adds the value to the context.
 
 -----
 
-##### `insert_turn(self, turn)`
+##### `mellea.stdlib.base.SimpleContext.insert_turn(turn: ContextTurn, generate_logs: list[GenerateLog] | None = None)`
 
 Removes the previous turn and starts a new one.
 
 -----
 
-##### `_hash_for_kv_cache(self)`
+##### `mellea.stdlib.base.SimpleContext._hash_for_kv_cache()`
 
 Constructs a hash that corresponds to the string contents of the KV cache associated with this context.
 
 -----
 
-##### `copy(self)`
+##### `mellea.stdlib.base.SimpleContext.copy()`
 
 Constructs a deep copy of this Context.
 
@@ -360,13 +353,13 @@ Constructs a deep copy of this Context.
 
 ---
 
-### `class TemplateRepresentation`
+### `class mellea.stdlib.base.TemplateRepresentation()`
 
 Representing a component as a set of important attributes that can be consumed by the formatter.
 
 ---
 
-### `class GenerateLog`
+### `class mellea.stdlib.base.GenerateLog()`
 
 A dataclass for capturing log entries.
 
@@ -375,7 +368,7 @@ records of events or operations where context and additional data are significan
 
 ---
 
-### `class ModelToolCall`
+### `class mellea.stdlib.base.ModelToolCall()`
 
 A dataclass for capturing the tool calls a model wants to make.
 
@@ -383,7 +376,7 @@ Provides a unified way to call tools post generation.
 
 #### Methods
 
-##### `call_func(self)`
+##### `mellea.stdlib.base.ModelToolCall.call_func()`
 
 A helper function for calling the function/tool represented by this object.
 

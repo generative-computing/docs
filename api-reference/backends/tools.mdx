@@ -1,24 +1,26 @@
 ---
-title: Tools
+title: mellea.backends.tools
 sidebar_label: Tools
 ---
 
-# Module: `tools`
+# Module: `mellea.backends.tools`
 
 Utilities for dealing with tools.
 
 ## Functions
 
-### `get_tools_from_action(action)`
+### `mellea.backends.tools.get_tools_from_action(action: Any)`
 
 If an object is a Component with a TemplateRepresentation, grabs it's tools field.
 
-Returns:
-dict: mapping function names to callables
+
+## Returns
+
+* `dict`: mapping function names to callables
 
 ---
 
-### `convert_tools_to_json(tools)`
+### `mellea.backends.tools.convert_tools_to_json(tools: dict[str, Callable])`
 
 Convert tools to json dict representation.
 
@@ -29,13 +31,13 @@ Notes:
 
 ---
 
-### `json_extraction(text)`
+### `mellea.backends.tools.json_extraction(text: str)`
 
 Yields the next valid json object in a given string.
 
 ---
 
-### `find_func(d)`
+### `mellea.backends.tools.find_func(d)`
 
 Find the first function in a json-like dictionary.
 
@@ -43,7 +45,7 @@ Most llms output tool requests in the form `...{"name": string, "arguments": {}}
 
 ---
 
-### `parse_tools(llm_response)`
+### `mellea.backends.tools.parse_tools(llm_response: str)`
 
 A simple parser that will scan a string for tools and attempt to extract them.
 

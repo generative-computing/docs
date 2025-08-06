@@ -1,46 +1,45 @@
 ---
-title: Chat
+title: mellea.stdlib.chat
 sidebar_label: Chat
 ---
 
-# Module: `chat`
+# Module: `mellea.stdlib.chat`
 
 Chat primitives.
 
 ## Classes
 
-### `class Message`
+### `class mellea.stdlib.chat.Message(role: 'Message.Role', content: str)`
 
 A single Message in a Chat history.
 
-#### Methods
-
-##### `__init__(self, role, content)`
+#### Constructor
 
 Initializer for Chat messages.
 
-Args:
-role (str): The role that this message came from (e.g., user, assistant).
-content (str): The content of the message.
 
------
+## Arguments
 
-##### `parts(self)`
+* `role`: `str`: The role that this message came from (e.g., user, assistant).
+* `content`: `str`: The content of the message.
+
+#### Methods
+
+##### `mellea.stdlib.chat.Message.parts()`
 
 Returns all of the constituent parts of an Instruction.
 
 -----
 
-##### `format_for_llm(self)`
+##### `mellea.stdlib.chat.Message.format_for_llm()`
 
 Formats the content for a Language Model.
 
-Returns:
 The formatted output suitable for language models.
 
 -----
 
-##### `__str__(self)`
+##### `mellea.stdlib.chat.Message.__str__()`
 
 Pretty representation of messages, because they are a special case.
 
@@ -48,33 +47,33 @@ Pretty representation of messages, because they are a special case.
 
 ---
 
-### `class ToolMessage`
+### `class mellea.stdlib.chat.ToolMessage(role: Message.Role, content: str, tool_output: Any, name: str, args: Mapping[str, Any], tool: ModelToolCall)`
 
 Adds the name field for function name.
 
-#### Methods
-
-##### `__init__(self, role, content, tool_output, name, args, tool)`
+#### Constructor
 
 Initializer for Chat messages.
 
-Args:
-role: the role of this message. Most backends/models use something like tool.
-content: The content of the message; should be a stringified version of the tool_output.
-name: The name of the tool/function.
-args: The args required to call the function.
-tool_output: the output of the tool/function call.
-tool: the ModelToolCall representation.
 
------
+## Arguments
 
-##### `format_for_llm(self)`
+* `role`: the role of this message. Most backends/models use something like tool.
+* `content`: The content of the message; should be a stringified version of the tool_output.
+* `name`: The name of the tool/function.
+* `args`: The args required to call the function.
+* `tool_output`: the output of the tool/function call.
+* `tool`: the ModelToolCall representation.
+
+#### Methods
+
+##### `mellea.stdlib.chat.ToolMessage.format_for_llm()`
 
 The same representation as Message with a name field added to args.
 
 -----
 
-##### `__str__(self)`
+##### `mellea.stdlib.chat.ToolMessage.__str__()`
 
 Pretty representation of messages, because they are a special case.
 

@@ -1,8 +1,8 @@
 ---
-title: example
+title: m_serve_example
 ---
 
-This is the code for `example.py`:
+This is the code for `m_serve_example.py`:
 <CodeGroup>
 
 ```python Python
@@ -11,14 +11,11 @@ This is the code for `example.py`:
 from typing import Any
 
 import mellea
-
-# TODO: Might want to move this to the stdlib?
 from cli.serve.models import ChatMessage
 from mellea.stdlib.base import LinearContext, ModelOutputThunk
 from mellea.stdlib.requirement import Requirement, simple_validate
 from mellea.stdlib.sampling import RejectionSamplingStrategy, SamplingResult
 
-# TODO: Should we move this into the app.py? This would give us control on using other fields from the ChatCompletionRequest
 session = mellea.start_session(ctx=LinearContext())
 
 

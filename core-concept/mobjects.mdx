@@ -16,8 +16,9 @@ Suppose you have a table of sales data and want to let the LLM answer questions 
 <CodeGroup>
 
 ```python Python
+# file: https://github.com/generative-computing/mellea/blob/main/docs/examples/tutorial/table_mobject.py#L1-L31
 import mellea
-from mellea.stdlib import mify
+from mellea.stdlib.mify import mify, MifiedProtocol
 import pandas
 from io import StringIO
 
@@ -37,13 +38,14 @@ class MyCompanyDatabase:
       skipinitialspace=True,
       header=0,
       index_col=False
-    ).
+    )
 
 
-if __name__ == "__main__":
-  m = mellea.start_session()
-  db = MyCompanyDatabase()
-  db.query(m, "What were sales for the Northeast branch this month?")
+m = mellea.start_session()
+db = MyCompanyDatabase()
+assert isinstance(db, MifiedProtocol)
+answer = m.query(db, "What were sales for the Northeast branch this month?")
+print(str(answer))
 ```
 
 </CodeGroup>
@@ -64,12 +66,10 @@ Let's create a RichDocument from an arxiv paper:
 <CodeGroup>
 
 ```python Python
+# file: https://github.com/generative-computing/mellea/blob/main/docs/examples/tutorial/document_mobject.py#L1-L3
 from mellea.stdlib.docs.richdocument import RichDocument
-
 rd = RichDocument.from_document_file("https://arxiv.org/pdf/1906.04043")
 ```
-
-</CodeGroup>
 
 this loads the PDF file and parses it using the Docling parser into an
 intermediate representation.
@@ -77,13 +77,13 @@ intermediate representation.
 From the rich document we can extract some document content, e.g. the
 first table:
 
+</CodeGroup>
+
 <CodeGroup>
-
-```python Python
-table1:Table = rd.get_tables()[0]
-print(table1)
-```
-
+  ```python Python # file:
+  https://github.com/generative-computing/mellea/blob/main/docs/examples/tutorial/document_mobject.py#L5-L8
+  from mellea.stdlib.docs.richdocument import Table table1: Table =
+  rd.get_tables()[0] print(table1.to_markdown()) ```
 </CodeGroup>
 
 Output:
@@ -106,25 +106,27 @@ The `Table` object is Mellea-ready and can be used immediately with LLMs.
 Let's just get it to work:
 
 <CodeGroup>
-
 ```python Python
+# file: https://github.com/generative-computing/mellea/blob/main/docs/examples/tutorial/document_mobject.py#L10-L24
+from mellea.backends.types import ModelOption
+from mellea import start_session
+
+m = start_session()
 for seed in [x*12 for x in range(5)]:
-    table2 = m.transform(table1,
-                         "Add a column 'Model' that extracts which model was used or 'None' if none.",
-                         model_options={ModelOption.SEED: seed})
-    if isinstance(table2, Table):
-        print(table2.to_markdown())
-        break
-    else:
-        print(f"==== TRYING AGAIN after non-useful output.====")
-```
+table2 = m.transform(table1,
+"Add a column 'Model' that extracts which model was used or 'None' if none.",
+model_options={ModelOption.SEED: seed})
+if isinstance(table2, Table):
+print(table2.to_markdown())
+break
+else:
+print(f"==== TRYING AGAIN after non-useful output.====")
 
+````
 </CodeGroup>
-
 In this example, `table1` should be transformed to have an extra column `Model` which contains the model string from the `Feature` column or `None` if there is none. Iterating through some seed values, we try to find a version which returns a parsable representation of the table. If found, print it out.
 
 The output for this code sample could be:
-
 <CodeGroup>
 
 ```markdown Markdown
@@ -137,7 +139,7 @@ table1=
 | (Test 1 - BERT) Average Probability | 0.70 ± 0.27 |
 | (Test 2 - BERT) Top-K Buckets | 0.85 ± 0.09 |
 
-=== 18:21:00-WARNING ======
+===== 18:21:00-WARNING ======
 added a tool message from transform to the context as well.
 
 table2=
@@ -148,10 +150,9 @@ table2=
 | (Test 2 - GPT-2) Top-K Buckets | 0.87 ± 0.07 | GPT-2 |
 | (Test 1 - BERT) Average Probability | 0.70 ± 0.27 | BERT |
 | (Test 2 - BERT) Top-K Buckets | 0.85 ± 0.09 | BERT |
-```
+````
 
 </CodeGroup>
-
 The model has done a great job at fulfilling the task and coming back with a parsable syntax. You could now call (e.g. `m.query(table2, "Are there any GPT models referenced?")`) or continue transformation (e.g. `m.transform(table2, "Transpose the table.")`).
 
 ### MObject methods are tools
@@ -161,6 +162,8 @@ When an object is `mified` all methods with a docstring get registered as tools 
 <CodeGroup>
 
 ```python Python
+from mellea.stdlib.mify import mify
+
 @mify(funcs_include={"from_markdown"})
 class MyDocumentLoader:
     def __init__(self) -> None:
@@ -191,5 +194,4 @@ table1_t2 = table1.transpose() # the table method
 ```
 
 </CodeGroup>
-
 Every native function of `Table` is automatically registered as a tool to the transform function. I.e., here the `.transform()` function calls the LLM and the LLM will get back suggesting to use the very own `.transpose()` function to achieve the result - it will also give you a friendly warning that you could directly use the function call instead of using the transform function.

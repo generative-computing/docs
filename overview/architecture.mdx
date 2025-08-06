@@ -2,7 +2,6 @@
 title: "Architecture"
 ---
 
-<img src="/images/architecture/IMG_9804.jpg" />
 Before going any further, we need to overview the architecture of Mellea.
 
 Mellea's core abstraction is called a `Component`. A `Component` is a structured object that represents a unit of interaction with an LLM. The Mellea `stdlib` contains a set of useful components, but you can also define your own. We have already seen some components -- `Instruction` and `Requirement` are both `Component`s.
@@ -33,18 +32,19 @@ class Instruction(Component):
         prefix: str | CBlock | None = None,
         output_prefix: str | CBlock | None = None,
     ):
-
 ```
 
 </CodeGroup>
 
 M's standard library contains four basic types of Components:
 
-1. [Instructions](#chapter-2-getting-started-with-generative-programming-in-mellea), which we have already seen.
-2. [Requirements](#chapter-2-getting-started-with-generative-programming-in-mellea), which we have already seen and will continue to use heavily throughout the remainder of the tutorial.
-3. [Generative Slots](#chapter-4-generative-slots), which treat LLM calls as functions.
-4. [MObjects](#chapter-5-mobjects), which help with context engineering for tool use by placing tools next to the data that those tools most reasonably operate over.
+1. [Instructions](/overview/quick-start), which we have already seen.
+2. [Requirements](/overview/requirements), which we have already seen and will continue to use heavily throughout the remainder of the tutorial.
+3. [Generative Slots](/core-concept/generative-slots), which treat LLM calls as functions.
+4. [MObjects](/core-concept/mobjects), which help with context engineering for tool use by placing tools next to the data that those tools most reasonably operate over.
 
-This is not an exhaustive list of possible component types. New components can be created as user libraries or as stdlib contributions. Where it makes sense, you can also back new components by [fine-tuned models designed especially to work with your Component types](/core-concept/adapters).
+This is not an exhaustive list of possible component types. New components can be created as [user libraries or as stdlib contributions](#appendix-contributing-to-m). Where it makes sense, you can also back new components by [fine-tuned models designed especially to work with your Component types](/core-concept/adapters).
 
 But before getting into these advanced modalities, let's finish our overview of the standard library of Components that ship with Mellea.
+
+<img src="/images/architecture/architecture.png" />

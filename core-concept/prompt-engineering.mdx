@@ -34,7 +34,7 @@ By writing a new template and/or changing the TemplateRepresentation of a compon
 
 #### Choosing a Template
 
-Assuming a component's TemplateRepresentation contains a `template_order` field, the default TemplateFormatter grabs the relevant template by looing at the following places in order for each template in the `template_order`:
+Assuming a component's TemplateRepresentation contains a `template_order` field, the default TemplateFormatter grabs the relevant template by looking at the following places in order for each template in the `template_order`:
 
 1. the formatter's cached templates if the template has been looked up recently
 2. the formatter's specified template path
@@ -50,3 +50,5 @@ If the default formatter searches the template path or the package, it uses the 
 #### Editing an Existing Class
 
 To customize the template and template representation of an existing class, simply create a new class that inherits from the class you want to edit. Then, override the format_for_llm function and create a new template.
+
+See [`mellea/docs/examples/mify/rich_document_advanced.py`](./examples/mify/rich_document_advanced.py)
