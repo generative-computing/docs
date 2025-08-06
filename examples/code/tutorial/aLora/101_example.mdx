@@ -22,16 +22,26 @@ from mellea.stdlib.requirement import Requirement, req
 backend = LocalHFBackend(
     model_id="ibm-granite/granite-3.2-8b-instruct", cache=SimpleLRUCache(5)
 )
-add_granite_aloras(backend)
+
+backend.add_alora(
+    HFConstraintAlora(
+        name="custom_construant",
+        path_or_model_id="my_uploaded_model/goes_here",  # can also be the checkpoint path
+        generation_prompt="<|start_of_role|>check_requirement<|end_of_role|>",
+        backend=backend,
+    )
+)
 
 # Create M session
 m = MelleaSession(backend, ctx=LinearContext())
 
 # define a requirement
-funny = req("Write it in German.")
+failure_check = req("The failure mode should not be none.")
 
 # run instruction with requirement attached on the base model
-res = m.instruct("Write a 10 word poem.", requirements=[funny])
+res = m.instruct(
+    "Write triage summaries based on technician note.", requirements=[failure_check]
+)
 
 print("==== Generation =====")
 print(f"Model Output: {res}")
@@ -75,11 +85,11 @@ def validate_reqs(reqs: list[Requirement]):
 
 
 # run with aLora -- which is the default if the constraint alora is added to a model
-validate_reqs([funny])
+validate_reqs([failure_check])
 
 # force to run without alora
 backend.default_to_constraint_checking_alora = False
-validate_reqs([funny])
+validate_reqs([failure_check])
 backend.default_to_constraint_checking_alora = True
 
 ```

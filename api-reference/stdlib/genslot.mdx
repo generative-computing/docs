@@ -1,67 +1,75 @@
 ---
-title: Genslot
+title: mellea.stdlib.genslot
 sidebar_label: Genslot
 ---
 
-# Module: `genslot`
+# Module: `mellea.stdlib.genslot`
 
 A method to generate outputs based on python functions and a Generative Slot function.
 
 ## Functions
 
-### `create_response_format(func)`
+### `mellea.stdlib.genslot.create_response_format(func: Callable[..., R])`
 
 Create a Pydantic response format class for a given function.
 
-Args:
-func: A function with exactly one argument
 
-Returns:
+## Arguments
+
+* `func`: A function with exactly one argument
+
 A Pydantic model class that inherits from FunctionResponse[T]
 
 ---
 
-### `describe_function(func)`
+### `mellea.stdlib.genslot.describe_function(func: Callable)`
 
 Generates a FunctionDict given a function.
 
-Args:
-func : Callable function that needs to be passed to generative slot.
 
-Returns:
-FunctionDict: Function dict of the passed function.
+## Arguments
+
+* `func`: Callable function that needs to be passed to generative slot.
+
+
+## Returns
+
+* `FunctionDict`: Function dict of the passed function.
 
 ---
 
-### `get_annotation(func, key, val)`
+### `mellea.stdlib.genslot.get_annotation(func: Callable, key: str, val: Any)`
 
 Returns a annotated list of arguments for a given function and list of arguments.
 
-Args:
-func : Callable Function
-key : Arg keys
-val : Arg Values
 
-Returns:
-str: An annotated string for a given func.
+## Arguments
+
+* `func`: Callable Function
+* `key`: Arg keys
+* `val`: Arg Values
+
+
+## Returns
+
+* `str`: An annotated string for a given func.
 
 ---
 
-### `bind_function_arguments(func, *args, **kwargs)`
+### `mellea.stdlib.genslot.bind_function_arguments(func: Callable[P, R], *args: P.args, **kwargs: P.kwargs)`
 
 Bind arguments to function parameters and return as dictionary.
 
-Args:
-func: The function to bind arguments for.
-*args: Positional arguments to bind.
-**kwargs: Keyword arguments to bind.
 
-Returns:
+## Arguments
+
+* `func`: The function to bind arguments for. *args: Positional arguments to bind. **kwargs: Keyword arguments to bind.
+
 Dictionary mapping parameter names to bound values with defaults applied.
 
 ---
 
-### `generative(func)`
+### `mellea.stdlib.genslot.generative(func: Callable[P, R])`
 
 Convert a function into an AI-powered function.
 
@@ -76,106 +84,105 @@ like a prompt. This ensures the function is well-documented, easily understood,
 and familiar to any Python developer. The more natural and conventional your
 function definition, the better the AI will understand and imitate it.
 
-Args:
-func: Function with docstring and type hints. Implementation can be empty (...).
 
-Returns:
+## Arguments
+
+* `func`: Function with docstring and type hints. Implementation can be empty (...).
+
 An AI-powered function that generates responses using an LLM based on the
 original function's signature and docstring.
 
-Examples:
-
 <CodeGroup>
 ```python Python
->>> from mellea import generative, start_session
->>> session = start_session()
->>> @generative
-... def summarize_text(text: str, max_words: int = 50) -> str:
-...     '''Generate a concise summary of the input text.'''
-...     ...
->>>
->>> summary = summarize_text(session, "Long text...", max_words=30)
+    >>> from mellea import generative, start_session
+    >>> session = start_session()
+    >>> @generative
+    ... def summarize_text(text: str, max_words: int = 50) -> str:
+    ...     '''Generate a concise summary of the input text.'''
+    ...     ...
+    >>>
+    >>> summary = summarize_text(session, "Long text...", max_words=30)
 ```
 </CodeGroup>
 
 
 <CodeGroup>
 ```python Python
->>> from typing import List
->>> from dataclasses import dataclass
->>>
->>> @dataclass
-... class Task:
-...     title: str
-...     priority: str
-...     estimated_hours: float
->>>
->>> @generative
-... def create_project_tasks(project_desc: str, count: int) -> List[Task]:
-...     '''Generate a list of realistic tasks for a project.
-...
-...     Args:
-...         project_desc: Description of the project
-...         count: Number of tasks to generate
-...
-...     Returns:
-...         List of tasks with titles, priorities, and time estimates
-...     '''
-...     ...
->>>
->>> tasks = create_project_tasks(session, "Build a web app", 5)
+    >>> from typing import List
+    >>> from dataclasses import dataclass
+    >>>
+    >>> @dataclass
+    ... class Task:
+    ...     title: str
+    ...     priority: str
+    ...     estimated_hours: float
+    >>>
+    >>> @generative
+    ... def create_project_tasks(project_desc: str, count: int) -> List[Task]:
+    ...     '''Generate a list of realistic tasks for a project.
+    ...
+    ...     Args:
+    ...         project_desc: Description of the project
+    ...         count: Number of tasks to generate
+    ...
+    ...     Returns:
+    ...         List of tasks with titles, priorities, and time estimates
+    ...     '''
+    ...     ...
+    >>>
+    >>> tasks = create_project_tasks(session, "Build a web app", 5)
 ```
 </CodeGroup>
 
 
 <CodeGroup>
 ```python Python
->>> @generative
-... def analyze_code_quality(code: str) -> Dict[str, Any]:
-...     '''Analyze code quality and provide recommendations.
-...
-...     Args:
-...         code: Source code to analyze
-...
-...     Returns:
-...         Dictionary containing:
-...         - score: Overall quality score (0-100)
-...         - issues: List of identified problems
-...         - suggestions: List of improvement recommendations
-...         - complexity: Estimated complexity level
-...     '''
-...     ...
->>>
->>> analysis = analyze_code_quality(
-...     session,
-...     "def factorial(n): return n * factorial(n-1)",
-...     model_options={"temperature": 0.3}
-... )
+    >>> @generative
+    ... def analyze_code_quality(code: str) -> Dict[str, Any]:
+    ...     '''Analyze code quality and provide recommendations.
+    ...
+    ...     Args:
+    ...         code: Source code to analyze
+    ...
+    ...     Returns:
+    ...         Dictionary containing:
+    ...         - score: Overall quality score (0-100)
+    ...         - issues: List of identified problems
+    ...         - suggestions: List of improvement recommendations
+    ...         - complexity: Estimated complexity level
+    ...     '''
+    ...     ...
+    >>>
+    >>> analysis = analyze_code_quality(
+    ...     session,
+    ...     "def factorial(n): return n * factorial(n-1)",
+    ...     model_options={"temperature": 0.3}
+    ... )
 ```
 </CodeGroup>
 
 
 <CodeGroup>
 ```python Python
->>> @dataclass
-... class Thought:
-...     title: str
-...     body: str
->>>
->>> @generative
-... def generate_chain_of_thought(problem: str, steps: int = 5) -> List[Thought]:
-...     '''Generate a step-by-step chain of thought for solving a problem.
-...
-...     Args:
-...         problem: The problem to solve or question to answer
-...         steps: Maximum number of reasoning steps
-...
-...     Returns:
-...         List of reasoning steps, each with a title and detailed body
-...     '''
-...     ...
->>>
->>> reasoning = generate_chain_of_thought(session, "How to optimize a slow database query?")
+    >>> @dataclass
+    ... class Thought:
+    ...     title: str
+    ...     body: str
+    >>>
+    >>> @generative
+    ... def generate_chain_of_thought(problem: str, steps: int = 5) -> List[Thought]:
+    ...     '''Generate a step-by-step chain of thought for solving a problem.
+    ...
+    ...     Args:
+    ...         problem: The problem to solve or question to answer
+    ...         steps: Maximum number of reasoning steps
+    ...
+    ...     Returns:
+    ...         List of reasoning steps, each with a title and detailed body
+    ...     '''
+    ...     ...
+    >>>
+    >>> reasoning = generate_chain_of_thought(session, "How to optimize a slow database query?")
 ```
 </CodeGroup>
 
@@ -183,87 +190,82 @@ Examples:
 
 ## Classes
 
-### `class FunctionResponse`
+### `class mellea.stdlib.genslot.FunctionResponse()`
 
 Generic base class for function response formats.
 
 ---
 
-### `class FunctionDict`
+### `class mellea.stdlib.genslot.FunctionDict()`
 
 Return Type for a Function Component.
 
 ---
 
-### `class ArgumentDict`
+### `class mellea.stdlib.genslot.ArgumentDict()`
 
 Return Type for a Argument Component.
 
 ---
 
-### `class Argument`
+### `class mellea.stdlib.genslot.Argument(annotation: str | None = None, name: str | None = None, value: str | None = None)`
 
 An Argument Component.
 
-#### Methods
-
-##### `__init__(self, annotation, name, value)`
+#### Constructor
 
 An Argument Component.
 
------
-
 ---
 
-### `class Function`
+### `class mellea.stdlib.genslot.Function(func: Callable)`
 
 A Function Component.
 
-#### Methods
-
-##### `__init__(self, func)`
+#### Constructor
 
 A Function Component.
 
------
-
 ---
 
-### `class GenerativeSlot`
+### `class mellea.stdlib.genslot.GenerativeSlot(func: Callable[P, R])`
 
 A generative slot component.
 
-#### Methods
-
-##### `__init__(self, func)`
+#### Constructor
 
 A generative slot function that converts a given `func` to a generative slot.
 
-Args:
-func: A callable function
 
------
+## Arguments
 
-##### `__call__(self, m, model_options, *args, **kwargs)`
+* `func`: A callable function
+
+#### Methods
+
+##### `mellea.stdlib.genslot.GenerativeSlot.__call__(m, model_options: dict | None = None, *args: P.args, **kwargs: P.kwargs)`
 
 Call the generative slot.
 
-Args:
-m: MelleaSession: A mellea session
-**kwargs: Additional Kwargs to be passed to the func
 
-Returns:
-ModelOutputThunk: Output with generated Thunk.
+## Arguments
+
+* `m`: `MelleaSession`: A mellea session **kwargs: Additional Kwargs to be passed to the func
+
+
+## Returns
+
+* `ModelOutputThunk`: Output with generated Thunk.
 
 -----
 
-##### `parts(self)`
+##### `mellea.stdlib.genslot.GenerativeSlot.parts()`
 
 Not implemented.
 
 -----
 
-##### `format_for_llm(self)`
+##### `mellea.stdlib.genslot.GenerativeSlot.format_for_llm()`
 
 Formats the instruction for Formatter use.
 

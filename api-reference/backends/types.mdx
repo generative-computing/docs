@@ -1,15 +1,15 @@
 ---
-title: Types
+title: mellea.backends.types
 sidebar_label: Types
 ---
 
-# Module: `types`
+# Module: `mellea.backends.types`
 
 Useful type definitions for models, formatters, and backends.
 
 ## Classes
 
-### `class ModelOption`
+### `class mellea.backends.types.ModelOption()`
 
 A type that wraps around model options.
 
@@ -23,11 +23,12 @@ Create a dictionary containing model options like this:
 from mellea.backends.types import ModelOption
 model_options = { ModelOption.TEMPERATURE : 0.0, ModelOption.SYSTEM_PROMPT : "You are a helpful assistant" }
 
+````
 </CodeGroup>
 
 #### Methods
 
-##### `replace_keys(options, from_to)`
+##### `mellea.backends.types.ModelOption.replace_keys(options: dict, from_to: dict[str, str])`
 
 Returns a new dict with the keys in `options` replaced with the corresponding value for that key in `from_to`.
 
@@ -39,7 +40,8 @@ Example:
 ```python Python
 >>> options = {"k1": "v1", "k2": "v2", "M1": "m1"}
 >>> from_to = {"k1": "M1", "k2": "M2"}
-```
+````
+
 </CodeGroup>
 
 <CodeGroup>
@@ -50,21 +52,14 @@ Example:
 ```
 </CodeGroup>
 
-```
+---
 
------
-
-##### `remove_special_keys(model_options)`
+##### `mellea.backends.types.ModelOption.remove_special_keys(model_options)`
 
 Removes all sentiel-valued keys (i.e., those that start with @@@).
 
------
+---
 
-##### `merge_model_options(persistent_opts, overwrite_opts)`
+##### `mellea.backends.types.ModelOption.merge_model_options(persistent_opts: dict[str, Any], overwrite_opts: dict[str, Any] | None)`
 
 Creates a new dict that contains all keys and values from persistent opts and overwrite opts. If there are duplicate keys, overwrite opts key value pairs will be used.
-
------
-
----
-```

@@ -1,77 +1,90 @@
 ---
-title: "Requirements"
+title: "Instruct-Validate-Repair"
 description: "Use pre- and post-conditions to validate your LLM outputs meet specific requirements."
 ---
 
 How can we ensure that the output from a language model is actually good?
 
-Experienced generative programmers don’t leave this to chance. Instead, they define pre-conditions to check that inputs to the LLM are in the expected format, and post-conditions to verify that the outputs meet their quality standards.
+Good generative programmers don't leave this up to chance -- instead, they use pre-conditions to ensure that inputs to the LLM are as expected and then check post-conditions to ensure that the LLM's outputs are fit-for-purpose.
 
-Let’s say we want to ensure that a generated email includes a salutation and uses only lower-case letters. We can enforce these expectations by specifying requirements in the m.instruct call.
+Suppose that in this case we want to ensure that the email has a salutation and contains only lower-case letters. We can capture these post-conditions by specifying **requirements** on the `m.instruct` call:
 
 <CodeGroup>
 
 ```python Python
-...
-def write_email(m: mellea.MelleaSession, name: str, notes: str) -> str:
-    email =  m.instruct(
+# file: https://github.com/generative-computing/mellea/blob/main/docs/examples/tutorial/simple_email.py#L33-L53
+import mellea
+
+def write_email_with_requirements(m: mellea.MelleaSession, name: str, notes: str) -> str:
+  email = m.instruct(
+      "Write an email to {{name}} using the notes following: {{notes}}.",
+      requirements=[
+          "The email should have a salutation",
+          "Use only lower-case letters",
+      ],
+      user_variables={"name": name, "notes": notes},
+  )
+  return str(email)
+
+m = mellea.start_session()
+print(write_email_with_requirements(
+  m,
+  name="Olivia",
+  notes="Olivia helped the lab over the last few weeks by organizing intern events, advertising the speaker series, and handling issues with snack delivery.",
+))
+```
+
+</CodeGroup>
+
+We just added two requirements to the instruction which will be added to the model request. But we don't check yet if these requirements are satisfied. Let's add a **strategy** for validating the requirements:
+
+<CodeGroup>
+
+```python Python
+# file: https://github.com/generative-computing/mellea/blob/main/docs/examples/tutorial/simple_email.py#L57-L84
+import mellea
+from mellea.stdlib.sampling import RejectionSamplingStrategy
+
+def write_email_with_strategy(m: mellea.MelleaSession, name: str, notes: str) -> str:
+    email_candidate = m.instruct(
         "Write an email to {{name}} using the notes following: {{notes}}.",
         requirements=[
             "The email should have a salutation",
-            "Use only lower-case letters"
+            "Use only lower-case letters",
         ],
-        user_dict={"name": name, "notes": notes},
+        strategy=RejectionSamplingStrategy(loop_budget=5),
+        user_variables={"name": name, "notes": notes},
+        return_sampling_results=True,
     )
-    return email.value
+    if email_candidate.success:
+        return str(email_candidate.result)
+    else:
+        print("Expect sub-par result.")
+        return email_candidate.sample_generations[0].value
 
 m = mellea.start_session()
-print(write_email(m, "Olivia", "Olivia helped the lab over the last few weeks by organizing intern events, advertising the speaker series, and handling issues with snack delivery."))
-
+print(
+    write_email_with_strategy(
+        m,
+        "Olivia",
+        "Olivia helped the lab over the last few weeks by organizing intern events, advertising the speaker series, and handling issues with snack delivery.",
+    )
+)
 ```
 
 </CodeGroup>
 
-We just added two requirements to the instruction which will be added to the model request.
-But we don't check yet if these requirements are satisfied. Let's add a **strategy** for
-validating the requirements:
-
-<CodeGroup>
-
-```python Python
-import mellea
-
-
-def write_email(m: mellea.MelleaSession, name: str, notes: str) -> str:
-  email_candidate = m.instruct(
-    "Write an email to {{name}} using the notes following: {{notes}}.",
-    requirements=[
-      "The email should have a salutation",
-      "Use only lower-case letters"
-    ],
-    strategy=m.strategy.smc(budget=5),
-    # see SMC: https://arxiv.org/pdf/2306.03081
-    user_dict={"name": name, "notes": notes},
-  )
-  if email_candidate.success():
-    return email_candidate.as_string()
-  else:
-    return email_candidate.candidates[0].as_string()
-
-
-m = mellea.start_session()
-print(write_email(m, "Olivia",
-                  "Olivia helped the lab over the last few weeks by organizing intern events, advertising the speaker series, and handling issues with snack delivery."))
-```
-
-</CodeGroup>
 A couple of things happened here. First, we added a sampling `strategy` to the instruction.
-This strategy (`m.strategy.smc()`) checks if all requirements are met.
-If any requirement fails, then the sampling strategy will generate a new email with a stronger emphasis on the failing requirement(s).
-This process will repeat until the `budget` on retries is consumed.
+This strategy (`RejectionSamplingStrategy()`) checks if all requirements are met.
+If any requirement fails, then the sampling strategy will sample a new email from the LLM.
+This process will repeat until the `loop_budget` on retries is consumed or all requirements are met.
 
-Even with retries, sampling might not generate results that fulfill all requirements (`email_candidate.success()==False`).
+Even with retries, sampling might not generate results that fulfill all requirements (`email_candidate.success==False`).
 Mellea forces you to think about what it means for an LLM call to fail;
-in this case, we handle the situation by simply reutrning the first sample as the final result.
+in this case, we handle the situation by simply returning the first sample as the final result.
+
+> [!NOTE]
+> When using the `return_sampling_results=True` parameter, the `instruct()` function returns a `SamplingResult` object (not a `ModelOutputThunk`) which carries the full history of sampling and validation results for each sample.
 
 ### Validating Requirements
 
@@ -83,6 +96,7 @@ Let's look on how we can customize requirement definitions:
 <CodeGroup>
 
 ```python Python
+# file: https://github.com/generative-computing/mellea/blob/main/docs/examples/tutorial/instruct_validate_repair.py#L1-L10
 from mellea.stdlib.requirement import req, check, simple_validate
 
 requirements = [
@@ -94,21 +108,16 @@ requirements = [
 
 </CodeGroup>
 
-Here, the first requirement (r1) has been given the highest priority of `MUST` which
-means, that it must be fulfilled to lead to a positive result. In contrast, r2 should
-be fulfilled - i.e. if two samples have both fulfilled r1 but only one of them r2,
-then this one is the most preferred.
+Here, the first requirement (r1) will be validated by LLM-as-a-judge on the output (last turn) of the instruction. This is the default behavior, since nothing else is specified.
 
-While r1 and r2 use LLM-as-a-judge for validation, the third requirement (r3) simply
-uses a function that takes the output of a sampling step and returns a boolean
-value indicating (un-)successful validation.
+The second requirement (r2) simply uses a function that takes the output of a sampling step and returns a boolean value indicating (un-)successful validation. While the `validation_fn` parameter requires to run validation on the full session context (see [Context Management](/core-concept/context-management)), Mellea provides a wrapper for simpler validation functions (`simple_validate(fn: Callable[[str], bool])`) that take the output string and return a boolean as seen in this case.
 
-The forth requirement is a `check()`. Checks are only used for validation, not for generation.
+The third requirement is a `check()`. Checks are only used for validation, not for generation.
 Checks aim to avoid the "do not think about B" effect that often primes models (and humans)
 to do the opposite and "think" about B.
 
 > [!NOTE]
-> LLMaJ is not presumtively robust. Whenever possible, implement requirement validation using plain old Python code. When a model is necessary, it can often be a good idea to train a **calibrated** model specifically for your validation problem. [Chapter 6](/core-concept/adapters) explains how to use Mellea's `m tune` subcommand to train your own LoRAs for requirement checking (and for other types of Mellea components as well).
+> LLMaJ is not presumtively robust. Whenever possible, implement requirement validation using plain old Python code. When a model is necessary, it can often be a good idea to train a **calibrated** model specifically for your validation problem. [Adapters](/core-concept/adapters) explains how to use Mellea's `m tune` subcommand to train your own LoRAs for requirement checking (and for other types of Mellea components as well).
 
 ### Instruct - Validate - Repair
 
@@ -117,43 +126,41 @@ Now, we bring it all together into a first generative program using the **instru
 <CodeGroup>
 
 ```python Python
-
+# file: https://github.com/generative-computing/mellea/blob/main/docs/examples/tutorial/instruct_validate_repair.py#L13-L37
 import mellea
+from mellea.stdlib.requirement import req, check, simple_validate
+from mellea.stdlib.sampling import RejectionSamplingStrategy
 
 def write_email(m: mellea.MelleaSession, name: str, notes: str) -> str:
-email_candidate = m.instruct(
-"Write an email to {{name}} using the notes following: {{notes}}.",
-requirements=[
-m.req("The email should have a salutation", priority=m.prio.MUST),
+    email_candidate = m.instruct(
+        "Write an email to {{name}} using the notes following: {{notes}}.",
+        requirements=[
+            req("The email should have a salutation"),  # == r1
+            req(
+                "Use only lower-case letters",
+                validation_fn=simple_validate(lambda x: x.lower() == x),
+            ),  # == r2
+            check("Do not mention purple elephants."),  # == r3
+        ],
+        strategy=RejectionSamplingStrategy(loop_budget=5),
+        user_variables={"name": name, "notes": notes},
+        return_sampling_results=True,
+    )
+    if email_candidate.success:
+        return str(email_candidate.result)
+    else:
+        return email_candidate.sample_generations[0].value
 
-# == r1
-
-m.req("Do not respond in all-caps", priority=m.prio.SHOULD), # == r2
-m.req("Use only lower-case letters",
-validator=lambda x: x.as_string().lower() == x.as_string()),
-
-# == r3
-
-m.check("Do not mention purple elephants.") # == r4
-],
-strategy=m.strategy.SMC(budget=5),
-user_dict={"name": name, "notes": notes},
-)
-if email_candidate.success():
-return email_candidate.as_string()
-else:
-return email_candidate.candidates[0].as_string()
 
 m = mellea.start_session()
 print(write_email(m, "Olivia",
-"Olivia helped the lab over the last few weeks by organizing intern events, advertising the speaker series, and handling issues with snack delivery."))
-
+                  "Olivia helped the lab over the last few weeks by organizing intern events, advertising the speaker series, and handling issues with snack delivery."))
 ```
 
 </CodeGroup>
 
 > [!NOTE]
-> The `instruct()` method is a convenience function that creates and then generates from an `Instruction` Component, `req()` similarly wraps the `Requirement` Component, etc. [Chapter 2](/overview/quick-start) will takes us one level deeper into understanding what happens under the hood when you call `m.instruct()`.
+> The `instruct()` method is a convenience function that creates and then generates from an `Instruction` Component, `req()` similarly wraps the `Requirement` Component, etc. [Quickstart](/overview/quick-start) will takes us one level deeper into understanding what happens under the hood when you call `m.instruct()`.
 
 ### ModelOptions
 
@@ -161,18 +168,31 @@ Most LLM apis allow you to specify options to modify the request: temperature, m
 
 Mellea supports many different types of inference engines (ollama, openai-compatible vllm, huggingface, etc.). These inference engines, which we call `Backend`s, provide different and sometimes inconsistent dict keysets for specifying model options. For the most common options among model providers, Mellea provides some engine-agnostic options, which can be used by typing [`ModelOption.<TAB>`](../mellea/backends/types.py) in your favorite IDE; for example, temperature can be specified as `{"{ModelOption.TEMPERATURE": 0}` and this will "just work" across all inference engines.
 
-You can add any key-value pair supported by the backend to the `model_options` dictionary, and those options will be passed along to the inference engine \*even if a Mellea-specific `ModelOption.<KEY>` is defined for that option. This means you can safely copy over model option parameters from exiting codeb ases as-is:
+You can add any key-value pair supported by the backend to the `model_options` dictionary, and those options will be passed along to the inference engine \*even if a Mellea-specific `ModelOption.<KEY>` is defined for that option. This means you can safely copy over model option parameters from exiting codebases as-is:
 
 <CodeGroup>
 
-```python Python
-m = MelleaSession(backend_name="openai")
-m.instruct(..., model_options={
-    "temperature": 0.5,
-    "frequency_penalty": 1,
-    "stop": "stop_string",
-    "max_completion_tokens": 10,
-})
+```python
+# file: https://github.com/generative-computing/mellea/blob/main/docs/examples/tutorial/model_options_example.py#L1-L16
+import mellea
+from mellea.backends.types import ModelOption
+from mellea.backends.ollama import OllamaModelBackend
+from mellea.backends import model_ids
+
+m = mellea.MelleaSession(backend=OllamaModelBackend(
+    model_id=model_ids.IBM_GRANITE_3_2_8B,
+    model_options={ModelOption.SEED: 42}
+))
+
+answer = m.instruct(
+    "What is 2x2?",
+    model_options={
+        "temperature": 0.5,
+        "num_predict": 5,
+    },
+)
+
+print(str(answer))
 ```
 
 </CodeGroup>
@@ -184,13 +204,26 @@ You can always update the model options of a given backend; however, Mellea offe
 <CodeGroup>
 
 ```python Python
-orig_model_opts = {"k1": "v1", ModelOption.K2: "v2", "k4": "v4"} # options specified when creating the backend
-new_model_opts = {ModelOption.K1: "v1.1", "k1": "v1.2", "k2": "v2.1", "k3": "v3"} # options specified with `m.*`
+# options passed during backend initialization
+backend_model_options = {
+    "seed": "1",
+    ModelOption.MAX_NEW_TOKENS: 1,
+    "temperature": 1,
+}
 
-# final options passed to the provider
+# options passed during m.*
+instruct_model_options = {
+    "seed": "2",
+    ModelOption.SEED: "3",
+    "num_predict": 2,
+}
 
-final_opts = {"k1": "v1.1", "k2": "v2.1", "k3": "v3", "k4": "v4"}
-
+# options passed to the model provider API
+final_options = {
+    "temperature": 1,
+    "seed": 3,
+    "num_predict": 2
+}
 ```
 
 </CodeGroup>
@@ -199,9 +232,9 @@ final_opts = {"k1": "v1.1", "k2": "v2.1", "k3": "v3", "k4": "v4"}
 
 ### Conclusion
 
-We have now worked up from a simple "Hello, World" example to our first generative programming design pattern: **Instruct - Validate - Reapir (IVR)**.
+We have now worked up from a simple "Hello, World" example to our first generative programming design pattern: **Instruct - Validate - Repair (IVR)**.
 
-When LLMs work well, the software developer experiences the LLM as a sort of oracle that can handle most any input and produce a sufficiently desirable output. When LLMs do not work at all, the software developer experinces the LLM as a naive markov chain that produces junk. In both cases, the LLM is just sampling from a distribution.
+When LLMs work well, the software developer experiences the LLM as a sort of oracle that can handle most any input and produce a sufficiently desirable output. When LLMs do not work at all, the software developer experiences the LLM as a naive markov chain that produces junk. In both cases, the LLM is just sampling from a distribution.
 
 The crux of generative programming is that most applications find themselves somewhere in-between these two extremes -- the LLM mostly works, enough to demo a tantilizing MVP. But failure modes are common enough and severe enough that complete automation is beyond the developer's grasp.
 

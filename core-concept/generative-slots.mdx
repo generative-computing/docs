@@ -12,24 +12,30 @@ A `GenerativeSlot` is a function whose implementation is provided by an LLM. In 
 Let's start with a simple example: a function that classifies the sentiment of a string as "positive" or "negative".
 
 <CodeGroup>
+
 ```python Python
+# file: https://github.com/generative-computing/mellea/blob/main/docs/examples/tutorial/sentiment_classifier.py#L1-L13
 from typing import Literal
 from mellea import generative, start_session
 
 @generative
 def classify_sentiment(text: str) -> Literal["positive", "negative"]:
-"""Classify the sentiment of the input text as 'positive' or 'negative'."""
+  """Classify the sentiment of the input text as 'positive' or 'negative'."""
+  ...
 
-if **name** == "**main**":
 m = start_session()
 sentiment = classify_sentiment(m, text="I love this!")
 print("Output sentiment is:", sentiment)
+```
 
-````
 </CodeGroup>
+
 Here, `classify_sentiment` is a GenerativeSlot: it looks like a normal function, but its implementation is handled by the LLM. The type annotation (`Literal["positive", "negative"]`) constrains the output, and the prompt is automatically constructed from the function signature and docstring.
 
-Many more examples of generative slots are provide in the `docs/examples` directory.
+Many more examples of generative slots are provided in the `docs/examples` directory.
+
+> [!NOTE]
+> Generative slots can also be implemented as code-generation calls instead of black-box structured output generators. This is most useful when correct code generation is difficult without some dynamic analysis (i.e., runtime information). In these cases, the problem can be solved by prompting with a FiTM code generation request, augmented with pieces of runtime state. This advanced functionality may result in untrusted code execution, and should therefore be used with caution and/or in conjunction with some combination of sandboxing and human validation prior to execution.
 
 #### Using Generative slots to Provide Compositionality Across Module Boundaries
 
@@ -38,102 +44,96 @@ Instruct-validate-repair provides compositionality within a given module. As the
 Consider the following two independently developed libraries: a **Summarizer** library that contains a set of functions for summarizing various types of documents, and a **Decision Aides** library that aides in decision making for particular situations.
 
 <CodeGroup>
+
 ```python Python
-# The Summarizer Library
+# file: https://github.com/generative-computing/mellea/blob/main/docs/examples/tutorial/compositionality_with_generative_slots.py#L1-L18
 from mellea import generative
 
-
+# The Summarizer Library
 @generative
 def summarize_meeting(transcript: str) -> str:
   """Summarize the meeting transcript into a concise paragraph of main points."""
-
 
 @generative
 def summarize_contract(contract_text: str) -> str:
   """Produce a natural language summary of contract obligations and risks."""
 
-
 @generative
 def summarize_short_story(story: str) -> str:
-  """Summarize a short story, with one paragraph on plot and one paragraph on braod themes."""
-````
+  """Summarize a short story, with one paragraph on plot and one paragraph on broad themes."""
+```
 
 </CodeGroup>
 
 <CodeGroup>
+
 ```python Python
-# The Decision Aides Library
+# file: https://github.com/generative-computing/mellea/blob/main/docs/examples/tutorial/compositionality_with_generative_slots.py#L20-L33
 from mellea import generative
 
+# The Decision Aides Library
 @generative
 def propose_business_decision(summary: str) -> str:
-"""Given a structured summary with clear recommendations, propose a business decision."""
+  """Given a structured summary with clear recommendations, propose a business decision."""
 
 @generative
 def generate_risk_mitigation(summary: str) -> str:
-"""If the summary contains risk elements, propose mitigation strategies."""
+  """If the summary contains risk elements, propose mitigation strategies."""
 
 @generative
 def generate_novel_recommendations(summary: str) -> str:
-"""Provide a list of novel recommendations that are similar in plot or theme to the short story summary."""
+  """Provide a list of novel recommendations that are similar in plot or theme to the short story summary."""
+```
 
-````
 </CodeGroup>
 
 Notice that these two libraries do not necessarily always compose -- meeting notes may or may not contain semantic content for which risk analysis even makes sense.
 
-To help us compose these libraries, we introduce a set of contracts that gate function composition and then use those contracts short-circuit non-sensical compositions of library components:
+To help us compose these libraries, we introduce a set of contracts that gate function composition and then use those contracts to short-circuit non-sensical compositions of library components:
 
 <CodeGroup>
+
 ```python Python
+# file: https://github.com/generative-computing/mellea/blob/main/docs/examples/tutorial/compositionality_with_generative_slots.py#L36-L52
 from mellea import generative
 from typing import Literal
 
-from summarizers import (
-  summarize_meeting,
-  summarize_contract,
-  summarize_short_story,
-)
-from decision_aides import (
-  propose_business_decision,
-  generate_risk_mitigation,
-  generate_novel_recommendations
-)
-
-
+# Compose the libraries.
 @generative
 def has_structured_conclusion(summary: str) -> Literal["yes", "no"]:
   """Determine whether the summary contains a clearly marked conclusion or recommendation."""
-
 
 @generative
 def contains_actionable_risks(summary: str) -> Literal["yes", "no"]:
   """Check whether the summary contains references to business risks or exposure."""
 
-
 @generative
 def has_theme_and_plot(summary: str) -> Literal["yes", "no"]:
   """Check whether the summary contains both a plot and thematic elements."""
-````
+```
 
-```python
+</CodeGroup>
+
+<CodeGroup>
+
+```python Python
+# file: https://github.com/generative-computing/mellea/blob/main/docs/examples/tutorial/compositionality_with_generative_slots.py#L55-L129
 from mellea import start_session
 
-if __name__ == "__main__":
-  m = start_session()
-  transcript = """Meeting Transcript: Market Risk Review -- Self-Sealing Stembolts Division
+m = start_session()
+transcript = """Meeting Transcript: Market Risk Review -- Self-Sealing Stembolts Division
 Date: December 1, 3125
 Attendees:
 
-    Karen Rojas, VP of Product Strategy
+Karen Rojas, VP of Product Strategy
 
-    Derek Madsen, Director of Global Procurement
+Derek Madsen, Director of Global Procurement
 
-    Felicia Zheng, Head of Market Research
+Felicia Zheng, Head of Market Research
 
-    Tom Vega, CFO
+Tom Vega, CFO
 
-    Luis Tran, Engineering Liaison
+Luis Tran, Engineering Liaison
 
 Karen Rojas:
 Thanks, everyone, for making time on short notice. As you've all seen, we've got three converging market risks we need to address: tariffs on micro-carburetors, increased adoption of the self-interlocking leafscrew, and, believe it or not, the "hipsterfication" of the construction industry. I need all on deck and let's not waste time. Derek, start.
@@ -181,23 +181,22 @@ Karen:
 Not yet. But we may need to reframe it as a prestige line—low volume, high margin. Okay, action items. Derek, map alternative micro-carburetor sources. Felicia, get me a forecast on leafscrew erosion by sector. Luis, feasibility of reviving manual seal production. Tom, let's scenario-plan cost pass-through vs. feature-based differentiation.
 
 Let's reconvene next week with hard numbers. Thanks, all."""
-  summary = summarize_meeting(m, transcript=transcript)
+summary = summarize_meeting(m, transcript=transcript)
 
-  if contains_actionable_risks(m, summary=summary) == "yes":
+if contains_actionable_risks(m, summary=summary) == "yes":
     mitigation = generate_risk_mitigation(m, summary=summary)
     print(f"Mitigation: {mitigation}")
-  else:
+else:
     print("Summary does not contain actionable risks.")
-
-  if has_structured_conclusion(m, summary=summary) == "yes":
+if has_structured_conclusion(m, summary=summary) == "yes":
     decision = propose_business_decision(m, summary=summary)
     print(f"Decision: {decision}")
-  else:
+else:
     print("Summary lacks a structured conclusion.")
 ```
 
 </CodeGroup>
 
-Without these Hoare-style contracts, the only way to ensure composition is to couple the libraries, either by rewriting `summarize_meeting` to conform to `propose_business_decision`, or adding Requirements to `propose_business_decision` that may silently fail if unmet. These approahces can work, but require tight coupling between these two otherwise loosely couple libraries.
+Without these Hoare-style contracts, the only way to ensure composition is to couple the libraries, either by rewriting `summarize_meeting` to conform to `propose_business_decision`, or adding Requirements to `propose_business_decision` that may silently fail if unmet. These approaches can work, but require tight coupling between these two otherwise loosely coupled libraries.
 
 With contracts, we **decouple** the libraries without sacrificing safe dynamic composition, by moving the coupling logic into pre- and post-condition checks. This is another LLM-native software engineering pattern: **guarded nondeterminism**.

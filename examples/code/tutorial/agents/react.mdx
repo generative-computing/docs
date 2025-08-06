@@ -59,7 +59,7 @@ class ReactTool(pydantic.BaseModel):
         sig = inspect.signature(self.fn)
         fields = dict()
         for param_name, param in sig.parameters.items():
-            fields[param_name] = str  # TODO use typing.get_type_hints
+            fields[param_name] = str
         return pydantic.create_model(
             f"{self.fn.__name__.capitalize()}ToolSchema", **fields
         )
@@ -117,7 +117,6 @@ def react(
     )
 
     # Construct the system prompt for ReACT.
-    # TODO should we make ReACT a component so that different models can specify the system prompt differently?
     _sys_prompt = react_system_template.render(
         {"today": datetime.date.today(), "tools": react_toolbox.tools}
     )
@@ -163,12 +162,9 @@ def react(
         )
         print(f"```json\n{json.dumps(json.loads(act_args.content), indent=2)}\n```")
 
-        # TODO: handle exceptions.
         print("### Observation")
         tool_output = react_toolbox.call_tool(selected_tool, act_args.content)
-        m.ctx.insert(
-            mellea.stdlib.chat.Message(role="tool", content=tool_output)
-        )  # TODO most models have a way of doing this.
+        m.ctx.insert(mellea.stdlib.chat.Message(role="tool", content=tool_output))
         print(tool_output)
 
         print("### Done Check")

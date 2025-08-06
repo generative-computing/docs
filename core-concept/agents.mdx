@@ -18,7 +18,8 @@ The core idea of ReACT is to alternate between reasoning ("Thought") and acting 
 
 <CodeGroup>
 
-```text Pseudocode
+```Pseudocode Pseudocode
+# Pseudocode
 while not done:
     get the model's next thought
     take an action based upon the though
@@ -35,6 +36,7 @@ Let's look at how this agent is implemented in Mellea:
 <CodeGroup>
 
 ````python Python
+# file: https://github.com/generative-computing/mellea/blob/main/docs/examples/agents/react.py#L99
 def react(
     m: mellea.MelleaSession,
     goal: str,
@@ -48,7 +50,6 @@ def react(
     ), "ReACT expects a fresh context."
 
     # Construct the system prompt for ReACT.
-    # TODO should we make ReACT a component so that different models can specify the system prompt differently?
     _sys_prompt = react_system_template.render(
         {"today": datetime.date.today(), "tools": react_toolbox.tools}
     )
@@ -119,7 +120,8 @@ The first step is to add a new `Component` that adds preconditions and postcondi
 
 <CodeGroup>
 
-```python Python
+```python
+# file: https://github.com/generative-computing/kripke_agents/blob/main/kripke/base.py#L10-L38 # TODO: MOVE THESE TO FAKE KRIPKE
 class ConstrainedGenerativeSlot(Component):
     template = GEN_SLOT_TEMPLATE # the same template as is used for generative slots.
 
@@ -142,6 +144,7 @@ We'll also add a decorator for convienance:
 <CodeGroup>
 
 ```python Python
+# file: https://github.com/generative-computing/kripke_agents/blob/main/kripke/base.py#L41-L44
 def constrained(preconds: list[Requirement | str], postconds: list[Requirement | str]):
     def _decorator(genslot: GenerativeSlot):
         return ConstrainedGenerativeSlot(genslot, preconds, postconds)
@@ -150,11 +153,12 @@ def constrained(preconds: list[Requirement | str], postconds: list[Requirement |
 
 </CodeGroup>
 
-We can now write down constrrained generative slots like so:
+We can now write down constrained generative slots like so:
 
 <CodeGroup>
 
 ```python Python
+# file: https://github.com/generative-computing/kripke_agents/blob/main/main.py#L23-L27
 @constrained(preconds=["contains a summary of the story's theme"], postconds=["each element of the list is the title and author of a significant novel"])
 @generative
 def suggest_novels_based_on_theme(summary: str) -> list[str]:
@@ -171,6 +175,7 @@ We are now ready to provide the stump of our kripke agent:
 <CodeGroup>
 
 ```python Python
+# file: https://github.com/generative-computing/kripke_agents/blob/main/kripke/base.py#L54-L99
 def filter_actions(m: mellea.MelleaSession, actions: list[ConstrainedGenerativeSlot], *, output: ModelOutputThunk | None = None):
   ...
 
@@ -209,6 +214,7 @@ The magic of the Kripke agent happens in `filter_actions`. The basic idea is sim
 <CodeGroup>
 
 ```python Python
+# file: https://github.com/generative-computing/kripke_agents/blob/main/kripke/base.py#L47-L55
 def _check_action_preconditions(m: mellea.MelleaSession, action: ConstrainedGenerativeSlot, *, output: ModelOutputThunk | None = None) -> bool:
     for precondition in action._preconds:
         if not m.validate(precondition, output=output):
@@ -226,7 +232,9 @@ And we finish of the agent by defining the selection criteria, using familiar co
 
 <CodeGroup>
 
-```python Python
+```
+python Python
+# file: https://github.com/generative-computing/kripke_agents/blob/main/kripke/base.py#L58-L71
 def select_action(m: mellea.MelleaSession, actions: list[ConstrainedGenerativeSlot], goal: Requirement):
     # Setup a pydanyic model for the next action.
     action_names = [action.action_name() for action in actions]
@@ -241,6 +249,7 @@ def select_action(m: mellea.MelleaSession, actions: list[ConstrainedGenerativeSl
     selected_action = [a for a in actions if a.action_name() == next_action_name]
     assert len(selected_action) == 1
     return selected_action[0]
+
 ```
 
 </CodeGroup>

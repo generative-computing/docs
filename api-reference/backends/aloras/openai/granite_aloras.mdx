@@ -1,15 +1,15 @@
 ---
-title: Granite Aloras
+title: mellea.backends.aloras.openai.granite_aloras
 sidebar_label: Granite Aloras
 ---
 
-# Module: `granite_aloras`
+# Module: `mellea.backends.aloras.openai.granite_aloras`
 
 OpenAI implementations for IBM's "starter pack" of Activated LoRAs.
 
 ## Functions
 
-### `add_granite_aloras(backend)`
+### `mellea.backends.aloras.openai.granite_aloras.add_granite_aloras(backend: OpenAIBackend)`
 
 Adds the IBM Granite "starter pack" ALoras to a backend.
 
@@ -17,19 +17,17 @@ Adds the IBM Granite "starter pack" ALoras to a backend.
 
 ## Classes
 
-### `class OpenAIConstraintAlora`
+### `class mellea.backends.aloras.openai.granite_aloras.OpenAIConstraintAlora(name: str, path: str, generation_prompt: str, backend: OpenAIBackend)`
 
 The [Requirement Checking ALora for Granite 3.2 8B](https://huggingface.co/ibm-granite/granite-3.2-8b-alora-requirement-check) checks if the specified requirement was satisfied by the most recent model generation. Only one requirement is checked at a time.
 
-#### Methods
-
-##### `__init__(self, name, path, generation_prompt, backend)`
+#### Constructor
 
 Initialize after checking that the backend is correct.
 
------
+#### Methods
 
-##### `generate_using_strings(self, input, response, constraint, force_yn)`
+##### `mellea.backends.aloras.openai.granite_aloras.OpenAIConstraintAlora.generate_using_strings(input: str, response: str, constraint: str, force_yn: bool = True)`
 
 Generates a constraint response from the ALora.
 

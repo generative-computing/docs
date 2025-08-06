@@ -1,54 +1,54 @@
 ---
-title: Instruction
+title: mellea.stdlib.instruction
 sidebar_label: Instruction
 ---
 
-# Module: `instruction`
+# Module: `mellea.stdlib.instruction`
 
 Instructions.
 
 ## Classes
 
-### `class Instruction`
+### `class mellea.stdlib.instruction.Instruction(description: str | CBlock | None = None, requirements: list[Requirement | str] | None = None, icl_examples: list[str | CBlock] | None = None, grounding_context: dict[str, str | CBlock | Component] | None = None, user_variables: dict[str, str] | None = None, prefix: str | CBlock | None = None, output_prefix: str | CBlock | None = None)`
 
 The Instruction in an instruct/validate/repair loop.
 
-#### Methods
-
-##### `__init__(self, description, requirements, icl_examples, grounding_context, user_variables, prefix, output_prefix)`
+#### Constructor
 
 Initializes an instruction. All strings will be converted into CBlocks.
 
-Args:
-description (str): The description of the instruction.
-requirements (List[Requirement | str]): A list of requirements that the instruction can be validated against.
-icl_examples (List[str | CBlock]): A list of in-context-learning examples that the instruction can be validated against.
-grounding_context (Dict[str, str | CBlock | Component]): A list of grounding contexts that the instruction can use. They can bind as variables using a (key: str, value: str | ContentBlock) tuple.
-user_variables (Dict[str, str]): A dict of user-defined variables used to fill in Jinja placeholders in other parameters. This requires that all other provided parameters are provided as strings.
-prefix (Optional[str | CBlock]): A prefix string or ContentBlock to use when generating the instruction.
-output_prefix (Optional[str | CBlock]): A string or ContentBlock that defines a prefix for the output generation. Usually you do not need this.
 
------
+## Arguments
 
-##### `parts(self)`
+* `description`: `str`: The description of the instruction.
+* `requirements`: `List[Requirement | str]`: A list of requirements that the instruction can be validated against.
+* `icl_examples`: `List[str | CBlock]`: A list of in-context-learning examples that the instruction can be validated against.
+* `grounding_context`: `Dict[str, str | CBlock | Component]`: A list of grounding contexts that the instruction can use. They can bind as variables using a (key: str, value: str | ContentBlock) tuple.
+* `user_variables`: `Dict[str, str]`: A dict of user-defined variables used to fill in Jinja placeholders in other parameters. This requires that all other provided parameters are provided as strings.
+* `prefix`: `Optional[str | CBlock]`: A prefix string or ContentBlock to use when generating the instruction.
+* `output_prefix`: `Optional[str | CBlock]`: A string or ContentBlock that defines a prefix for the output generation. Usually you do not need this.
+
+#### Methods
+
+##### `mellea.stdlib.instruction.Instruction.parts()`
 
 Returns all of the constituent parts of an Instruction.
 
 -----
 
-##### `format_for_llm(self)`
+##### `mellea.stdlib.instruction.Instruction.format_for_llm()`
 
 Formats the instruction for Formatter use.
 
 -----
 
-##### `apply_user_dict_from_jinja(user_dict, s)`
+##### `mellea.stdlib.instruction.Instruction.apply_user_dict_from_jinja(user_dict: dict[str, str], s: str)`
 
 Treats s as a jinja string and user_dict as the template values dictionary.
 
 -----
 
-##### `requirements(self)`
+##### `mellea.stdlib.instruction.Instruction.requirements()`
 
 Returns a list of Requirement instances.
 

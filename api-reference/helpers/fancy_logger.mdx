@@ -1,27 +1,25 @@
 ---
-title: Fancy Logger
+title: mellea.helpers.fancy_logger
 sidebar_label: Fancy Logger
 ---
 
-# Module: `fancy_logger`
+# Module: `mellea.helpers.fancy_logger`
 
 Hendrik's Fancy Logger.
 
 ## Classes
 
-### `class RESTHandler`
+### `class mellea.helpers.fancy_logger.RESTHandler(api_url, method = 'POST', headers = None)`
 
 RESTHandler for logging.
 
-#### Methods
-
-##### `__init__(self, api_url, method, headers)`
+#### Constructor
 
 Initializes a RESTHandler; uses application/json by default.
 
------
+#### Methods
 
-##### `emit(self, record)`
+##### `mellea.helpers.fancy_logger.RESTHandler.emit(record)`
 
 Attempts to emit a record to FLOG, or silently fails.
 
@@ -29,13 +27,13 @@ Attempts to emit a record to FLOG, or silently fails.
 
 ---
 
-### `class JsonFormatter`
+### `class mellea.helpers.fancy_logger.JsonFormatter()`
 
 Logging formatter for JSON.
 
 #### Methods
 
-##### `format(self, record)`
+##### `mellea.helpers.fancy_logger.JsonFormatter.format(record)`
 
 Formats record as a JSON serializable object.
 
@@ -43,13 +41,13 @@ Formats record as a JSON serializable object.
 
 ---
 
-### `class CustomFormatter`
+### `class mellea.helpers.fancy_logger.CustomFormatter()`
 
 A nice custom formatter copied from [https://stackoverflow.com/questions/384076/how-can-i-color-python-logging-output](Sergey Pleshakov's post on StackOvervlow).
 
 #### Methods
 
-##### `format(self, record)`
+##### `mellea.helpers.fancy_logger.CustomFormatter.format(record)`
 
 The format fn.
 
@@ -57,13 +55,13 @@ The format fn.
 
 ---
 
-### `class FancyLogger`
+### `class mellea.helpers.fancy_logger.FancyLogger()`
 
 A fancy logger.
 
 #### Methods
 
-##### `get_logger()`
+##### `mellea.helpers.fancy_logger.FancyLogger.get_logger()`
 
 Returns a FancyLogger.logger and sets level based upon env vars.
 

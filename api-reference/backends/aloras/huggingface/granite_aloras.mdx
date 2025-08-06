@@ -1,15 +1,15 @@
 ---
-title: Granite Aloras
+title: mellea.backends.aloras.huggingface.granite_aloras
 sidebar_label: Granite Aloras
 ---
 
-# Module: `granite_aloras`
+# Module: `mellea.backends.aloras.huggingface.granite_aloras`
 
 Huggingface implementations for IBM's "starter pack" of Activated LoRAs.
 
 ## Functions
 
-### `add_granite_aloras(backend)`
+### `mellea.backends.aloras.huggingface.granite_aloras.add_granite_aloras(backend: LocalHFBackend)`
 
 Adds the IBM Granite "starter pack" ALoras to a backend.
 
@@ -17,29 +17,27 @@ Adds the IBM Granite "starter pack" ALoras to a backend.
 
 ## Classes
 
-### `class HFConstraintAlora`
+### `class mellea.backends.aloras.huggingface.granite_aloras.HFConstraintAlora(name: str, path_or_model_id: str, generation_prompt: str, backend: LocalHFBackend)`
 
 The [Requirement Checking ALora for Granite 3.2 8B](https://huggingface.co/ibm-granite/granite-3.2-8b-alora-requirement-check) checks if the specified requirement was satisfied by the most recent model generation. Only one requirement is checked at a time.
 
-#### Methods
-
-##### `__init__(self, name, path_or_model_id, generation_prompt, backend)`
+#### Constructor
 
 Initialize after checking that the backend is correct.
 
------
+#### Methods
 
-##### `generate_using_strings(self, input, response, constraint, force_yn)`
+##### `mellea.backends.aloras.huggingface.granite_aloras.HFConstraintAlora.generate_using_strings(input: str, response: str, constraint: str, force_yn: bool = True)`
 
 Generates a constraint response from the ALora.
 
 -----
 
-##### `_generate_using_cache(self, cache_hit, constraint, force_yn)`
+##### `mellea.backends.aloras.huggingface.granite_aloras.HFConstraintAlora._generate_using_cache(cache_hit: HFAloraCacheInfo, constraint: str, force_yn: bool)`
 
 -----
 
-##### `_generate_not_using_cache(self, input, response, constraint, force_yn)`
+##### `mellea.backends.aloras.huggingface.granite_aloras.HFConstraintAlora._generate_not_using_cache(input: str, response: str, constraint: str, force_yn: bool)`
 
 -----
 

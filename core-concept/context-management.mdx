@@ -16,6 +16,8 @@ When you use the `start_session()` method, you are actually instantiating a `Mel
 <CodeGroup>
 
 ```python Python
+from mellea import MelleaSession
+
 m = mellea.MelleaSession(
     backend=OllamaBackend(model_id=IBM_GRANITE_3_3_8B)
     context=SimpleContext()
@@ -23,11 +25,15 @@ m = mellea.MelleaSession(
 ```
 
 </CodeGroup>
-The `SimpleContext` -- which is the only context we have used so far -- is a context manager that resets the chat message history on each model call. That is, the model's context is entirely determined by the current Component. Mellea also provides a `LinearContext`, which behaves like a chat history. We can use the LinearContext to interact with cat hmodels:
+
+The `SimpleContext` -- which is the only context we have used so far -- is a context manager that resets the chat message history on each model call. That is, the model's context is entirely determined by the current Component. Mellea also provides a `LinearContext`, which behaves like a chat history. We can use the LinearContext to interact with chat models:
 
 <CodeGroup>
 
 ```python Python
+# file: https://github.com/generative-computing/mellea/blob/main/docs/examples/tutorial/context_example.py#L1-L5
+from mellea import start_session
+
 m = mellea.start_session(ctx=LinearContext())
 m.chat("Make up a math problem.")
 m.chat("Solve your math problem.")
@@ -35,12 +41,13 @@ m.chat("Solve your math problem.")
 
 </CodeGroup>
 
-The `Context` object provides a few useful hepfuls for introspecting on the current model context; for example, you can always get the last model output:
+The `Context` object provides a few useful helpers for introspecting on the current model context; for example, you can always get the last model output:
 
 <CodeGroup>
 
 ```python Python
-print(m.last_output())
+# file: https://github.com/generative-computing/mellea/blob/main/docs/examples/tutorial/context_example.py#L7
+print(m.ctx.last_output())
 ```
 
 </CodeGroup>
@@ -50,7 +57,8 @@ or the entire last turn (user query + assistant response):
 <CodeGroup>
 
 ```python Python
-print(m.last_turn())
+# file: https://github.com/generative-computing/mellea/blob/main/docs/examples/tutorial/context_example.py#L9
+print(m.ctx.last_turn())
 ```
 
 </CodeGroup>
