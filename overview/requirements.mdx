@@ -83,8 +83,11 @@ Even with retries, sampling might not generate results that fulfill all requirem
 Mellea forces you to think about what it means for an LLM call to fail;
 in this case, we handle the situation by simply returning the first sample as the final result.
 
-> [!NOTE]
-> When using the `return_sampling_results=True` parameter, the `instruct()` function returns a `SamplingResult` object (not a `ModelOutputThunk`) which carries the full history of sampling and validation results for each sample.
+<Note>
+  When using the `return_sampling_results=True` parameter, the `instruct()`
+  function returns a `SamplingResult` object (not a `ModelOutputThunk`) which
+  carries the full history of sampling and validation results for each sample.
+</Note>
 
 ### Validating Requirements
 
@@ -116,9 +119,14 @@ The third requirement is a `check()`. Checks are only used for validation, not f
 Checks aim to avoid the "do not think about B" effect that often primes models (and humans)
 to do the opposite and "think" about B.
 
-> [!NOTE]
-> LLMaJ is not presumtively robust. Whenever possible, implement requirement validation using plain old Python code. When a model is necessary, it can often be a good idea to train a **calibrated** model specifically for your validation problem. [Adapters](/core-concept/adapters) explains how to use Mellea's `m tune` subcommand to train your own LoRAs for requirement checking (and for other types of Mellea components as well).
-
+<Note>
+  LLMaJ is not presumtively robust. Whenever possible, implement requirement
+  validation using plain old Python code. When a model is necessary, it can
+  often be a good idea to train a **calibrated** model specifically for your
+  validation problem. [Adapters](/core-concept/adapters) explains how to use
+  Mellea's `m tune` subcommand to train your own LoRAs for requirement checking
+  (and for other types of Mellea components as well).
+</Note>
 ### Instruct - Validate - Repair
 
 Now, we bring it all together into a first generative program using the **instruct-validate-repair** pattern:
@@ -159,9 +167,13 @@ print(write_email(m, "Olivia",
 
 </CodeGroup>
 
-> [!NOTE]
-> The `instruct()` method is a convenience function that creates and then generates from an `Instruction` Component, `req()` similarly wraps the `Requirement` Component, etc. [Quickstart](/overview/quick-start) will takes us one level deeper into understanding what happens under the hood when you call `m.instruct()`.
-
+<Note>
+  The `instruct()` method is a convenience function that creates and then
+  generates from an `Instruction` Component, `req()` similarly wraps the
+  `Requirement` Component, etc. [Quickstart](/overview/quick-start) will takes
+  us one level deeper into understanding what happens under the hood when you
+  call `m.instruct()`.
+</Note>
 ### ModelOptions
 
 Most LLM apis allow you to specify options to modify the request: temperature, max_tokens, seed, etc... Mellea supports specifying these options during backend initialization and when calling session-level functions with the `model_options` parameter.

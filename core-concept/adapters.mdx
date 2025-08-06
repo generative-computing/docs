@@ -98,8 +98,14 @@ If you get a permissions error, make sure you are logged in to Huggingface:
   ```bash Bash huggingface-cli login # Optional: only needed for uploads ```
 </CodeGroup>
 
-> [!NOTE] > **Warning on Privacy:** Before uploading your trained model to the Hugging Face Hub, review the visibility carefully. If you will be sharing your model with the public, consider whether your training data includes any proprietary, confidential, or sensitive information. Language models can unintentionally memorize details, and this problem compounds when operating over small or domain-specific datasets.
-
+<Note>
+  **Warning on Privacy:** Before uploading your trained model to the Hugging
+  Face Hub, review the visibility carefully. If you will be sharing your model
+  with the public, consider whether your training data includes any proprietary,
+  confidential, or sensitive information. Language models can unintentionally
+  memorize details, and this problem compounds when operating over small or
+  domain-specific datasets.
+</Note>
 ### Integrating the Tuned Model into Mellea
 
 After training an aLoRA classifier for our task, we would like to use that classifier to check requirements in a Mellea program. First, we need to setup our backend for using the aLoRA classifier:
@@ -125,9 +131,9 @@ backend=m.backend,
 </CodeGroup>
 In the above arguments, `path_or_model_id` refers to the model checkpoint from last step, i.e., the `m alora train` process.
 
-> [!NOTE]
-> The `generation_prompt` passed to your `backend.add_alora` call should exactly match the prompt used for training.
-
+<Note>
+The `generation_prompt` passed to your `backend.add_alora` call should exactly match the prompt used for training.
+</Note>
 We are now ready to create a M session, define the requirement, and run the instruction:
 
 <CodeGroup>

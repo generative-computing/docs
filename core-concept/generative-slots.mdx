@@ -34,9 +34,16 @@ Here, `classify_sentiment` is a GenerativeSlot: it looks like a normal function,
 
 Many more examples of generative slots are provided in the `docs/examples` directory.
 
-> [!NOTE]
-> Generative slots can also be implemented as code-generation calls instead of black-box structured output generators. This is most useful when correct code generation is difficult without some dynamic analysis (i.e., runtime information). In these cases, the problem can be solved by prompting with a FiTM code generation request, augmented with pieces of runtime state. This advanced functionality may result in untrusted code execution, and should therefore be used with caution and/or in conjunction with some combination of sandboxing and human validation prior to execution.
-
+<Note>
+  Generative slots can also be implemented as code-generation calls instead of
+  black-box structured output generators. This is most useful when correct code
+  generation is difficult without some dynamic analysis (i.e., runtime
+  information). In these cases, the problem can be solved by prompting with a
+  FiTM code generation request, augmented with pieces of runtime state. This
+  advanced functionality may result in untrusted code execution, and should
+  therefore be used with caution and/or in conjunction with some combination of
+  sandboxing and human validation prior to execution.
+</Note>
 #### Using Generative slots to Provide Compositionality Across Module Boundaries
 
 Instruct-validate-repair provides compositionality within a given module. As the examples listed above demonstrate, generative slots can do the same. But generative slots are not just about local validity; their real power comes from safe interoperability between independently designed systems.
