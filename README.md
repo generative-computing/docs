@@ -1,16 +1,26 @@
-# Mintlify Generic Docs Starter
+# 📚 Mellea Documentation
 
-This is a **generic starter template** for creating beautiful, maintainable documentation sites using [Mintlify](https://mintlify.com).
+This repository contains the documentation for the [**Mellea**](https://github.com/generative-computing/mellea) project. It provides clear, developer-focused guides and reference materials for working with the Mellea platform.
 
-## 🌟 Features
-
-- Pre-configured `docs.json` with generic navigation (Section 1, Section 2, etc.)
-- Example MDX pages for quick customization
-- Reusable IBM Plex Sans fonts
-- Generic light and dark logos with transparent backgrounds
-- Sample components like Steps, Cards, and CardGroup demonstrated
+Visit Mellea documentation site: [https://mellea.ai/](https://mellea.ai)
 
 ---
+
+## 🔎 About Mellea
+
+**Mellea** is a library for writing generative programs. Generative programming replaces flaky agents and brittle prompts with structured, maintainable, robust, and efficient AI workflows.
+
+---
+
+## 🚀 Getting Started
+
+Follow these steps to run the documentation site locally:
+
+### 1️⃣ Install Mintlify CLI
+
+````bash
+npm install -g mint
+
 
 ## 🚀 Getting Started
 
@@ -18,7 +28,7 @@ This is a **generic starter template** for creating beautiful, maintainable docu
 
 ```bash
 npm install -g mint
-```
+````
 
 ### 2️⃣ Run locally
 
@@ -29,16 +39,3 @@ mint dev
 Your site will be available at [http://localhost:3000](http://localhost:3000).
 
 ---
-
-## 🛠️ Adding New Pages
-
-1. Create new `.mdx` files inside one of the sections (e.g., `section1`, `section2`).
-2. Update `docs.json` to include new pages under the desired tab and group.
-
----
-
-## 💡 Customization Tips
-
-- Change colors, fonts, and logos in `docs.json`.
-- Use Mintlify built-in components like `<Steps>`, `<Card>`, `<CardGroup>`, and `<Callout>`.
-- Update the `overview.mdx` file to introduce your project or give quick start instructions to new users.
