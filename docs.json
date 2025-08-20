@@ -247,7 +247,7 @@
         "primary": {
             "type": "button",
             "label": "GitHub",
-            "href": "http://github.com/generative-computing/mellea"
+            "href": "https://github.com/generative-computing/mellea"
         },
         "links": [
             {
@@ -256,11 +256,11 @@
             },
             {
                 "label": "Community",
-                "href": "http://github.com/generative-computing/mellea/discussions"
+                "href": "https://github.com/generative-computing/mellea/discussions"
             },
             {
                 "label": "Support",
-                "href": "http://github.com/generative-computing/mellea/issues"
+                "href": "https://github.com/generative-computing/mellea/issues"
             },
             {
                 "label": "Contribution Guide",
