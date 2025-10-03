@@ -1,6 +1,6 @@
 ---
-title: "MObject"
-description: "Bringing OOP to LLM with MObjects"
+title: "Mify Objects"
+description: "Bringing object-oriented programming to LLMs with MObjects"
 ---
 
 Object-oriented programming (OOP) is a powerful paradigm for organizing code: you group related data and the methods that operate on that data into classes. In the world of LLMs, a similar organizational principle emerges—especially when you want to combine structured data with LLM-powered "tools" or operations. This is where Mellea's **MObject** abstraction comes in.
@@ -80,10 +80,11 @@ first table:
 </CodeGroup>
 
 <CodeGroup>
-  ```python Python # file:
-  https://github.com/generative-computing/mellea/blob/main/docs/examples/tutorial/document_mobject.py#L5-L8
-  from mellea.stdlib.docs.richdocument import Table table1: Table =
-  rd.get_tables()[0] print(table1.to_markdown()) ```
+  ```python Python
+  # file: https://github.com/generative-computing/mellea/blob/main/docs/examples/tutorial/document_mobject.py#L5-L8
+  from mellea.stdlib.docs.richdocument import Table
+  table1: Table = rd.get_tables()[0] print(table1.to_markdown())
+  ```
 </CodeGroup>
 
 Output:
@@ -111,18 +112,24 @@ Let's just get it to work:
 from mellea.backends.types import ModelOption
 from mellea import start_session
 
-m = start_session()
-for seed in [x*12 for x in range(5)]:
-table2 = m.transform(table1,
-"Add a column 'Model' that extracts which model was used or 'None' if none.",
-model_options={ModelOption.SEED: seed})
-if isinstance(table2, Table):
-print(table2.to_markdown())
-break
-else:
-print(f"==== TRYING AGAIN after non-useful output.====")
+m = start_session(
+    model_id=model_ids.META_LLAMA_3_2_3B,
+    model_options={ModelOption.MAX_NEW_TOKENS: 500},
+)
+op = ("Add a column 'Model' that extracts "
+      "which model was used or 'None' if none.")
 
-````
+for seed in [x * 12 for x in range(5)]:
+    table2 = m.transform(table1,
+                         op,
+                         model_options={ModelOption.SEED: seed})
+    if isinstance(table2, Table):
+        print(table2.to_markdown())
+        break
+    else:
+        print(f"==== TRYING AGAIN after non-useful output.====")
+
+```
 </CodeGroup>
 In this example, `table1` should be transformed to have an extra column `Model` which contains the model string from the `Feature` column or `None` if there is none. Iterating through some seed values, we try to find a version which returns a parsable representation of the table. If found, print it out.
 
@@ -130,26 +137,14 @@ The output for this code sample could be:
 <CodeGroup>
 
 ```markdown Markdown
-table1=
-| Feature | AUC |
-|--------------------------------------|-------------|
-| Bag of Words | 0.63 ± 0.11 |
-| (Test 1 - GPT-2) Average Probability | 0.71 ± 0.25 |
-| (Test 2 - GPT-2) Top-K Buckets | 0.87 ± 0.07 |
-| (Test 1 - BERT) Average Probability | 0.70 ± 0.27 |
-| (Test 2 - BERT) Top-K Buckets | 0.85 ± 0.09 |
-
-===== 18:21:00-WARNING ======
-added a tool message from transform to the context as well.
-
-table2=
-| Feature | AUC | Model |
+....
+| Feature                              | AUC         | Model   |
 |--------------------------------------|-------------|---------|
-| Bag of Words | 0.63 ± 0.11 | None |
-| (Test 1 - GPT-2) Average Probability | 0.71 ± 0.25 | GPT-2 |
-| (Test 2 - GPT-2) Top-K Buckets | 0.87 ± 0.07 | GPT-2 |
-| (Test 1 - BERT) Average Probability | 0.70 ± 0.27 | BERT |
-| (Test 2 - BERT) Top-K Buckets | 0.85 ± 0.09 | BERT |
+| Bag of Words                         | 0.63 ± 0.11 | None    |
+| (Test 1 - GPT-2) Average Probability | 0.71 ± 0.25 | GPT-2   |
+| (Test 2 - GPT-2) Top-K Buckets       | 0.87 ± 0.07 | GPT-2   |
+| (Test 1 - BERT) Average Probability  | 0.70 ± 0.27 | BERT    |
+| (Test 2 - BERT) Top-K Buckets        | 0.85 ± 0.09 | BERT    |
 ````
 
 </CodeGroup>
