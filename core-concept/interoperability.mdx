@@ -1,6 +1,6 @@
 ---
 title: "Interoperability"
-description: "Using `m serve` to connect with agent frameworks."
+description: "Connect with mellea programs with other (agentic) frameworks."
 ---
 
 Mellea programs are, at last, just Python programs. Mellea programs can be shared via the Model Context Protocol or via the A2A protocol. Mellea programs can also consume tools and agents that implement these protocols.
@@ -12,7 +12,6 @@ Like we mentioned, mellea are at the end python programs. We can wrap a simple `
 <CodeGroup>
 
 ```python Python
-# file: https://github.com/generative-computing/mellea/blob/main/docs/examples/agents/mcp_example.py#L15-L40
 # Create an MCP server
 mcp = FastMCP("Demo")
 
@@ -37,8 +36,56 @@ def write_a_poem(word_limit: int) -> str:
 if __name__ == '__main__':
     mcp.run()
 ```
-
 </CodeGroup>
+
+This is a simple example to show how to write a poem MCP tool
+with Mellea and instruct-validate-repair. Being able to
+speak the tool language allows you to integrate with
+Claude Desktop, Langflow, ...
+
+See code in [mcp_example.py](mcp_example.py)
+
+### run the example stand-alone
+You need to install the mcp package:
+```bash Bash
+uv pip install "mcp[cli]"
+```
+
+and run the example in MCP debug UI:
+```bash Bash
+uv run mcp dev docs/examples/tutorial/mcp_example.py
+```
+
+
+### use the poem tool via MCP in Langflow
+Follow this tutorial to use the MCP tool in Langflow: [https://docs.langflow.org/mcp-client#mcp-stdio-mode](https://docs.langflow.org/mcp-client#mcp-stdio-mode)
+
+The JSON to register your MCP tool is the following. Make sure to insert the **absolute path** to the directory containing the mcp_example.py file:
+
+```json JSON
+{
+  "mcpServers": {
+    "mellea_mcp_server": {
+      "command": "uv",
+      "args": [
+        "--directory",
+        "<ABSOLUTE PATH>/mellea/docs/examples/mcp",
+        "run",
+        "mcp",
+        "run",
+        "mcp_example.py"
+      ]
+    }
+  }
+}
+```
+
+Connect your MCP tools in `tool mode` like this:
+
+<img src="/images/langflow_example.jpg" />
+
+Have fun trying your new tool in the Playground !
+
 
 ### Running Mellea programs as an openai compatible server (Experimental)
 

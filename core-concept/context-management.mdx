@@ -19,14 +19,14 @@ When you use the `start_session()` method, you are actually instantiating a `Mel
 from mellea import MelleaSession
 
 m = mellea.MelleaSession(
-    backend=OllamaBackend(model_id=IBM_GRANITE_3_3_8B)
+    backend=OllamaBackend(model_id=IBM_GRANITE_4_MICRO_3B)
     context=SimpleContext()
 )
 ```
 
 </CodeGroup>
 
-The `SimpleContext` -- which is the only context we have used so far -- is a context manager that resets the chat message history on each model call. That is, the model's context is entirely determined by the current Component. Mellea also provides a `LinearContext`, which behaves like a chat history. We can use the LinearContext to interact with chat models:
+The `SimpleContext` -- which is the only context we have used so far -- is a context manager that resets the chat message history on each model call. That is, the model's context is entirely determined by the current Component. Mellea also provides a `ChatContext`, which behaves like a chat history. We can use the ChatContext to interact with chat models:
 
 <CodeGroup>
 
@@ -34,7 +34,7 @@ The `SimpleContext` -- which is the only context we have used so far -- is a con
 # file: https://github.com/generative-computing/mellea/blob/main/docs/examples/tutorial/context_example.py#L1-L5
 from mellea import start_session
 
-m = mellea.start_session(ctx=LinearContext())
+m = mellea.start_session(ctx=ChatContext())
 m.chat("Make up a math problem.")
 m.chat("Solve your math problem.")
 ```
@@ -62,3 +62,18 @@ print(m.ctx.last_turn())
 ```
 
 </CodeGroup>
+
+or reset the whole conversation (empty the ChatContext):
+
+<CodeGroup>
+
+```python Python
+m = new_session(ctx=ChatContext)
+m.chat("hello")
+m.chat("How are you?")
+m.reset()
+should_be_empty = m.last_output
+```
+
+</CodeGroup>
+

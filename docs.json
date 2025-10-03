@@ -1,275 +1,171 @@
 {
-    "$schema": "https://leaves.mintlify.com/schema/docs.json",
-    "theme": "maple",
-    "name": "Mellea",
-    "colors": {
-        "primary": "#000000",
-        "light": "#c5c5c5",
-        "dark": "#000000"
+  "$schema": "https://leaves.mintlify.com/schema/docs.json",
+  "theme": "maple",
+  "name": "Mellea",
+  "colors": {
+    "primary": "#000000",
+    "light": "#c5c5c5",
+    "dark": "#000000"
+  },
+  "fonts": {
+    "heading": {
+      "family": "IBM Plex Sans"
     },
-    "fonts": {
-        "heading": {
-            "family": "IBM Plex Sans"
-        },
-        "body": {
-            "family": "IBM Plex Sans"
-        }
-    },
-    "favicon": "/images/favicon.svg",
-    "navigation": {
-        "tabs": [
-            {
-                "tab": "Docs",
-                "groups": [
-                    {
-                        "group": "Introduction",
-                        "pages": [
-                          "overview/mellea-welcome",
-                            "overview/quick-start",
-                            "overview/requirements",
-                            "overview/project-mellea",
-                            "overview/architecture"
-                        ]
-                    },
-                    {
-                        "group": "Core Concepts",
-                        "pages": [
-                            "core-concept/generative-slots",
-                            "core-concept/mobjects",
-                            "core-concept/adapters",
-                            "core-concept/agents",
-                            "core-concept/context-management",
-                            "core-concept/prompt-engineering",
-                            "core-concept/interoperability"
-                        ]
-                    }
-                ]
-            },
-            {
-                "tab": "Cookbook",
-                "groups": [
-                    {
-                        "group": "aLoRA",
-                        "pages": [
-                            "examples/code/tutorial/aLora/101_example"
-                        ]
-                    },
-                    {
-                        "group": "agents",
-                        "pages": [
-                            "examples/code/tutorial/agents/react",
-                            "examples/code/tutorial/agents/react_instruct"
-                        ]
-                    },
-                    {
-                        "group": "generative_slots",
-                        "pages": [
-                            "examples/code/tutorial/generative_slots/generate_with_context",
-                            "examples/code/tutorial/generative_slots/generative_cot",
-                            "examples/code/tutorial/generative_slots/generative_slots",
-                            "examples/code/tutorial/generative_slots/inter_module_composition/decision_aides",
-                            "examples/code/tutorial/generative_slots/inter_module_composition/summarize_and_decide",
-                            "examples/code/tutorial/generative_slots/inter_module_composition/summarizers",
-                            "examples/code/tutorial/generative_slots/investment_advice"
-                        ]
-                    },
-                    {
-                        "group": "information_extraction",
-                        "pages": [
-                            "examples/code/tutorial/information_extraction/101_with_gen_slots",
-                            "examples/code/tutorial/information_extraction/advanced_with_m_instruct"
-                        ]
-                    },
-                    {
-                        "group": "instruct_validate_repair",
-                        "pages": [
-                            "examples/code/tutorial/instruct_validate_repair/101_email",
-                            "examples/code/tutorial/instruct_validate_repair/101_email_comparison",
-                            "examples/code/tutorial/instruct_validate_repair/101_email_with_requirements",
-                            "examples/code/tutorial/instruct_validate_repair/101_email_with_validate",
-                            "examples/code/tutorial/instruct_validate_repair/advanced_email_with_validate_function"
-                        ]
-                    },
-                    {
-                        "group": "m_serve",
-                        "pages": [
-                            "examples/code/tutorial/m_serve/best_of_n",
-                            "examples/code/tutorial/m_serve/client"
-                        ]
-                    },
-                    {
-                        "group": "mify",
-                        "pages": [
-                            "examples/code/tutorial/mify/mify",
-                            "examples/code/tutorial/mify/rich_document_advanced",
-                            "examples/code/tutorial/mify/rich_table_execute_basic"
-                        ]
-                    },
-                    {
-                        "group": "mini_researcher",
-                        "pages": [
-                            "examples/code/tutorial/mini_researcher/context_docs",
-                            "examples/code/tutorial/mini_researcher/researcher"
-                        ]
-                    },
-                    {
-                        "group": "mobject",
-                        "pages": [
-                            "examples/code/tutorial/mobject/table"
-                        ]
-                    },
-                    {
-                        "group": "rag",
-                        "pages": [
-                            "examples/code/tutorial/rag/simple_rag_with_filter"
-                        ]
-                    },
-                    {
-                        "group": "safety.py",
-                        "pages": [
-                            "examples/code/tutorial/safety.py/guardian"
-                        ]
-                    },
-                    {
-                        "group": "sessions",
-                        "pages": [
-                            "examples/code/tutorial/sessions/creating_a_new_type_of_session"
-                        ]
-                    },
-                    {
-                        "group": "tutorial",
-                        "pages": [
-                            "examples/code/tutorial/tutorial/compositionality_with_generative_slots",
-                            "examples/code/tutorial/tutorial/context_example",
-                            "examples/code/tutorial/tutorial/document_mobject",
-                            "examples/code/tutorial/tutorial/example",
-                            "examples/code/tutorial/tutorial/instruct_validate_repair",
-                            "examples/code/tutorial/tutorial/m_serve_example",
-                            "examples/code/tutorial/tutorial/mcp_example",
-                            "examples/code/tutorial/tutorial/model_options_example",
-                            "examples/code/tutorial/tutorial/sentiment_classifier",
-                            "examples/code/tutorial/tutorial/simple_email",
-                            "examples/code/tutorial/tutorial/table_mobject"
-                        ]
-                    }
-                ]
-            },
-            {
-                "tab": "API Reference",
-                "groups": [
-                    {
-                        "group": "Overview",
-                        "pages": [
-                            "api-reference/index"
-                        ]
-                    },
-                    {
-                        "group": "Backends",
-                        "pages": [
-                            "api-reference/backends/index",
-                            "api-reference/backends/cache",
-                            "api-reference/backends/dummy",
-                            "api-reference/backends/formatter",
-                            "api-reference/backends/huggingface",
-                            "api-reference/backends/model_ids",
-                            "api-reference/backends/ollama",
-                            "api-reference/backends/openai",
-                            "api-reference/backends/tools",
-                            "api-reference/backends/types",
-                            "api-reference/backends/watsonx"
-                        ]
-                    },
-                    {
-                        "group": "Backends \u203a aLoRA \u203a Huggingface",
-                        "pages": [
-                            "api-reference/backends/aloras/huggingface/index",
-                            "api-reference/backends/aloras/huggingface/granite_aloras"
-                        ]
-                    },
-                    {
-                        "group": "Backends \u203a aLoRA \u203a Openai",
-                        "pages": [
-                            "api-reference/backends/aloras/openai/index",
-                            "api-reference/backends/aloras/openai/granite_aloras"
-                        ]
-                    },
-                    {
-                        "group": "Helpers",
-                        "pages": [
-                            "api-reference/helpers/index",
-                            "api-reference/helpers/fancy_logger"
-                        ]
-                    },
-                    {
-                        "group": "Stdlib",
-                        "pages": [
-                            "api-reference/stdlib/index",
-                            "api-reference/stdlib/base",
-                            "api-reference/stdlib/chat",
-                            "api-reference/stdlib/genslot",
-                            "api-reference/stdlib/instruction",
-                            "api-reference/stdlib/mify",
-                            "api-reference/stdlib/mobject",
-                            "api-reference/stdlib/requirement",
-                            "api-reference/stdlib/sampling",
-                            "api-reference/stdlib/session"
-                        ]
-                    },
-                    {
-                        "group": "Stdlib \u203a Docs",
-                        "pages": [
-                            "api-reference/stdlib/docs/index",
-                            "api-reference/stdlib/docs/richdocument"
-                        ]
-                    },
-                    {
-                        "group": "Stdlib \u203a Reqlib",
-                        "pages": [
-                            "api-reference/stdlib/reqlib/index",
-                            "api-reference/stdlib/reqlib/md"
-                        ]
-                    },
-                    {
-                        "group": "Stdlib \u203a Safety",
-                        "pages": [
-                            "api-reference/stdlib/safety/index",
-                            "api-reference/stdlib/safety/guardian"
-                        ]
-                    }
-                ]
-            }
-        ]
-    },
-    "logo": {
-        "light": "/logo/logo-light.svg",
-        "dark": "/logo/logo-dark.svg"
-    },
-    "navbar": {
-        "primary": {
-            "type": "button",
-            "label": "GitHub",
-            "href": "https://github.com/generative-computing/mellea"
-        },
-        "links": [
-            {
-                "label": "Blog",
-                "href": "https://generative-computing.github.io/blog/"
-            },
-            {
-                "label": "Community",
-                "href": "https://github.com/generative-computing/mellea/discussions"
-            },
-            {
-                "label": "Support",
-                "href": "https://github.com/generative-computing/mellea/issues"
-            },
-            {
-                "label": "Contribution Guide",
-                "href": "https://github.com/generative-computing/mellea/blob/main/docs/tutorial.md#appendix-contributing-to-mellea"
-            }
-        ]
-    },
-    "search": {
-        "prompt": "Search documentation..."
+    "body": {
+      "family": "IBM Plex Sans"
     }
+  },
+  "favicon": "/images/favicon.svg",
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Docs",
+        "groups": [
+          {
+            "group": "Introduction",
+            "pages": [
+              "overview/mellea-welcome",
+              "overview/quick-start",
+              "overview/requirements",
+              "overview/architecture",
+              "overview/project-mellea"
+            ]
+          },
+          {
+            "group": "Core Concepts",
+            "pages": [
+              "core-concept/generative-slots",
+              "core-concept/mobjects",
+              "core-concept/context-management",
+              "core-concept/agents",
+              "core-concept/interoperability"
+            ]
+          },
+          {
+            "group": "Advanced Concepts",
+            "pages": [
+              "core-concept/prompt-engineering",
+              "core-concept/adapters"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "API Reference",
+        "groups": [
+          {
+            "group": "Overview",
+            "pages": [
+              "api-reference/index"
+            ]
+          },
+          {
+            "group": "Backends",
+            "pages": [
+              "api-reference/backends/index",
+              "api-reference/backends/cache",
+              "api-reference/backends/dummy",
+              "api-reference/backends/formatter",
+              "api-reference/backends/huggingface",
+              "api-reference/backends/model_ids",
+              "api-reference/backends/ollama",
+              "api-reference/backends/openai",
+              "api-reference/backends/tools",
+              "api-reference/backends/types",
+              "api-reference/backends/watsonx"
+            ]
+          },
+          {
+            "group": "Backends \u203a aLoRA \u203a Huggingface",
+            "pages": [
+              "api-reference/backends/aloras/huggingface/index",
+              "api-reference/backends/aloras/huggingface/granite_aloras"
+            ]
+          },
+          {
+            "group": "Backends \u203a aLoRA \u203a Openai",
+            "pages": [
+              "api-reference/backends/aloras/openai/index",
+              "api-reference/backends/aloras/openai/granite_aloras"
+            ]
+          },
+          {
+            "group": "Helpers",
+            "pages": [
+              "api-reference/helpers/index",
+              "api-reference/helpers/fancy_logger"
+            ]
+          },
+          {
+            "group": "Stdlib",
+            "pages": [
+              "api-reference/stdlib/index",
+              "api-reference/stdlib/base",
+              "api-reference/stdlib/chat",
+              "api-reference/stdlib/genslot",
+              "api-reference/stdlib/instruction",
+              "api-reference/stdlib/mify",
+              "api-reference/stdlib/mobject",
+              "api-reference/stdlib/requirement",
+              "api-reference/stdlib/sampling",
+              "api-reference/stdlib/session"
+            ]
+          },
+          {
+            "group": "Stdlib \u203a Docs",
+            "pages": [
+              "api-reference/stdlib/docs/index",
+              "api-reference/stdlib/docs/richdocument"
+            ]
+          },
+          {
+            "group": "Stdlib \u203a Reqlib",
+            "pages": [
+              "api-reference/stdlib/reqlib/index",
+              "api-reference/stdlib/reqlib/md"
+            ]
+          },
+          {
+            "group": "Stdlib \u203a Safety",
+            "pages": [
+              "api-reference/stdlib/safety/index",
+              "api-reference/stdlib/safety/guardian"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "logo": {
+    "light": "/logo/logo-light.svg",
+    "dark": "/logo/logo-dark.svg"
+  },
+  "navbar": {
+    "primary": {
+      "type": "button",
+      "label": "GitHub",
+      "href": "https://github.com/generative-computing/mellea"
+    },
+    "links": [
+      {
+        "label": "Blog",
+        "href": "https://generative-computing.github.io/blog/"
+      },
+      {
+        "label": "Community",
+        "href": "https://github.com/generative-computing/mellea/discussions"
+      },
+      {
+        "label": "Support",
+        "href": "https://github.com/generative-computing/mellea/issues"
+      },
+      {
+        "label": "Contribution Guide",
+        "href": "https://github.com/generative-computing/mellea/blob/main/docs/tutorial.md#appendix-contributing-to-mellea"
+      }
+    ]
+  },
+  "search": {
+    "prompt": "Search documentation..."
+  }
 }

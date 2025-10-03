@@ -40,14 +40,13 @@ Let's look at how this agent is implemented in Mellea:
 def react(
     m: mellea.MelleaSession,
     goal: str,
+    state_description: str | None,
     react_toolbox: ReactToolbox,
-    budget: int=5,
 ):
-    assert m.ctx.is_chat_context, "ReACT requires a chat context."
-    test_ctx_lin = m.ctx.linearize()
-    assert (
-        test_ctx_lin is not None and len(test_ctx_lin) == 0
-    ), "ReACT expects a fresh context."
+    test_ctx_lin = m.ctx.view_for_generation()
+    assert test_ctx_lin is not None and len(test_ctx_lin) == 0, (
+        "ReACT expects a fresh context."
+    )
 
     # Construct the system prompt for ReACT.
     _sys_prompt = react_system_template.render(
@@ -55,16 +54,26 @@ def react(
     )
 
     # Add the system prompt and the goal to the chat history.
-    m.ctx.insert(mellea.stdlib.chat.Message(role="system", content=_sys_prompt))
-    m.ctx.insert(mellea.stdlib.chat.Message(role="user", content=f"{goal}"))
+    m.ctx = m.ctx.add(
+        mellea.stdlib.chat.Message(role="system", content=_sys_prompt)
+    ).add(mellea.stdlib.chat.Message(role="user", content=f"{goal}"))
 
+    # The main ReACT loop as a dynamic program:
+    # (  ?(not done) ;
+    #    (thought request ; thought response) ;
+    #    (action request ; action response) ;
+    #    (action args request ; action args response) ;
+    #    observation from the tool call ;
+    #    (is done request ; is done response) ;
+    #    { ?(model indicated done) ; emit_final_answer ; done := true }
+    # )*
     done = False
     turn_num = 0
     while not done:
         turn_num += 1
         print(f"## ReACT TURN NUMBER {turn_num}")
 
-        print(f"### Thought")
+        print("### Thought")
         thought = m.chat(
             "What should you do next? Respond with a description of the next piece of information you need or the next action you need to take."
         )
@@ -73,27 +82,24 @@ def react(
         print("### Action")
         act = m.chat(
             "Choose your next action. Respond with a nothing other than a tool name.",
-            # model_options={mellea.backends.types.ModelOption.TOOLS: react_toolbox.tools_dict()},
             format=react_toolbox.tool_name_schema(),
         )
         selected_tool: ReactTool = react_toolbox.get_tool_from_schema(act.content)
         print(selected_tool.get_name())
 
-        print(f"### Arguments for action")
+        print("### Arguments for action")
         act_args = m.chat(
             "Choose arguments for the tool. Respond using JSON and include only the tool arguments in your response.",
             format=selected_tool.args_schema(),
         )
         print(f"```json\n{json.dumps(json.loads(act_args.content), indent=2)}\n```")
 
-        # TODO: handle exceptions.
         print("### Observation")
         tool_output = react_toolbox.call_tool(selected_tool, act_args.content)
-        m.ctx.insert(
-            mellea.stdlib.chat.Message(role="tool", content=tool_output)
-        )
+        m.ctx = m.ctx.add(mellea.stdlib.chat.Message(role="tool", content=tool_output))
         print(tool_output)
 
+        print("### Done Check")
         is_done = IsDoneModel.model_validate_json(
             m.chat(
                 f"Do you know the answer to the user's original query ({goal})? If so, respond with Yes. If you need to take more actions, then respond No.",
@@ -106,157 +112,257 @@ def react(
             return m.chat(
                 f"Please provide your final answer to the original query ({goal})."
             ).content
-        elif turn_num == budget:
-            return None
+        else:
+            print("Not done.")
+            done = False
 ````
 
 </CodeGroup>
 
-### Guarded Nondeterminism
-
-Recall Chapter 4, where we saw how libraries of `GenerativeSlot` components can be composed by introducing compositionality contracts. We will now build an "agentic" mechanism for automating the task of chaining together possibly-composable generative functions. Let's get started on our guarded nondeterminism agent ("guarded nondeterminism" is a bit of a mouthful, so we'll call this a a [Kripke](https://en.wikipedia.org/wiki/Saul_Kripke) agent going forward).
-
-The first step is to add a new `Component` that adds preconditions and postconditions to generative slots:
+The example implementation needs some helper classes which even allows tool calling:
 
 <CodeGroup>
-
-```python
-# file: https://github.com/generative-computing/kripke_agents/blob/main/kripke/base.py#L10-L38 # TODO: MOVE THESE TO FAKE KRIPKE
-class ConstrainedGenerativeSlot(Component):
-    template = GEN_SLOT_TEMPLATE # the same template as is used for generative slots.
-
-    def __init__(self, generative_slot: GenerativeSlot, preconds: list[Requirement | str], postconds: list[Requirement | str]):
-        self._genslot = generative_slot
-        self._preconds = [reqify(precond) for precond in preconds]
-        self._postconds = [reqify(postcond) for postcond in postconds]
-
-    def format_for_llm(self):
-        return self._genslot.format_for_llm()
-
-    def action_name(self):
-        return self._genslot._function._function_dict["name"]
-```
-
-</CodeGroup>
-
-We'll also add a decorator for convienance:
-
-<CodeGroup>
-
 ```python Python
-# file: https://github.com/generative-computing/kripke_agents/blob/main/kripke/base.py#L41-L44
-def constrained(preconds: list[Requirement | str], postconds: list[Requirement | str]):
-    def _decorator(genslot: GenerativeSlot):
-        return ConstrainedGenerativeSlot(genslot, preconds, postconds)
-    return _decorator
-```
+if __name__ == "__main__":
+    m = mellea.start_session(ctx=ChatContext())
 
+    # ZIP lookup tool function
+    def zip_lookup_tool_fn(city: str):
+        """Returns the ZIP code for the `city`."""
+        return "03285"
+
+    # convert to tool
+    zip_lookup_tool = ReactTool(
+        name="Zip Code Lookup",
+        fn=zip_lookup_tool_fn,
+        description="Returns the ZIP code given a town name.",
+    )
+
+    # Weather lookup tool function
+    def weather_lookup_fn(zip_code: str):
+        """Looks up the weather for a town given a five-digit `zip_code`."""
+        return "The weather in Thornton, NH is sunny with a high of 78 and a low of 52. Scattered showers are possible in the afternoon."
+
+    # convert to tool
+    weather_lookup_tool = ReactTool(
+        name="Get the weather",
+        fn=weather_lookup_fn,
+        description="Returns the weather given a ZIP code.",
+    )
+
+    # use tools for request
+    result = react(
+        m,
+        goal="What is today's high temperature in Thornton, NH?",
+        state_description=None,
+        react_toolbox=ReactToolbox(tools=[zip_lookup_tool, weather_lookup_tool]),
+    )
+
+    print("## Final Answer")
+    print(result)
+```
 </CodeGroup>
 
-We can now write down constrained generative slots like so:
+For the query *What is today's high temperature in Thornton, NH?* the agent outputs the following:
 
 <CodeGroup>
 
-```python Python
-# file: https://github.com/generative-computing/kripke_agents/blob/main/main.py#L23-L27
-@constrained(preconds=["contains a summary of the story's theme"], postconds=["each element of the list is the title and author of a significant novel"])
-@generative
-def suggest_novels_based_on_theme(summary: str) -> list[str]:
-    """Based upon a summary of a short story, suggests novels with similar themes."""
-    ...
-```
+```markdown Output
+## ReACT TURN NUMBER 1
+### Thought
+To provide the current weather details for Thornton,
+New Hampshire, I first need to obtain its ZIP code
+using the "Zip Code Lookup" tool. Once I have the
+ZIP code, I will then use the "Get the weather" tool
+to find today's high temperature.
+### Action
+Zip Code Lookup
+### Arguments for action
+"json
+{
+  "city": "Thornton, NH"
+}"
+### Observation
+03285
+### Done Check
+Not done.
 
+
+## ReACT TURN NUMBER 2
+### Thought
+I now have Thornton, NH's ZIP code (03285) and need
+to use the "Get the weather" tool to find today's
+high temperature.
+
+Next step: Utilize the "Get the weather" tool with
+the ZIP code for Thornton, New Hampshire.
+### Action
+Get the weather
+### Arguments for action
+"json
+{
+  "zip_code": "03285"
+}"
+### Observation
+The weather in Thornton, NH is sunny with a high of 78
+and a low of 52. Scattered showers are possible in
+the afternoon.
+### Done Check
+Done. Will summarize and return output now.
+
+## Final Answer
+Today's high temperature in Thornton, New Hampshire is 78 degrees.
+```
 </CodeGroup>
 
-Notice that we have used the `Requirement` component throughout, so we now have all the power of Mellea requirement validation semantics at our disposal for defining and checking pre/post-conditions.
-
-We are now ready to provide the stump of our kripke agent:
-
-<CodeGroup>
-
-```python Python
-# file: https://github.com/generative-computing/kripke_agents/blob/main/kripke/base.py#L54-L99
-def filter_actions(m: mellea.MelleaSession, actions: list[ConstrainedGenerativeSlot], *, output: ModelOutputThunk | None = None):
-  ...
+The agent looked up the zip code (round 1) and used the zip code to call the weather tool (round 2). The full code can be found in [docs/example/agents/react.py](https://github.com/generative-computing/mellea/blob/main/docs/examples/agents/react.py) on GitHub.
 
 
-def select_action(m: mellea.MelleaSession, actions: list[ConstrainedGenerativeSlot], goal: Requirement):
-  ...
+### Advanced: Guarded Nondeterminism
+
+Recall Chapter [Generative Slots](./generative-slots), where we saw how libraries of `GenerativeSlot` components can be composed by introducing compositionality contracts. We will now build an "agentic" mechanism for automating the task of chaining together possibly-composable generative functions. Let's get started on our guarded nondeterminism agent ("guarded nondeterminism" is a bit of a mouthful, so we'll call this a a [Kripke](https://en.wikipedia.org/wiki/Saul_Kripke) agent going forward). This example will be ready soon...
+
+{/* The first step is to add a new `Component` that adds preconditions and postconditions to generative slots: */}
+
+{/* <CodeGroup> */}
+
+{/* ```python */}
+{/* # file: https://github.com/generative-computing/kripke_agents/blob/main/kripke/base.py#L10-L38 # TODO: MOVE THESE TO FAKE KRIPKE */}
+{/* class ConstrainedGenerativeSlot(Component): */}
+{/*     template = GEN_SLOT_TEMPLATE # the same template as is used for generative slots. */}
+
+{/*     def __init__(self, generative_slot: GenerativeSlot, preconds: list[Requirement | str], postconds: list[Requirement | str]): */}
+{/*         self._genslot = generative_slot */}
+{/*         self._preconds = [reqify(precond) for precond in preconds] */}
+{/*         self._postconds = [reqify(postcond) for postcond in postconds] */}
+
+{/*     def format_for_llm(self): */}
+{/*         return self._genslot.format_for_llm() */}
+
+{/*     def action_name(self): */}
+{/*         return self._genslot._function._function_dict["name"] */}
+{/* ``` */}
+
+{/* </CodeGroup> */}
+
+{/* We'll also add a decorator for convienance: */}
+
+{/* <CodeGroup> */}
+
+{/* ```python Python */}
+{/* # file: https://github.com/generative-computing/kripke_agents/blob/main/kripke/base.py#L41-L44 */}
+{/* def constrained(preconds: list[Requirement | str], postconds: list[Requirement | str]): */}
+{/*     def _decorator(genslot: GenerativeSlot): */}
+{/*         return ConstrainedGenerativeSlot(genslot, preconds, postconds) */}
+{/*     return _decorator */}
+{/* ``` */}
+
+{/* </CodeGroup> */}
+
+{/* We can now write down constrained generative slots like so: */}
+
+{/* <CodeGroup> */}
+
+{/* ```python Python */}
+{/* # file: https://github.com/generative-computing/kripke_agents/blob/main/main.py#L23-L27 */}
+{/* @constrained(preconds=["contains a summary of the story's theme"], postconds=["each element of the list is the title and author of a significant novel"]) */}
+{/* @generative */}
+{/* def suggest_novels_based_on_theme(summary: str) -> list[str]: */}
+{/*     """Based upon a summary of a short story, suggests novels with similar themes.""" */}
+{/*     ... */}
+{/* ``` */}
+
+{/* </CodeGroup> */}
+
+{/* Notice that we have used the `Requirement` component throughout, so we now have all the power of Mellea requirement validation semantics at our disposal for defining and checking pre/post-conditions. */}
+
+{/* We are now ready to provide the stump of our kripke agent: */}
+
+{/* <CodeGroup> */}
+
+{/* ```python Python */}
+{/* # file: https://github.com/generative-computing/kripke_agents/blob/main/kripke/base.py#L54-L99 */}
+{/* def filter_actions(m: mellea.MelleaSession, actions: list[ConstrainedGenerativeSlot], *, output: ModelOutputThunk | None = None): */}
+{/*   ... */}
 
 
-def kripke_agent(
-        m: mellea.MelleaSession,
-        actions: list[ConstrainedGenerativeSlot],
-        goal: Requirement | str,
-        budget: int = 10
-) -> Callable[[str], str | None]:
-    goal = reqify(goal)
-
-    def _agent(initial_state: str) -> str | None:
-        print(f"Goal: {goal.description}")
-        m.ctx.insert(ModelOutputThunk(initial_state))
-        i = 0
-        while i in tqdm.tqdm(list(range(budget))):
-            print(m.ctx.last_output())
-            available_actions = filter_actions(m, actions)
-            next_action = select_action(m, available_actions, goal)
-            m.act(next_action)
-            if goal.validate(m.backend, m.ctx):
-                return m.ctx.last_output().value
-        return None
-    return _agent
-```
-
-</CodeGroup>
-
-The magic of the Kripke agent happens in `filter_actions`. The basic idea is simple: select only actions whose preconditions are implied by the current state:
-
-<CodeGroup>
-
-```python Python
-# file: https://github.com/generative-computing/kripke_agents/blob/main/kripke/base.py#L47-L55
-def _check_action_preconditions(m: mellea.MelleaSession, action: ConstrainedGenerativeSlot, *, output: ModelOutputThunk | None = None) -> bool:
-    for precondition in action._preconds:
-        if not m.validate(precondition, output=output):
-            return False
-    return True
+{/* def select_action(m: mellea.MelleaSession, actions: list[ConstrainedGenerativeSlot], goal: Requirement): */}
+{/*   ... */}
 
 
-def filter_actions(m: mellea.MelleaSession, actions: list[ConstrainedGenerativeSlot], *, output: ModelOutputThunk | None = None):
-    return [act for act in actions if _check_action_preconditions(m, act, output=output)]
-```
+{/* def kripke_agent( */}
+{/*         m: mellea.MelleaSession, */}
+{/*         actions: list[ConstrainedGenerativeSlot], */}
+{/*         goal: Requirement | str, */}
+{/*         budget: int = 10 */}
+{/* ) -> Callable[[str], str | None]: */}
+{/*     goal = reqify(goal) */}
 
-</CodeGroup>
+{/*     def _agent(initial_state: str) -> str | None: */}
+{/*         print(f"Goal: {goal.description}") */}
+{/*         m.ctx.insert(ModelOutputThunk(initial_state)) */}
+{/*         i = 0 */}
+{/*         while i in tqdm.tqdm(list(range(budget))): */}
+{/*             print(m.ctx.last_output()) */}
+{/*             available_actions = filter_actions(m, actions) */}
+{/*             next_action = select_action(m, available_actions, goal) */}
+{/*             m.act(next_action) */}
+{/*             if goal.validate(m.backend, m.ctx): */}
+{/*                 return m.ctx.last_output().value */}
+{/*         return None */}
+{/*     return _agent */}
+{/* ``` */}
 
-And we finish of the agent by defining the selection criteria, using familiar constrained decoding techniques from our react agent:
+{/* </CodeGroup> */}
 
-<CodeGroup>
+{/* The magic of the Kripke agent happens in `filter_actions`. The basic idea is simple: select only actions whose preconditions are implied by the current state: */}
 
-```
-python Python
-# file: https://github.com/generative-computing/kripke_agents/blob/main/kripke/base.py#L58-L71
-def select_action(m: mellea.MelleaSession, actions: list[ConstrainedGenerativeSlot], goal: Requirement):
-    # Setup a pydanyic model for the next action.
-    action_names = [action.action_name() for action in actions]
-    fields = dict()
-    fields["next_action"] = Literal[*action_names]
-    pydantic_model = pydantic.create_model("NextActionSelectionSchema", **fields)
-    # Prompt the model for the next action.
-    actions_list = "\n".join([f" * {action.action_name()}" for action in actions])
-    action_selection_response = m.chat(f"Your ultimate goal is {goal.description}. Select the next action from the list of actions:\n{actions_list}", format=pydantic_model)
-    # return the selected action.
-    next_action_name = pydantic_model.model_validate_json(action_selection_response.content).next_action
-    selected_action = [a for a in actions if a.action_name() == next_action_name]
-    assert len(selected_action) == 1
-    return selected_action[0]
+{/* <CodeGroup> */}
 
-```
+{/* ```python Python */}
+{/* # file: https://github.com/generative-computing/kripke_agents/blob/main/kripke/base.py#L47-L55 */}
+{/* def _check_action_preconditions(m: mellea.MelleaSession, action: ConstrainedGenerativeSlot, *, output: ModelOutputThunk | None = None) -> bool: */}
+{/*     for precondition in action._preconds: */}
+{/*         if not m.validate(precondition, output=output): */}
+{/*             return False */}
+{/*     return True */}
 
-</CodeGroup>
 
-We will stop here for the basic tutorial, but notice that there are several natural extensions:
+{/* def filter_actions(m: mellea.MelleaSession, actions: list[ConstrainedGenerativeSlot], *, output: ModelOutputThunk | None = None): */}
+{/*     return [act for act in actions if _check_action_preconditions(m, act, output=output)] */}
+{/* ``` */}
 
-1. We have not yet used the preconditions. Kripke agents can be optimized by **pre-computing** entailments between sets of pre-conditions and post-conditions; in this way, we only have to pay the cost of figuring out permissible interleaving of actions once.
-2. We can execute multiple actions at once, then prune likely unfruitful portions of the search process.
+{/* </CodeGroup> */}
 
-We will dive into a full implementation of these and other Kripke agent tricks during a future deep-dive session on inference scaling with Mellea.
+{/* And we finish of the agent by defining the selection criteria, using familiar constrained decoding techniques from our react agent: */}
+
+{/* <CodeGroup> */}
+
+{/* ``` */}
+{/* python Python */}
+{/* # file: https://github.com/generative-computing/kripke_agents/blob/main/kripke/base.py#L58-L71 */}
+{/* def select_action(m: mellea.MelleaSession, actions: list[ConstrainedGenerativeSlot], goal: Requirement): */}
+{/*     # Setup a pydanyic model for the next action. */}
+{/*     action_names = [action.action_name() for action in actions] */}
+{/*     fields = dict() */}
+{/*     fields["next_action"] = Literal[*action_names] */}
+{/*     pydantic_model = pydantic.create_model("NextActionSelectionSchema", **fields) */}
+{/*     # Prompt the model for the next action. */}
+{/*     actions_list = "\n".join([f" * {action.action_name()}" for action in actions]) */}
+{/*     action_selection_response = m.chat(f"Your ultimate goal is {goal.description}. Select the next action from the list of actions:\n{actions_list}", format=pydantic_model) */}
+{/*     # return the selected action. */}
+{/*     next_action_name = pydantic_model.model_validate_json(action_selection_response.content).next_action */}
+{/*     selected_action = [a for a in actions if a.action_name() == next_action_name] */}
+{/*     assert len(selected_action) == 1 */}
+{/*     return selected_action[0] */}
+
+{/* ``` */}
+
+{/* </CodeGroup> */}
+
+{/* We will stop here for the basic tutorial, but notice that there are several natural extensions: */}
+
+{/* 1. We have not yet used the preconditions. Kripke agents can be optimized by **pre-computing** entailments between sets of pre-conditions and post-conditions; in this way, we only have to pay the cost of figuring out permissible interleaving of actions once. */}
+{/* 2. We can execute multiple actions at once, then prune likely unfruitful portions of the search process. */}
+
+{/* We will dive into a full implementation of these and other Kripke agent tricks during a future deep-dive session on inference scaling with Mellea. */}

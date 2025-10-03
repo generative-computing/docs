@@ -36,7 +36,13 @@ print(write_email_with_requirements(
 
 </CodeGroup>
 
-We just added two requirements to the instruction which will be added to the model request. But we don't check yet if these requirements are satisfied. Let's add a **strategy** for validating the requirements:
+We just added two requirements to the instruction which will be added to the model request. Per default, the output of the request is checked against the requirements -- and, if not all are satisfied, a second request is sent. In the following examples we show you how you can customize:
+- how to define a budget for retrying
+- how validation is done for each requirement/check.
+- how to set a strategy and (repair) method that is used for retrying
+
+
+Let's add a **strategy** for validating the requirements:
 
 <CodeGroup>
 
@@ -167,13 +173,13 @@ print(write_email(m, "Olivia",
 
 </CodeGroup>
 
-<Note>
-  The `instruct()` method is a convenience function that creates and then
-  generates from an `Instruction` Component, `req()` similarly wraps the
-  `Requirement` Component, etc. [Quickstart](/overview/quick-start) will takes
-  us one level deeper into understanding what happens under the hood when you
-  call `m.instruct()`.
-</Note>
+{/* <Note> */}
+{/*   The `instruct()` method is a convenience function that creates and then */}
+{/*   generates from an `Instruction` Component, `req()` similarly wraps the */}
+{/*   `Requirement` Component, etc. [Quickstart](/overview/quick-start) will takes */}
+{/*   us one level deeper into understanding what happens under the hood when you */}
+{/*   call `m.instruct()`. */}
+{/* </Note> */}
 ### ModelOptions
 
 Most LLM apis allow you to specify options to modify the request: temperature, max_tokens, seed, etc... Mellea supports specifying these options during backend initialization and when calling session-level functions with the `model_options` parameter.
@@ -250,4 +256,5 @@ When LLMs work well, the software developer experiences the LLM as a sort of ora
 
 The crux of generative programming is that most applications find themselves somewhere in-between these two extremes -- the LLM mostly works, enough to demo a tantilizing MVP. But failure modes are common enough and severe enough that complete automation is beyond the developer's grasp.
 
-Traditional software deals with failure modes by carefully describing what can go wrong and then providing precise error handling logic. When working with LLMs, however, this approach suffers a Sysiphean curse. There is always one more failure mode, one more special case, one more new feature request. In the next chapter, we will explore how to build generative programs that are compositional and that grow gracefully.
+Traditional software deals with failure modes by carefully describing what can go wrong and then providing precise error handling logic. When working with LLMs, however, this approach suffers a Sysiphean curse. There is always one more failure mode, one more special case, one more new feature request.
+{/* In the next chapter, we will explore how to build generative programs that are compositional and that grow gracefully. */}
