@@ -24,9 +24,10 @@
                     {
                         "group": "Introduction",
                         "pages": [
-                            "overview/project-mellea",
+                          "overview/mellea-welcome",
                             "overview/quick-start",
                             "overview/requirements",
+                            "overview/project-mellea",
                             "overview/architecture"
                         ]
                     },
