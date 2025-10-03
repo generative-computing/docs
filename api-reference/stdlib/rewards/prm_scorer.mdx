@@ -1,0 +1,34 @@
+---
+title: mellea.stdlib.rewards.prm_scorer
+sidebar_label: Prm Scorer
+---
+
+## Module: `mellea.stdlib.rewards.prm_scorer`
+
+PRM Requirements.
+
+### Classes
+
+#### `class mellea.stdlib.rewards.prm_scorer.PRMScorer(prm_model: HFProcessRewardModel, preference_ordering: str = 'max')`
+
+A process reward model scorer based on local huggingface backend.
+
+##### Constructor
+
+Instantiate a process reward model scorer based on local huggingface backend.
+
+
+## Arguments
+
+* `prm_model`: The PRM model
+* `preference_ordering`: indicates whether the goal is to maximize or minimize the score. must be either "max" or "min".
+
+##### Methods
+
+###### `mellea.stdlib.rewards.prm_scorer.PRMScorer._prm_validate(ctx: Context)`
+
+Returns PRM score of last turn of context.
+
+-----
+
+---

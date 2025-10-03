@@ -1,0 +1,50 @@
+---
+title: mellea.stdlib.sampling.best_of_n
+sidebar_label: Best Of N
+---
+
+## Module: `mellea.stdlib.sampling.best_of_n`
+
+Best of N Sampling Strategy.
+
+### Classes
+
+#### `class mellea.stdlib.sampling.best_of_n.BestofNSamplingStrategy()`
+
+Sampling strategy that selects the best response from a set of samples as given by a Requirement Scorer.
+
+##### Methods
+
+###### `mellea.stdlib.sampling.best_of_n.BestofNSamplingStrategy.select_from_failure(sampled_actions: list[Component], sampled_results: list[ModelOutputThunk], sampled_val: list[list[tuple[Requirement, ValidationResult]]])`
+
+Selects the attempt with the highest score.
+
+
+## Arguments
+
+* `sampled_actions`: List of actions that have been executed (without success).
+* `sampled_results`: List of (unsuccessful) generation results for these actions.
+* `sampled_val`: List of validation results for the results.
+
+The index of the result that should be selected as `.value`.
+
+-----
+
+###### `mellea.stdlib.sampling.best_of_n.BestofNSamplingStrategy.repair(old_ctx: Context, new_ctx: Context, past_actions: list[Component], past_results: list[ModelOutputThunk], past_val: list[list[tuple[Requirement, ValidationResult]]])`
+
+Adds a description of the requirements that failed to a copy of the original instruction.
+
+
+## Arguments
+
+* `old_ctx`: The context WITHOUT the last action + output.
+* `new_ctx`: The context including the last action + output.
+* `past_actions`: List of actions that have been executed (without success).
+* `past_results`: List of (unsuccessful) generation results for these actions.
+* `past_val`: List of validation results for the results.
+
+The next action component and context to be used for the next generation attempt.
+
+-----
+
+---

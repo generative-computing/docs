@@ -3,31 +3,31 @@ title: mellea.stdlib.docs.richdocument
 sidebar_label: Richdocument
 ---
 
-# Module: `mellea.stdlib.docs.richdocument`
+## Module: `mellea.stdlib.docs.richdocument`
 
 Representations of Docling Documents.
 
-## Classes
+### Classes
 
-### `class mellea.stdlib.docs.richdocument.RichDocument(doc: DoclingDocument)`
+#### `class mellea.stdlib.docs.richdocument.RichDocument(doc: DoclingDocument)`
 
 A `RichDocument` is a block of content with an underlying DoclingDocument.
 
 It has helper functions for working with the document and extracting parts of it.
 
-#### Constructor
+##### Constructor
 
 A `RichDocument` is a block of content with an underlying DoclingDocument.
 
-#### Methods
+##### Methods
 
-##### `mellea.stdlib.docs.richdocument.RichDocument.parts()`
+###### `mellea.stdlib.docs.richdocument.RichDocument.parts()`
 
 A `RichDocument` has no parts.
 
 -----
 
-##### `mellea.stdlib.docs.richdocument.RichDocument.format_for_llm()`
+###### `mellea.stdlib.docs.richdocument.RichDocument.format_for_llm()`
 
 Return Document content as Markdown.
 
@@ -35,37 +35,37 @@ No template needed here.
 
 -----
 
-##### `mellea.stdlib.docs.richdocument.RichDocument.docling()`
+###### `mellea.stdlib.docs.richdocument.RichDocument.docling()`
 
 Get the underlying Docling Document.
 
 -----
 
-##### `mellea.stdlib.docs.richdocument.RichDocument.to_markdown()`
+###### `mellea.stdlib.docs.richdocument.RichDocument.to_markdown()`
 
 Get the full text of the document as markdown.
 
 -----
 
-##### `mellea.stdlib.docs.richdocument.RichDocument.get_tables()`
+###### `mellea.stdlib.docs.richdocument.RichDocument.get_tables()`
 
 Return the `Table`s that are a part of this document.
 
 -----
 
-##### `mellea.stdlib.docs.richdocument.RichDocument.save(filename: str | Path)`
+###### `mellea.stdlib.docs.richdocument.RichDocument.save(filename: str | Path)`
 
 Save the underlying DoclingDocument for reuse later.
 
 -----
 
-##### `mellea.stdlib.docs.richdocument.RichDocument.load(filename: str | Path)`
+###### `mellea.stdlib.docs.richdocument.RichDocument.load(filename: str | Path)`
 
 Load a DoclingDocument from a file. The file must already be a DoclingDocument.
 
 -----
 
-##### `mellea.stdlib.docs.richdocument.RichDocument.from_document_file(source: str | Path | DocumentStream)`
+###### `mellea.stdlib.docs.richdocument.RichDocument.from_document_file(source: str | Path | DocumentStream)`
 
 Process a document with Docling.
 
@@ -73,11 +73,11 @@ Process a document with Docling.
 
 ---
 
-### `class mellea.stdlib.docs.richdocument.TableQuery(obj: Table, query: str)`
+#### `class mellea.stdlib.docs.richdocument.TableQuery(obj: Table, query: str)`
 
 Table-specific query.
 
-#### Constructor
+##### Constructor
 
 Initializes a new instance of the `TableQuery` class.
 
@@ -87,9 +87,9 @@ Initializes a new instance of the `TableQuery` class.
 * `obj`: The table object to which the query applies.
 * `query`: The query string.
 
-#### Methods
+##### Methods
 
-##### `mellea.stdlib.docs.richdocument.TableQuery.format_for_llm()`
+###### `mellea.stdlib.docs.richdocument.TableQuery.format_for_llm()`
 
 Template arguments for Formatter.
 
@@ -97,11 +97,11 @@ Template arguments for Formatter.
 
 ---
 
-### `class mellea.stdlib.docs.richdocument.TableTransform(obj: Table, transformation: str)`
+#### `class mellea.stdlib.docs.richdocument.TableTransform(obj: Table, transformation: str)`
 
 Table-specific transform.
 
-#### Constructor
+##### Constructor
 
 Initializes a new instance of the `TableTransform` class.
 
@@ -111,9 +111,9 @@ Initializes a new instance of the `TableTransform` class.
 * `obj`: The table object to which the transform applies.
 * `transformation`: The transformation description string.
 
-#### Methods
+##### Methods
 
-##### `mellea.stdlib.docs.richdocument.TableTransform.format_for_llm()`
+###### `mellea.stdlib.docs.richdocument.TableTransform.format_for_llm()`
 
 Template arguments for Formatter.
 
@@ -121,35 +121,35 @@ Template arguments for Formatter.
 
 ---
 
-### `class mellea.stdlib.docs.richdocument.Table(ti: TableItem, doc: DoclingDocument)`
+#### `class mellea.stdlib.docs.richdocument.Table(ti: TableItem, doc: DoclingDocument)`
 
 A `Table` represents a single table within a larger Docling Document.
 
-#### Constructor
+##### Constructor
 
 If you pass doc=None, the underlying docling functions to extract data from tables may fail due to lack of context and docling deprecations.
 
-#### Methods
+##### Methods
 
-##### `mellea.stdlib.docs.richdocument.Table.from_markdown(md: str)`
+###### `mellea.stdlib.docs.richdocument.Table.from_markdown(md: str)`
 
 Creates a fake document from the markdown and attempts to extract the first table found.
 
 -----
 
-##### `mellea.stdlib.docs.richdocument.Table.to_markdown()`
+###### `mellea.stdlib.docs.richdocument.Table.to_markdown()`
 
 Get the `Table` as markdown.
 
 -----
 
-##### `mellea.stdlib.docs.richdocument.Table.transpose()`
+###### `mellea.stdlib.docs.richdocument.Table.transpose()`
 
 Transposes the table. Will return a new transposed `Table` if successful.
 
 -----
 
-##### `mellea.stdlib.docs.richdocument.Table.format_for_llm()`
+###### `mellea.stdlib.docs.richdocument.Table.format_for_llm()`
 
 Return Table representation for Formatter.
 

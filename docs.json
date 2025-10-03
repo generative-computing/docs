@@ -162,79 +162,72 @@
                             "api-reference/index"
                         ]
                     },
-                    {
-                        "group": "Backends",
-                        "pages": [
-                            "api-reference/backends/index",
-                            "api-reference/backends/cache",
-                            "api-reference/backends/dummy",
-                            "api-reference/backends/formatter",
-                            "api-reference/backends/huggingface",
-                            "api-reference/backends/model_ids",
-                            "api-reference/backends/ollama",
-                            "api-reference/backends/openai",
-                            "api-reference/backends/tools",
-                            "api-reference/backends/types",
-                            "api-reference/backends/watsonx"
-                        ]
-                    },
-                    {
-                        "group": "Backends \u203a aLoRA \u203a Huggingface",
-                        "pages": [
-                            "api-reference/backends/aloras/huggingface/index",
-                            "api-reference/backends/aloras/huggingface/granite_aloras"
-                        ]
-                    },
-                    {
-                        "group": "Backends \u203a aLoRA \u203a Openai",
-                        "pages": [
-                            "api-reference/backends/aloras/openai/index",
-                            "api-reference/backends/aloras/openai/granite_aloras"
-                        ]
-                    },
-                    {
-                        "group": "Helpers",
-                        "pages": [
-                            "api-reference/helpers/index",
-                            "api-reference/helpers/fancy_logger"
-                        ]
-                    },
-                    {
-                        "group": "Stdlib",
-                        "pages": [
-                            "api-reference/stdlib/index",
-                            "api-reference/stdlib/base",
-                            "api-reference/stdlib/chat",
-                            "api-reference/stdlib/genslot",
-                            "api-reference/stdlib/instruction",
-                            "api-reference/stdlib/mify",
-                            "api-reference/stdlib/mobject",
-                            "api-reference/stdlib/requirement",
-                            "api-reference/stdlib/sampling",
-                            "api-reference/stdlib/session"
-                        ]
-                    },
-                    {
-                        "group": "Stdlib \u203a Docs",
-                        "pages": [
-                            "api-reference/stdlib/docs/index",
-                            "api-reference/stdlib/docs/richdocument"
-                        ]
-                    },
-                    {
-                        "group": "Stdlib \u203a Reqlib",
-                        "pages": [
-                            "api-reference/stdlib/reqlib/index",
-                            "api-reference/stdlib/reqlib/md"
-                        ]
-                    },
-                    {
-                        "group": "Stdlib \u203a Safety",
-                        "pages": [
-                            "api-reference/stdlib/safety/index",
-                            "api-reference/stdlib/safety/guardian"
-                        ]
-                    }
+{
+            "group": "Backends",
+            "pages": [
+                "api-reference/backends/index",
+                "api-reference/backends/cache",
+                "api-reference/backends/dummy",
+                "api-reference/backends/huggingface",
+                "api-reference/backends/litellm",
+                "api-reference/backends/model_ids",
+                "api-reference/backends/types",
+                "api-reference/backends/watsonx"
+            ]
+        },
+        {
+            "group": "Backends \u203a Process Reward Models \u203a Huggingface",
+            "pages": [
+                "api-reference/backends/process_reward_models/huggingface/index",
+                "api-reference/backends/process_reward_models/huggingface/prms"
+            ]
+        },
+        {
+            "group": "Helpers",
+            "pages": [
+                "api-reference/helpers/index",                
+                "api-reference/helpers/async_helpers",
+                "api-reference/helpers/fancy_logger"
+            ]
+        },
+        {
+            "group": "Stdlib",
+            "pages": [
+                "api-reference/stdlib/index",
+                "api-reference/stdlib/instruction",
+                "api-reference/stdlib/mobject"
+            ]
+        },
+        {
+            "group": "Stdlib \u203a Docs",
+            "pages": [
+                "api-reference/stdlib/docs/index",
+                "api-reference/stdlib/docs/richdocument"
+            ]
+        },
+        {
+            "group": "Stdlib \u203a Rewards",
+            "pages": [
+                "api-reference/stdlib/rewards/index",
+                "api-reference/stdlib/rewards/prm_scorer"
+            ]
+        },
+        {
+            "group": "Stdlib \u203a Safety",
+            "pages": [
+                "api-reference/stdlib/safety/index",
+                "api-reference/stdlib/safety/guardian"                
+            ]
+        },
+        {
+            "group": "Stdlib \u203a Sampling",
+            "pages": [
+                "api-reference/stdlib/sampling/index",                
+                "api-reference/stdlib/sampling/base",
+                "api-reference/stdlib/sampling/best_of_n",
+                "api-reference/stdlib/sampling/types"
+            ]
+        }                    
                 ]
             }
         ]

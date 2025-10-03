@@ -3,17 +3,17 @@ title: mellea.stdlib.instruction
 sidebar_label: Instruction
 ---
 
-# Module: `mellea.stdlib.instruction`
+## Module: `mellea.stdlib.instruction`
 
 Instructions.
 
-## Classes
+### Classes
 
-### `class mellea.stdlib.instruction.Instruction(description: str | CBlock | None = None, requirements: list[Requirement | str] | None = None, icl_examples: list[str | CBlock] | None = None, grounding_context: dict[str, str | CBlock | Component] | None = None, user_variables: dict[str, str] | None = None, prefix: str | CBlock | None = None, output_prefix: str | CBlock | None = None)`
+#### `class mellea.stdlib.instruction.Instruction(description: str | CBlock | None = None, requirements: list[Requirement | str] | None = None, icl_examples: list[str | CBlock] | None = None, grounding_context: dict[str, str | CBlock | Component] | None = None, user_variables: dict[str, str] | None = None, prefix: str | CBlock | None = None, output_prefix: str | CBlock | None = None, images: list[ImageBlock] | None = None)`
 
 The Instruction in an instruct/validate/repair loop.
 
-#### Constructor
+##### Constructor
 
 Initializes an instruction. All strings will be converted into CBlocks.
 
@@ -27,30 +27,37 @@ Initializes an instruction. All strings will be converted into CBlocks.
 * `user_variables`: `Dict[str, str]`: A dict of user-defined variables used to fill in Jinja placeholders in other parameters. This requires that all other provided parameters are provided as strings.
 * `prefix`: `Optional[str | CBlock]`: A prefix string or ContentBlock to use when generating the instruction.
 * `output_prefix`: `Optional[str | CBlock]`: A string or ContentBlock that defines a prefix for the output generation. Usually you do not need this.
+* `images`: `Optional[List[ImageCBlock]]`: A list of images to use in the instruction.
 
-#### Methods
+##### Methods
 
-##### `mellea.stdlib.instruction.Instruction.parts()`
+###### `mellea.stdlib.instruction.Instruction.parts()`
 
 Returns all of the constituent parts of an Instruction.
 
 -----
 
-##### `mellea.stdlib.instruction.Instruction.format_for_llm()`
+###### `mellea.stdlib.instruction.Instruction.format_for_llm()`
 
 Formats the instruction for Formatter use.
 
 -----
 
-##### `mellea.stdlib.instruction.Instruction.apply_user_dict_from_jinja(user_dict: dict[str, str], s: str)`
+###### `mellea.stdlib.instruction.Instruction.apply_user_dict_from_jinja(user_dict: dict[str, str], s: str)`
 
 Treats s as a jinja string and user_dict as the template values dictionary.
 
 -----
 
-##### `mellea.stdlib.instruction.Instruction.requirements()`
+###### `mellea.stdlib.instruction.Instruction.requirements()`
 
 Returns a list of Requirement instances.
+
+-----
+
+###### `mellea.stdlib.instruction.Instruction.copy_and_repair(repair_string: str)`
+
+Creates a copy of the instruction and adds/overwrites the repair string.
 
 -----
 

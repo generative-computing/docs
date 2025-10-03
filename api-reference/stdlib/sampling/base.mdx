@@ -1,0 +1,185 @@
+---
+title: mellea.stdlib.sampling.base
+sidebar_label: Base
+---
+
+## Module: `mellea.stdlib.sampling.base`
+
+Base Sampling Strategies.
+
+### Classes
+
+#### `class mellea.stdlib.sampling.base.BaseSamplingStrategy(loop_budget: int = 1, requirements: list[Requirement] | None = None)`
+
+Base class for multiple strategies that rejects samples based on given instructions.
+
+##### Constructor
+
+Initialize a new instance of the class with default parameters.
+
+
+## Arguments
+
+* `loop_budget`: Number of times to iterate through the process. Must be greater than 0.
+* `validate`: Function to validate the results against requirements. If None, validation is provided later through setter.
+* `generate`: Function to generate new model output thunks. If None, generate is provided later through setter.
+* `requirements`: List of requirements to test against. If None, test all requirements attached to the given instruction.
+
+Raises:
+AssertionError: If loop_budget is not greater than 0.
+
+##### Methods
+
+###### `mellea.stdlib.sampling.base.BaseSamplingStrategy.repair(old_ctx: Context, new_ctx: Context, past_actions: list[Component], past_results: list[ModelOutputThunk], past_val: list[list[tuple[Requirement, ValidationResult]]])`
+
+Repair function that is being invoked if not all requirements are fulfilled. It should return a next action component.
+
+
+## Arguments
+
+* `old_ctx`: The context WITHOUT the last action + output.
+* `new_ctx`: The context including the last action + output.
+* `past_actions`: List of actions that have been executed (without success).
+* `past_results`: List of (unsuccessful) generation results for these actions.
+* `past_val`: List of validation results for the results.
+
+The next action component and context to be used for the next generation attempt.
+
+-----
+
+###### `mellea.stdlib.sampling.base.BaseSamplingStrategy.select_from_failure(sampled_actions: list[Component], sampled_results: list[ModelOutputThunk], sampled_val: list[list[tuple[Requirement, ValidationResult]]])`
+
+This function returns the index of the result that should be selected as `.value` iff the loop budget is exhausted and no success.
+
+
+## Arguments
+
+* `sampled_actions`: List of actions that have been executed (without success).
+* `sampled_results`: List of (unsuccessful) generation results for these actions.
+* `sampled_val`: List of validation results for the results.
+
+The index of the result that should be selected as `.value`.
+
+-----
+
+---
+
+#### `class mellea.stdlib.sampling.base.RejectionSamplingStrategy()`
+
+Simple rejection sampling strategy that just repeats the same call on failure.
+
+##### Methods
+
+###### `mellea.stdlib.sampling.base.RejectionSamplingStrategy.select_from_failure(sampled_actions: list[Component], sampled_results: list[ModelOutputThunk], sampled_val: list[list[tuple[Requirement, ValidationResult]]])`
+
+Always returns the 0th index.
+
+
+## Arguments
+
+* `sampled_actions`: List of actions that have been executed (without success).
+* `sampled_results`: List of (unsuccessful) generation results for these actions.
+* `sampled_val`: List of validation results for the results.
+
+The index of the result that should be selected as `.value`.
+
+-----
+
+###### `mellea.stdlib.sampling.base.RejectionSamplingStrategy.repair(old_ctx: Context, new_ctx: Context, past_actions: list[Component], past_results: list[ModelOutputThunk], past_val: list[list[tuple[Requirement, ValidationResult]]])`
+
+Always returns the unedited, last action.
+
+
+## Arguments
+
+* `old_ctx`: The context WITHOUT the last action + output.
+* `new_ctx`: The context including the last action + output.
+* `past_actions`: List of actions that have been executed (without success).
+* `past_results`: List of (unsuccessful) generation results for these actions.
+* `past_val`: List of validation results for the results.
+
+The next action component and context to be used for the next generation attempt.
+
+-----
+
+---
+
+#### `class mellea.stdlib.sampling.base.RepairTemplateStrategy()`
+
+A sampling strategy that adds a repair string to the instruction object.
+
+##### Methods
+
+###### `mellea.stdlib.sampling.base.RepairTemplateStrategy.select_from_failure(sampled_actions: list[Component], sampled_results: list[ModelOutputThunk], sampled_val: list[list[tuple[Requirement, ValidationResult]]])`
+
+Always returns the 0th index.
+
+
+## Arguments
+
+* `sampled_actions`: List of actions that have been executed (without success).
+* `sampled_results`: List of (unsuccessful) generation results for these actions.
+* `sampled_val`: List of validation results for the results.
+
+The index of the result that should be selected as `.value`.
+
+-----
+
+###### `mellea.stdlib.sampling.base.RepairTemplateStrategy.repair(old_ctx: Context, new_ctx: Context, past_actions: list[Component], past_results: list[ModelOutputThunk], past_val: list[list[tuple[Requirement, ValidationResult]]])`
+
+Adds a description of the requirements that failed to a copy of the original instruction.
+
+
+## Arguments
+
+* `old_ctx`: The context WITHOUT the last action + output.
+* `new_ctx`: The context including the last action + output.
+* `past_actions`: List of actions that have been executed (without success).
+* `past_results`: List of (unsuccessful) generation results for these actions.
+* `past_val`: List of validation results for the results.
+
+The next action component and context to be used for the next generation attempt.
+
+-----
+
+---
+
+#### `class mellea.stdlib.sampling.base.MultiTurnStrategy()`
+
+Rejection sampling strategy with (agentic) multi-turn repair.
+
+##### Methods
+
+###### `mellea.stdlib.sampling.base.MultiTurnStrategy.select_from_failure(sampled_actions: list[Component], sampled_results: list[ModelOutputThunk], sampled_val: list[list[tuple[Requirement, ValidationResult]]])`
+
+Always returns the last index. The last message from the model will always be returned if all results are failures.
+
+
+## Arguments
+
+* `sampled_actions`: List of actions that have been executed (without success).
+* `sampled_results`: List of (unsuccessful) generation results for these actions.
+* `sampled_val`: List of validation results for the results.
+
+The index of the result that should be selected as `.value`.
+
+-----
+
+###### `mellea.stdlib.sampling.base.MultiTurnStrategy.repair(old_ctx: Context, new_ctx: Context, past_actions: list[Component], past_results: list[ModelOutputThunk], past_val: list[list[tuple[Requirement, ValidationResult]]])`
+
+Returns a Message with a description of the failed requirements.
+
+
+## Arguments
+
+* `old_ctx`: The context WITHOUT the last action + output.
+* `new_ctx`: The context including the last action + output.
+* `past_actions`: List of actions that have been executed (without success).
+* `past_results`: List of (unsuccessful) generation results for these actions.
+* `past_val`: List of validation results for the results.
+
+The next action component and context to be used for the next generation attempt.
+
+-----
+
+---

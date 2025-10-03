@@ -3,17 +3,17 @@ title: mellea.backends.dummy
 sidebar_label: Dummy
 ---
 
-# Module: `mellea.backends.dummy`
+## Module: `mellea.backends.dummy`
 
 This module holds shim backends used for smoke tests.
 
-## Classes
+### Classes
 
-### `class mellea.backends.dummy.DummyBackend(responses: list[str] | None)`
+#### `class mellea.backends.dummy.DummyBackend(responses: list[str] | None)`
 
 A backend for smoke testing.
 
-#### Constructor
+##### Constructor
 
 Initializes the dummy backend, optionally with a list of dummy responses.
 
@@ -22,9 +22,9 @@ Initializes the dummy backend, optionally with a list of dummy responses.
 
 * `responses`: If `None`, then the dummy backend always returns "dummy". Otherwise, returns the next item from responses. The generate function will throw an exception if a generate call is made after the list is exhausted.
 
-#### Methods
+##### Methods
 
-##### `mellea.backends.dummy.DummyBackend.generate_from_context(action: Component | CBlock, ctx: Context, format: type[BaseModelSubclass] | None = None, model_options: dict | None = None, generate_logs: list[GenerateLog] | None = None, tool_calls: bool = False)`
+###### `mellea.backends.dummy.DummyBackend.generate_from_context(action: Component | CBlock, ctx: Context, format: type[BaseModelSubclass] | None = None, model_options: dict | None = None, tool_calls: bool = False)`
 
 See constructor for an exmplanation of how DummyBackends work.
 

@@ -3,21 +3,21 @@ title: mellea.backends.huggingface
 sidebar_label: Huggingface
 ---
 
-# Module: `mellea.backends.huggingface`
+## Module: `mellea.backends.huggingface`
 
 A backend that uses the Huggingface Transformers library.
 
 The purpose of the Hugginface backend is to provide a setting for implementing experimental features. If you want a performance local backend, and do not need experimental features such as Span-based context or ALoras, consider using Ollama backends instead.
 
-## Classes
+### Classes
 
-### `class mellea.backends.huggingface.HFAloraCacheInfo()`
+#### `class mellea.backends.huggingface.HFAloraCacheInfo()`
 
 A dataclass for holding some KV cache and associated information.
 
 ---
 
-### `class mellea.backends.huggingface.LocalHFBackend(model_id: str | ModelIdentifier, formatter: Formatter | None = None, use_caches: bool = True, cache: Cache | None = None, custom_config: TransformersTorchConfig | None = None, default_to_constraint_checking_alora: bool = True, model_options: dict | None = None)`
+#### `class mellea.backends.huggingface.LocalHFBackend(model_id: str | ModelIdentifier, formatter: Formatter | None = None, use_caches: bool = True, cache: Cache | None = None, custom_config: TransformersTorchConfig | None = None, default_to_constraint_checking_alora: bool = True, model_options: dict | None = None)`
 
 The LocalHFBackend uses Huggingface's transformers library for inference, and uses a Formatter to convert `Component`s into prompts. This backend also supports Activated LoRAs (ALoras)](https://arxiv.org/pdf/2504.12397).
 
@@ -25,7 +25,7 @@ This backend is designed for running an HF model for small-scale inference local
 
 This backend is NOT designed for inference scaling on CUDA-enabled hardware.
 
-#### Constructor
+##### Constructor
 
 Attempt to load model weights using the model_id by default, or using `custom_config` if provided.
 
@@ -42,53 +42,53 @@ WARNING: initializing a `LocalHFBackend` will download and load the model on you
 * `default_to_constraint_checking_alora`: If set to False then aloras will be deactivated. This is primarily for performance benchmarking and debugging.
 * `model_options`: `Optional[dict]`: Default model options.
 
-#### Methods
+##### Methods
 
-##### `mellea.backends.huggingface.LocalHFBackend.alora_model()`
+###### `mellea.backends.huggingface.LocalHFBackend.alora_model()`
 
 The ALora model.
 
 -----
 
-##### `mellea.backends.huggingface.LocalHFBackend.alora_model(model: aLoRAPeftModelForCausalLM | None)`
+###### `mellea.backends.huggingface.LocalHFBackend.alora_model(model: 'aLoRAPeftModelForCausalLM | None')`
 
 Sets the ALora model. This should only happen once in a backend's lifetime.
 
 -----
 
-##### `mellea.backends.huggingface.LocalHFBackend.generate_from_context(action: Component | CBlock, ctx: Context, format: type[BaseModelSubclass] | None = None, model_options: dict | None = None, generate_logs: list[GenerateLog] | None = None, tool_calls: bool = False)`
+###### `mellea.backends.huggingface.LocalHFBackend.generate_from_context(action: Component | CBlock, ctx: Context, format: type[BaseModelSubclass] | None = None, model_options: dict | None = None, tool_calls: bool = False)`
 
 Generate using the huggingface model.
 
 -----
 
-##### `mellea.backends.huggingface.LocalHFBackend._generate_from_context_alora(action: Component | CBlock, ctx: Context, format: type[BaseModelSubclass] | None = None, model_options: dict[str, Any], generate_logs: list[GenerateLog] | None = None)`
+###### `mellea.backends.huggingface.LocalHFBackend._generate_from_context_alora(action: Component | CBlock, ctx: Context, format: type[BaseModelSubclass] | None = None, model_options: dict[str, Any])`
 
 -----
 
-##### `mellea.backends.huggingface.LocalHFBackend._generate_from_context_standard(action: Component | CBlock, ctx: Context, format: type[BaseModelSubclass] | None = None, model_options: dict[str, Any], generate_logs: list[GenerateLog] | None = None, tool_calls: bool = False)`
+###### `mellea.backends.huggingface.LocalHFBackend._generate_from_context_standard(action: Component | CBlock, ctx: Context, format: type[BaseModelSubclass] | None = None, model_options: dict[str, Any], tool_calls: bool = False)`
 
 -----
 
-##### `mellea.backends.huggingface.LocalHFBackend._generate_from_raw(actions: list[Component | CBlock], format: type[BaseModelSubclass] | None = None, model_options: dict | None = None, generate_logs: list[GenerateLog] | None = None)`
+###### `mellea.backends.huggingface.LocalHFBackend._generate_from_raw(actions: list[Component | CBlock], format: type[BaseModelSubclass] | None = None, model_options: dict | None = None, generate_logs: list[GenerateLog] | None = None)`
 
 Generate using the completions api. Gives the input provided to the model without templating.
 
 -----
 
-##### `mellea.backends.huggingface.LocalHFBackend.cache_get(id: str)`
+###### `mellea.backends.huggingface.LocalHFBackend.cache_get(id: str)`
 
 Retrieve from cache.
 
 -----
 
-##### `mellea.backends.huggingface.LocalHFBackend.cache_put(id: str, v: HFAloraCacheInfo)`
+###### `mellea.backends.huggingface.LocalHFBackend.cache_put(id: str, v: HFAloraCacheInfo)`
 
 Put into cache.
 
 -----
 
-##### `mellea.backends.huggingface.LocalHFBackend._simplify_and_merge(model_options: dict[str, Any] | None)`
+###### `mellea.backends.huggingface.LocalHFBackend._simplify_and_merge(model_options: dict[str, Any] | None)`
 
 Simplifies model_options to use the Mellea specific ModelOption.Option and merges the backend's model_options with those passed into this call.
 
@@ -110,7 +110,7 @@ a new dict
 
 -----
 
-##### `mellea.backends.huggingface.LocalHFBackend._make_backend_specific_and_remove(model_options: dict[str, Any])`
+###### `mellea.backends.huggingface.LocalHFBackend._make_backend_specific_and_remove(model_options: dict[str, Any])`
 
 Maps specified Mellea specific keys to their backend specific version and removes any remaining Mellea keys.
 
@@ -123,11 +123,11 @@ a new dict
 
 -----
 
-##### `mellea.backends.huggingface.LocalHFBackend._extract_model_tool_requests(tools: dict[str, Callable], decoded_result: str)`
+###### `mellea.backends.huggingface.LocalHFBackend._extract_model_tool_requests(tools: dict[str, Callable], decoded_result: str)`
 
 -----
 
-##### `mellea.backends.huggingface.LocalHFBackend.add_alora(alora: HFAlora)`
+###### `mellea.backends.huggingface.LocalHFBackend.add_alora(alora: HFAlora)`
 
 Loads an ALora for this backend.
 
@@ -138,13 +138,13 @@ Loads an ALora for this backend.
 
 -----
 
-##### `mellea.backends.huggingface.LocalHFBackend.get_alora(alora_name: str)`
+###### `mellea.backends.huggingface.LocalHFBackend.get_alora(alora_name: str)`
 
 Returns the ALora by name, or None if that ALora isn't loaded.
 
 -----
 
-##### `mellea.backends.huggingface.LocalHFBackend.get_aloras()`
+###### `mellea.backends.huggingface.LocalHFBackend.get_aloras()`
 
 Returns a list of all loaded ALora adapters.
 
@@ -152,11 +152,11 @@ Returns a list of all loaded ALora adapters.
 
 ---
 
-### `class mellea.backends.huggingface.HFAlora(name: str, path_or_model_id: str, generation_prompt: str, backend: LocalHFBackend)`
+#### `class mellea.backends.huggingface.HFAlora(name: str, path_or_model_id: str, generation_prompt: str, backend: LocalHFBackend)`
 
 ALoras that work with the local huggingface backend.
 
-#### Constructor
+##### Constructor
 
 Initialize an ALora that should work with huggingface backends that support ALoras.
 
@@ -167,5 +167,36 @@ Initialize an ALora that should work with huggingface backends that support ALor
 * `path_or_model_id`: `str`: A local path to ALora's weights or a Huggingface model_id to an ALora.
 * `generation_prompt`: `str`: A prompt used to "activate" the Lora. This string goes between the pre-activation context and the aLora generate call. This needs to be provided by the entity that trained the ALora.
 * `backend`: `LocalHFBackend`: Mained as a pointer to the backend to which this this ALora is attached.
+
+---
+
+#### `class mellea.backends.huggingface.HFProcessRewardModel(model_name_or_path: str, score_token: str, device: str | None = None)`
+
+A Process Reward Model that works with a huggingface backend.
+
+##### Constructor
+
+Initialize an PRM that works with a huggingface backend. Currently supports and tested with IBM Process Reward Models.
+
+
+## Arguments
+
+* `model_name_or_path`: `str`: A local path to PRM or a huggingface PRM
+* `score_token`: `str`: token who's logits correspond to the PRM score. Can be a step demarker (for non-generative PRMs) or a correctness indicator (for generative PRMs)
+* `device`: `str`: device: The computational device to use ("cuda" for GPU, "mps" for Apple Silicon, or "cpu"), defaults to None. If not specified, the best available device will be automatically selected.
+
+##### Methods
+
+###### `mellea.backends.huggingface.HFProcessRewardModel.stepify(content: str, step_separator: str)`
+
+Splits the assistant response into steps to score.
+
+
+## Arguments
+
+* `content`: assistant response to score
+* `step_separator`: string on which to separate the content into steps
+
+-----
 
 ---

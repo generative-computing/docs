@@ -1,0 +1,99 @@
+---
+title: mellea.backends.process_reward_models.huggingface.prms
+sidebar_label: Prms
+---
+
+## Module: `mellea.backends.process_reward_models.huggingface.prms`
+
+PRM Implementations for Local HuggingFace Backends.
+
+### Classes
+
+#### `class mellea.backends.process_reward_models.huggingface.prms.HFGenerativePRM(model_name_or_path: str = 'ibm-granite/granite-3.3-8b-lora-math-prm', score_token: str = 'Y', device: str | None = None, generation_prompt: str = 'Is this response correct so far (Y/N)?', step_separator: str = '\n\n')`
+
+A Generative PRM that works with a huggingface backend.
+
+##### Constructor
+
+Initialize a Generative PRM that works with a huggingface backend. Currently supports and tested with IBM Process Reward Models.
+
+
+## Arguments
+
+* `model_name_or_path`: `str`: A local path to PRM or a huggingface PRM
+* `score_token`: `str`: token who's logits correspond to the PRM score. Usually is a correctness indicator (for generative PRMs)
+* `device`: `str`: pointer to device
+* `generation_prompt`: `str`: Optional prompt to be added before generation
+* `step_separator`: `str`: string on which to separate the content into steps
+
+##### Methods
+
+###### `mellea.backends.process_reward_models.huggingface.prms.HFGenerativePRM.score(query: str, response: str)`
+
+Returns a final and per-step score for a given input query and response.
+
+
+## Arguments
+
+* `query`: `str`: User query
+* `response`: `str`: Assistant Response to score
+
+-----
+
+###### `mellea.backends.process_reward_models.huggingface.prms.HFGenerativePRM.prepare_inputs(user_content: str, steps: list[str])`
+
+Prepare the inputs for inference with the model.
+
+
+## Arguments
+
+* `user_content`: `str`: the user query
+* `steps`: `List(str)`: assistant response, broken down into steps
+
+-----
+
+---
+
+#### `class mellea.backends.process_reward_models.huggingface.prms.HFRegressionPRM(model_name_or_path: str, score_token: str = '<end_of_step>', device: str | None = None, step_separator: str = '\n\n')`
+
+A Regression PRM that works with a huggingface backend.
+
+##### Constructor
+
+Initialize a Regression PRM that works with a huggingface backend. Currently supports and tested with IBM Process Reward Models.
+
+
+## Arguments
+
+* `model_name_or_path`: `str`: A local path to PRM or a huggingface PRM
+* `score_token`: `str`: token who's logits correspond to the PRM score. Usually is a step demarker (for non-generative PRMs)
+* `device`: `str`: pointer to the device on which to run the model
+* `step_separator`: `str`: string on which to separate the input content into steps
+
+##### Methods
+
+###### `mellea.backends.process_reward_models.huggingface.prms.HFRegressionPRM.score(query: str, response: str)`
+
+Returns a final and per-step score for a given input query and response.
+
+
+## Arguments
+
+* `query`: `str`: User query
+* `response`: `str`: Assistant Response to score
+
+-----
+
+###### `mellea.backends.process_reward_models.huggingface.prms.HFRegressionPRM.prepare_inputs(user_content: str, steps: list[str])`
+
+Prepare the inputs for inference with the model.
+
+
+## Arguments
+
+* `user_content`: `str`: the user query
+* `steps`: `List(str)`: assistant response, broken down into steps
+
+-----
+
+---

@@ -3,17 +3,17 @@ title: mellea.stdlib.mobject
 sidebar_label: Mobject
 ---
 
-# Module: `mellea.stdlib.mobject`
+## Module: `mellea.stdlib.mobject`
 
 MObject.
 
-## Classes
+### Classes
 
-### `class mellea.stdlib.mobject.Query(obj: Component, query: str)`
+#### `class mellea.stdlib.mobject.Query(obj: Component, query: str)`
 
 A Query component.
 
-#### Constructor
+##### Constructor
 
 Initializes a new instance of Query with the provided object and query.
 
@@ -23,15 +23,15 @@ Initializes a new instance of Query with the provided object and query.
 * `obj`: The object to be queried.
 * `query`: The query string used for querying the object.
 
-#### Methods
+##### Methods
 
-##### `mellea.stdlib.mobject.Query.parts()`
+###### `mellea.stdlib.mobject.Query.parts()`
 
 Get the parts of the query.
 
 -----
 
-##### `mellea.stdlib.mobject.Query.format_for_llm()`
+###### `mellea.stdlib.mobject.Query.format_for_llm()`
 
 Format the query for llm.
 
@@ -39,11 +39,11 @@ Format the query for llm.
 
 ---
 
-### `class mellea.stdlib.mobject.Transform(obj: Component, transformation: str)`
+#### `class mellea.stdlib.mobject.Transform(obj: Component, transformation: str)`
 
 A Transform component.
 
-#### Constructor
+##### Constructor
 
 Initializes a new instance of Transform with the provided object and transformation description.
 
@@ -53,15 +53,15 @@ Initializes a new instance of Transform with the provided object and transformat
 * `obj`: The object to be queried.
 * `transformation`: The string used for transforming the object.
 
-#### Methods
+##### Methods
 
-##### `mellea.stdlib.mobject.Transform.parts()`
+###### `mellea.stdlib.mobject.Transform.parts()`
 
 Get the parts of the transform.
 
 -----
 
-##### `mellea.stdlib.mobject.Transform.format_for_llm()`
+###### `mellea.stdlib.mobject.Transform.format_for_llm()`
 
 Format the transform for llm.
 
@@ -69,19 +69,19 @@ Format the transform for llm.
 
 ---
 
-### `class mellea.stdlib.mobject.MObjectProtocol()`
+#### `class mellea.stdlib.mobject.MObjectProtocol()`
 
 Protocol to describe the necessary functionality of a MObject. Implementers should prefer inheriting from MObject than MObjectProtocol.
 
-#### Methods
+##### Methods
 
-##### `mellea.stdlib.mobject.MObjectProtocol.parts()`
+###### `mellea.stdlib.mobject.MObjectProtocol.parts()`
 
 Returns a list of parts for MObject.
 
 -----
 
-##### `mellea.stdlib.mobject.MObjectProtocol.get_query_object(query: str)`
+###### `mellea.stdlib.mobject.MObjectProtocol.get_query_object(query: str)`
 
 Returns the instantiated query object.
 
@@ -92,7 +92,7 @@ Returns the instantiated query object.
 
 -----
 
-##### `mellea.stdlib.mobject.MObjectProtocol.get_transform_object(transformation: str)`
+###### `mellea.stdlib.mobject.MObjectProtocol.get_transform_object(transformation: str)`
 
 Returns the instantiated transform object.
 
@@ -103,7 +103,7 @@ Returns the instantiated transform object.
 
 -----
 
-##### `mellea.stdlib.mobject.MObjectProtocol.content_as_string()`
+###### `mellea.stdlib.mobject.MObjectProtocol.content_as_string()`
 
 Returns the content of MObject as a string.
 
@@ -112,7 +112,7 @@ Subclasses should override this method.
 
 -----
 
-##### `mellea.stdlib.mobject.MObjectProtocol._get_all_members()`
+###### `mellea.stdlib.mobject.MObjectProtocol._get_all_members()`
 
 Returns a list of all methods from the MObject except methods of the super class.
 
@@ -120,7 +120,7 @@ Undocumented and methods with [no-index] in doc string are ignored.
 
 -----
 
-##### `mellea.stdlib.mobject.MObjectProtocol.format_for_llm()`
+###### `mellea.stdlib.mobject.MObjectProtocol.format_for_llm()`
 
 The template representation used by the formatter.
 
@@ -132,11 +132,11 @@ from `content_as_string()`.
 
 ---
 
-### `class mellea.stdlib.mobject.MObject(query_type: type = Query, transform_type: type = Transform)`
+#### `class mellea.stdlib.mobject.MObject(query_type: type = Query, transform_type: type = Transform)`
 
 An extension of `Component` for adding query and transform operations.
 
-#### Constructor
+##### Constructor
 
 Initializes a new instance of MObject with a specified query type and transformation type.
 
@@ -146,15 +146,15 @@ Initializes a new instance of MObject with a specified query type and transforma
 * `query_type`: The type of query to be used, defaults to Query if not provided.
 * `transform_type`: The type of transform to be used, defaults to Transform if not provided.
 
-#### Methods
+##### Methods
 
-##### `mellea.stdlib.mobject.MObject.parts()`
+###### `mellea.stdlib.mobject.MObject.parts()`
 
 Returns a list of parts for MObject.
 
 -----
 
-##### `mellea.stdlib.mobject.MObject.get_query_object(query: str)`
+###### `mellea.stdlib.mobject.MObject.get_query_object(query: str)`
 
 Returns the instantiated query object.
 
@@ -165,7 +165,7 @@ Returns the instantiated query object.
 
 -----
 
-##### `mellea.stdlib.mobject.MObject.get_transform_object(transformation: str)`
+###### `mellea.stdlib.mobject.MObject.get_transform_object(transformation: str)`
 
 Returns the instantiated transform object.
 
@@ -176,7 +176,7 @@ Returns the instantiated transform object.
 
 -----
 
-##### `mellea.stdlib.mobject.MObject.content_as_string()`
+###### `mellea.stdlib.mobject.MObject.content_as_string()`
 
 Returns the content of MObject as a string.
 
@@ -185,7 +185,7 @@ Subclasses should override this method.
 
 -----
 
-##### `mellea.stdlib.mobject.MObject._get_all_members()`
+###### `mellea.stdlib.mobject.MObject._get_all_members()`
 
 Returns a list of all methods from the MObject except methods of the super class.
 
@@ -193,7 +193,7 @@ Undocumented and methods with [no-index] in doc string are ignored.
 
 -----
 
-##### `mellea.stdlib.mobject.MObject.format_for_llm()`
+###### `mellea.stdlib.mobject.MObject.format_for_llm()`
 
 The template representation used by the formatter.
 

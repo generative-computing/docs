@@ -1,0 +1,65 @@
+---
+title: mellea.stdlib.sampling.types
+sidebar_label: Types
+---
+
+## Module: `mellea.stdlib.sampling.types`
+
+Base types for sampling.
+
+### Classes
+
+#### `class mellea.stdlib.sampling.types.SamplingResult(result_index: int, success: bool, sample_generations: list[ModelOutputThunk] | None = None, sample_validations: list[list[tuple[Requirement, ValidationResult]]] | None = None, sample_actions: list[Component] | None = None, sample_contexts: list[Context] | None = None)`
+
+Stores the results from a sampling operation. This includes successful and failed samplings.
+
+##### Constructor
+
+Initialize a new instance of sampling results.
+
+
+## Arguments
+
+* `result_index`: The index of the final output or result from applying the sampling strategy.
+* `success`: A boolean indicating whether the operation was successful.
+* `sample_generations`: A list containing intermediate generations produced during the process.
+* `sample_validations`: For each generation a list of tuples of a requirement and a validation result.
+* `sample_actions`: A list of intermediate actions used to produce sampling results.
+* `sample_contexts`: A list of contexts produced by the generation results.
+
+##### Methods
+
+###### `mellea.stdlib.sampling.types.SamplingResult.result()`
+
+The final output or result from applying the sampling strategy.
+
+-----
+
+###### `mellea.stdlib.sampling.types.SamplingResult.result_ctx()`
+
+The context of the final output or result from applying the sampling strategy.
+
+-----
+
+###### `mellea.stdlib.sampling.types.SamplingResult.result_action()`
+
+The action that generated the final output or result from applying the sampling strategy.
+
+-----
+
+###### `mellea.stdlib.sampling.types.SamplingResult.result_validations()`
+
+The validation results associated with the final output or result from applying the sampling strategy.
+
+-----
+
+---
+
+#### `class mellea.stdlib.sampling.types.SamplingStrategy()`
+
+A SamplingStrategy class defines an abstract base class for implementing various sampling strategies.
+
+This class provides a template for creating concrete sampling strategies that can be used to generate model outputs based on given instructions.
+It allows setting custom validation and generation functions through properties.
+
+---

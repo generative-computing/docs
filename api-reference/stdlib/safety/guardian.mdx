@@ -3,23 +3,23 @@ title: mellea.stdlib.safety.guardian
 sidebar_label: Guardian
 ---
 
-# Module: `mellea.stdlib.safety.guardian`
+## Module: `mellea.stdlib.safety.guardian`
 
 Risk checking with Guardian models.
 
-## Classes
+### Classes
 
-### `class mellea.stdlib.safety.guardian.GuardianRisk()`
+#### `class mellea.stdlib.safety.guardian.GuardianRisk()`
 
 Risk definitions as defined in https://github.com/ibm-granite/granite-guardian/blob/main/cookbooks/granite-guardian-3.2/quick_start_vllm.ipynb .
 
 ---
 
-### `class mellea.stdlib.safety.guardian.GuardianCheck(risk: str = GuardianRisk.HARM, model_version: str = 'ibm-granite/granite-guardian-3.2-3b-a800m', device: str | None = None)`
+#### `class mellea.stdlib.safety.guardian.GuardianCheck(risk: str = GuardianRisk.HARM, model_version: str = 'ibm-granite/granite-guardian-3.2-3b-a800m', device: str | None = None)`
 
 A Check for Risks based on local huggingface backend.
 
-#### Constructor
+##### Constructor
 
 Initializes a GuardianModel instance with the specified risk definition, model version, and device.
 
@@ -30,9 +30,9 @@ Initializes a GuardianModel instance with the specified risk definition, model v
 * `model_version`: The version of the model, defaults to "ibm-granite/granite-guardian-3.2-3b-a800m".
 * `device`: The computational device to use ("cuda" for GPU, "mps" for Apple Silicon, or "cpu"), defaults to None. If not specified, the best available device will be automatically selected.
 
-#### Methods
+##### Methods
 
-##### `mellea.stdlib.safety.guardian.GuardianCheck._parse_output(output, input_len, tokenizer)`
+###### `mellea.stdlib.safety.guardian.GuardianCheck._parse_output(output, input_len, tokenizer)`
 
 Parse the output of a guardian model and determine whether if the risk is present or not.
 
@@ -45,7 +45,7 @@ Parse the output of a guardian model and determine whether if the risk is presen
 
 -----
 
-##### `mellea.stdlib.safety.guardian.GuardianCheck._guardian_validate(ctx: Context)`
+###### `mellea.stdlib.safety.guardian.GuardianCheck._guardian_validate(ctx: Context)`
 
 Validates the last turn of a conversation context using wrt given risk.
 
@@ -54,7 +54,7 @@ Code is adopted from https://huggingface.co/ibm-granite/granite-guardian-3.2-3b-
 
 ## Arguments
 
-* `ctx`: `Context`: The context object containing the last turn of the conversation.
+* `ctx`: `LegacyContext`: The context object containing the last turn of the conversation.
 
 
 ## Returns
