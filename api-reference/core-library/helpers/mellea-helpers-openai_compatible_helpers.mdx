@@ -1,0 +1,35 @@
+---
+title: openai_compatible_helpers
+sidebarTitle: openai_compatible_helpers
+---
+
+# `mellea.helpers.openai_compatible_helpers`
+
+
+A file for helper functions that deal with OpenAI API compatible helpers.
+
+## Functions
+
+### `extract_model_tool_requests`
+
+```python
+extract_model_tool_requests(tools: dict[str, Callable], response: dict[str, Any]) -> dict[str, ModelToolCall] | None
+```
+
+
+Extracts tool calls from the dict representation of an OpenAI-like chat response object.
+
+
+### `chat_completion_delta_merge`
+
+```python
+chat_completion_delta_merge(chunks: list[dict], force_all_tool_calls_separate: bool = False) -> dict
+```
+
+
+Takes a list of deltas from `ChatCompletionChunk`s and merges them into a single dict representing the `ChatCompletion` choice.
+
+**Args:**
+- `chunks`: the list of dicts that represent the message deltas
+- `force_all_tool_calls_separate`: if `True`, tool calls in separate message deltas will not be merged (even if their index values are the same); use when providers do not return the correct index value for tool calls. If using this option, all tool calls must be fully populated in a single delta since they won't be merged.
+

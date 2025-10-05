@@ -1,0 +1,48 @@
+---
+title: litellm
+sidebarTitle: litellm
+---
+
+# `mellea.backends.litellm`
+
+
+A generic LiteLLM compatible backend that wraps around the openai python sdk.
+
+## Classes
+
+### `LiteLLMBackend`
+
+
+A generic LiteLLM compatible backend.
+
+
+**Methods:**
+
+#### `generate_from_context`
+
+```python
+generate_from_context(self, action: Component | CBlock, ctx: Context)
+```
+
+See `generate_from_chat_context`.
+
+
+#### `processing`
+
+```python
+processing(self, mot: ModelOutputThunk, chunk: litellm.ModelResponse | litellm.ModelResponseStream)
+```
+
+Called during generation to add information from a single ModelResponse or a chunk / ModelResponseStream to the ModelOutputThunk.
+
+For LiteLLM, tool call parsing is handled in the post processing step.
+
+
+#### `post_processing`
+
+```python
+post_processing(self, mot: ModelOutputThunk, conversation: list[dict], tools: dict[str, Callable], thinking, format)
+```
+
+Called when generation is done.
+

@@ -1,0 +1,186 @@
+---
+title: requirement
+sidebarTitle: requirement
+---
+
+# `mellea.stdlib.requirement`
+
+
+Requirements are a special type of Component used as input to the "validate" step in Instruct/Validate/Repair design patterns.
+
+## Functions
+
+### `default_output_to_bool`
+
+```python
+default_output_to_bool(x: CBlock | str) -> bool
+```
+
+
+Checks if a given output should be marked converted to `True`.
+
+Checks if the output is exactly equal to "yes" or "y" (case-insensitive). If not, it will also
+check if any of the words in the output are "yes" (case-insensitive).
+
+
+### `reqify`
+
+```python
+reqify(r: str | Requirement) -> Requirement
+```
+
+
+Maps strings to Requirements.
+
+This is a utility method for functions that allow you to pass in Requirements as either explicit Requirement objects or strings that you intend to be interpreted as requirements.
+
+
+### `req`
+
+```python
+req(*args, **kwargs) -> Requirement
+```
+
+
+Shorthand for Requirement.__init__.
+
+
+### `check`
+
+```python
+check(*args, **kwargs) -> Requirement
+```
+
+
+Shorthand for Requirement.__init__(..., check_only=True).
+
+
+### `simple_validate`
+
+```python
+simple_validate(fn: Callable[[str], Any]) -> Callable[[Context], ValidationResult]
+```
+
+
+Syntactic sugar for writing validation functions that only operate over the last output from the model (interpreted as a string).
+
+This is useful when your validation logic only depends upon the most recent model output. For example:
+
+`Requirement("Answer 'yes' or 'no'", simple_validate(lambda x: x == 'yes' or x == 'no')`
+
+Validation functions operate over `Context`. Often you do not care about the entire context, and just want to consider the most recent output from the model.
+
+**Args:**
+- `fn`: the simple validation function that takes a string and returns either a bool or (bool, str)
+- `reason`: only used if the provided function returns a bool; if the validation function fails, a static reason for that failure to give to the llm when repairing
+
+
+## Classes
+
+### `ValidationResult`
+
+
+ValidationResults store the output of a Requirement's validation. They can be used to return additional info from validation functions, which is useful for sampling/repairing.
+
+
+**Methods:**
+
+#### `reason`
+
+```python
+reason(self) -> str | None
+```
+
+Reason for the validation result.
+
+
+#### `score`
+
+```python
+score(self) -> float | None
+```
+
+An optional score for the validation result.
+
+
+#### `thunk`
+
+```python
+thunk(self) -> ModelOutputThunk | None
+```
+
+The ModelOutputThunk associated with the validation func if an llm was used to generate the final result.
+
+
+#### `as_bool`
+
+```python
+as_bool(self) -> bool
+```
+
+Return a boolean value based on the result.
+
+
+### `Requirement`
+
+
+Requirements are a special type of Component used as input to the Validate step in Instruct/Validate/Repair patterns.
+
+
+**Methods:**
+
+#### `validate`
+
+```python
+validate(self, backend: Backend, ctx: Context) -> ValidationResult
+```
+
+Chooses the appropriate validation strategy and applies that strategy.
+
+
+#### `parts`
+
+```python
+parts(self)
+```
+
+Returns all of the constituent parts of a Requirement.
+
+
+#### `format_for_llm`
+
+```python
+format_for_llm(self) -> TemplateRepresentation | str
+```
+
+Some object protocol magic happens here with management of the output.
+
+
+### `LLMaJRequirement`
+
+
+A requirement that always uses LLM-as-a-Judge. Any available constraint ALoRA will be ignored.
+
+
+### `ALoraRequirement`
+
+
+A requirement that always uses an (possibly specified) ALora. If an exception is thrown during the ALora execution path, `mellea` will fall back to LLMaJ. But that is the only case where LLMaJ will be used.
+
+
+### `ScorerRequirement`
+
+
+A requirement that always returns a non-None score. The scorer must also define a preference ordering to indicate whether the goal is to maximize or minimize the score.
+
+
+**Methods:**
+
+#### `validate`
+
+```python
+validate(self, backend: Backend, ctx: Context) -> ValidationResult
+```
+
+Chooses the appropriate validation strategy and applies that strategy. Asserts that the returned ValidationResult has a valid score.
+

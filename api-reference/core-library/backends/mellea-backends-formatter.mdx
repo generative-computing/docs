@@ -1,0 +1,89 @@
+---
+title: formatter
+sidebarTitle: formatter
+---
+
+# `mellea.backends.formatter`
+
+
+Abstract interfaces for Formatters.
+
+## Classes
+
+### `Formatter`
+
+
+A Formatter converts `Component`s into strings and parses `ModelOutputThunk`s into `Component`s (or `CBlock`s).
+
+
+**Methods:**
+
+#### `print`
+
+```python
+print(self, c: Component | CBlock) -> str
+```
+
+Renders a component for input to a model.
+
+
+#### `parse`
+
+```python
+parse(self, source_component: Component | CBlock, result: ModelOutputThunk) -> ModelOutputThunk
+```
+
+Parses the output from a model and sets the parsed_repr of the result ModelOutputThunk.
+
+Returns the ModelOutputThunk that was passed in.
+
+
+#### `to_chat_messages`
+
+```python
+to_chat_messages(self, cs: list[Component | CBlock]) -> list[Message]
+```
+
+Helper method that converts a linearized chat history into a list of messages. The purpose of this helper is to prepare a sequence of Messages for input to a chat endpoint.
+
+
+### `TemplateFormatter`
+
+
+Formatter that uses jinja2 templates.
+
+
+**Methods:**
+
+#### `parse`
+
+```python
+parse(self, source_component: Component | CBlock, result: ModelOutputThunk) -> ModelOutputThunk
+```
+
+Parses the output and updates the result's parsed_repr.
+
+
+#### `print`
+
+```python
+print(self, c: Component | CBlock) -> str
+```
+
+Uses a jinja2 template to pretty-print components.
+
+
+### `FormatterBackend`
+
+
+`FormatterBackend`s support legacy model types.
+
+The `mellea` library was designed to support generative computing with [spanned attention](https://generative.computing/what-are-spans.html) over [generative programming primitives](https://generative.computing/what-are-generative-programs.html).
+In the ideal world, context management is handled via span scope-relations and all generative programming primitives are baked into the model via fine-tuning.
+I.e., the model's instruction tuning is done in terms of generative programming primitives, and the model is then prompted with the same set of templates that were used for that tuning.
+
+Today, most models do not yet support spans and even those that do are not properly tuned to leverage generative programming primitives.
+The `mellea` library supports these legacy models primarily through prompt engineering surfaced via `FormatterBackends`.
+A `FormatterBackend` is a backend that uses hand-engineered prompts for rendering generative programming primitives to a model and parsing responses from the model back into `mellea`.
+By default, a `FormatterBackend` uses jinja2 templates for pretty-printing, and relies on the user's ad-hoc logic for parsing.
+

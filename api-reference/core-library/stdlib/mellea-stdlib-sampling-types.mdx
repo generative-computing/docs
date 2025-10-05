@@ -1,0 +1,90 @@
+---
+title: types
+sidebarTitle: types
+---
+
+# `mellea.stdlib.sampling.types`
+
+
+Base types for sampling.
+
+## Classes
+
+### `SamplingResult`
+
+
+Stores the results from a sampling operation. This includes successful and failed samplings.
+
+
+**Methods:**
+
+#### `result`
+
+```python
+result(self) -> ModelOutputThunk
+```
+
+The final output or result from applying the sampling strategy.
+
+
+#### `result_ctx`
+
+```python
+result_ctx(self) -> Context
+```
+
+The context of the final output or result from applying the sampling strategy.
+
+
+#### `result_action`
+
+```python
+result_action(self) -> Component
+```
+
+The action that generated the final output or result from applying the sampling strategy.
+
+
+#### `result_validations`
+
+```python
+result_validations(self) -> list[tuple[Requirement, ValidationResult]]
+```
+
+The validation results associated with the final output or result from applying the sampling strategy.
+
+
+### `SamplingStrategy`
+
+
+A SamplingStrategy class defines an abstract base class for implementing various sampling strategies.
+
+This class provides a template for creating concrete sampling strategies that can be used to generate model outputs based on given instructions.
+It allows setting custom validation and generation functions through properties.
+
+
+**Methods:**
+
+#### `sample`
+
+```python
+sample(self, action: Component, context: Context, backend: Backend, requirements: list[Requirement] | None) -> SamplingResult
+```
+
+This method is the abstract method for sampling a given component.
+
+It must be implemented by any concrete subclasses to provide specific sampling logic.
+
+**Args:**
+- `action `: The action object to be sampled.
+- `context`: The context to be passed to the sampling strategy.
+- `backend`: The backend used for generating samples.
+- `requirements`: List of requirements to test against (merged with global requirements).
+- `validation_ctx`: Optional context to use for validation. If None, validation_ctx = ctx.
+- `format`: output format for structured outputs.
+- `model_options`: model options to pass to the backend during generation / validation.
+- `tool_calls`: True if tool calls should be used during this sampling strategy.
+
+**Returns:**
+- A result object indicating the success or failure of the sampling process.
+

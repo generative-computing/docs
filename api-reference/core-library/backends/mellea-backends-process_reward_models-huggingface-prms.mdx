@@ -1,0 +1,79 @@
+---
+title: prms
+sidebarTitle: prms
+---
+
+# `mellea.backends.process_reward_models.huggingface.prms`
+
+
+PRM Implementations for Local HuggingFace Backends.
+
+## Classes
+
+### `HFGenerativePRM`
+
+
+A Generative PRM that works with a huggingface backend.
+
+
+**Methods:**
+
+#### `score`
+
+```python
+score(self, query: str, response: str) -> tuple[list[float], list[list[float]]]
+```
+
+Returns a final and per-step score for a given input query and response.
+
+**Args:**
+- `query`: User query
+- `response`: Assistant Response to score
+
+
+#### `prepare_inputs`
+
+```python
+prepare_inputs(self, user_content: str, steps: list[str]) -> BatchEncoding
+```
+
+Prepare the inputs for inference with the model.
+
+**Args:**
+- `user_content`: the user query
+- `steps`: assistant response, broken down into steps
+
+
+### `HFRegressionPRM`
+
+
+A Regression PRM that works with a huggingface backend.
+
+
+**Methods:**
+
+#### `score`
+
+```python
+score(self, query: str, response: str) -> tuple[list[float], list[list[float]]]
+```
+
+Returns a final and per-step score for a given input query and response.
+
+**Args:**
+- `query`: User query
+- `response`: Assistant Response to score
+
+
+#### `prepare_inputs`
+
+```python
+prepare_inputs(self, user_content: str, steps: list[str]) -> BatchEncoding
+```
+
+Prepare the inputs for inference with the model.
+
+**Args:**
+- `user_content`: the user query
+- `steps`: assistant response, broken down into steps
+

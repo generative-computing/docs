@@ -1,0 +1,78 @@
+---
+title: chat
+sidebarTitle: chat
+---
+
+# `mellea.stdlib.chat`
+
+
+Chat primitives.
+
+## Functions
+
+### `as_chat_history`
+
+```python
+as_chat_history(ctx: Context) -> list[Message]
+```
+
+
+Returns a list of Messages corresponding to a Context.
+
+
+## Classes
+
+### `Message`
+
+
+A single Message in a Chat history.
+
+
+**Methods:**
+
+#### `images`
+
+```python
+images(self) -> None | list[str]
+```
+
+Returns the images associated with this message as list of base 64 strings.
+
+
+#### `parts`
+
+```python
+parts(self)
+```
+
+Returns all of the constituent parts of an Instruction.
+
+
+#### `format_for_llm`
+
+```python
+format_for_llm(self) -> TemplateRepresentation
+```
+
+Formats the content for a Language Model.
+
+**Returns:**
+- The formatted output suitable for language models.
+
+
+### `ToolMessage`
+
+
+Adds the name field for function name.
+
+
+**Methods:**
+
+#### `format_for_llm`
+
+```python
+format_for_llm(self) -> TemplateRepresentation
+```
+
+The same representation as Message with a name field added to args.
+

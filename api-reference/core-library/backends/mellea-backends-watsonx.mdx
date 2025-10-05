@@ -1,0 +1,66 @@
+---
+title: watsonx
+sidebarTitle: watsonx
+---
+
+# `mellea.backends.watsonx`
+
+
+A generic WatsonX.ai compatible backend that wraps around the watson_machine_learning library.
+
+## Classes
+
+### `WatsonxAIBackend`
+
+
+A generic backend class for watsonx SDK.
+
+
+**Methods:**
+
+#### `filter_chat_completions_kwargs`
+
+```python
+filter_chat_completions_kwargs(self, model_options: dict) -> dict
+```
+
+Filter kwargs to only include valid watsonx chat.completions.create parameters.
+
+
+#### `generate_from_context`
+
+```python
+generate_from_context(self, action: Component | CBlock, ctx: Context)
+```
+
+See `generate_from_chat_context`.
+
+
+#### `generate_from_chat_context`
+
+```python
+generate_from_chat_context(self, action: Component | CBlock, ctx: Context) -> ModelOutputThunk
+```
+
+Generates a new completion from the provided Context using this backend's `Formatter`.
+
+
+#### `processing`
+
+```python
+processing(self, mot: ModelOutputThunk, chunk: dict)
+```
+
+Called during generation to add information from a single ChatCompletion or ChatCompletionChunk to the ModelOutputThunk.
+
+For OpenAI-like APIs, tool call parsing is handled in the post processing step.
+
+
+#### `post_processing`
+
+```python
+post_processing(self, mot: ModelOutputThunk, conversation: list[dict], tools: dict[str, Callable], seed, format)
+```
+
+Called when generation is done.
+

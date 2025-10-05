@@ -1,0 +1,64 @@
+---
+title: instruction
+sidebarTitle: instruction
+---
+
+# `mellea.stdlib.instruction`
+
+
+Instructions.
+
+## Classes
+
+### `Instruction`
+
+
+The Instruction in an instruct/validate/repair loop.
+
+
+**Methods:**
+
+#### `parts`
+
+```python
+parts(self)
+```
+
+Returns all of the constituent parts of an Instruction.
+
+
+#### `format_for_llm`
+
+```python
+format_for_llm(self) -> TemplateRepresentation
+```
+
+Formats the instruction for Formatter use.
+
+
+#### `apply_user_dict_from_jinja`
+
+```python
+apply_user_dict_from_jinja(user_dict: dict[str, str], s: str) -> str
+```
+
+Treats s as a jinja string and user_dict as the template values dictionary.
+
+
+#### `requirements`
+
+```python
+requirements(self) -> list[Requirement]
+```
+
+Returns a list of Requirement instances.
+
+
+#### `copy_and_repair`
+
+```python
+copy_and_repair(self, repair_string: str) -> Instruction
+```
+
+Creates a copy of the instruction and adds/overwrites the repair string.
+

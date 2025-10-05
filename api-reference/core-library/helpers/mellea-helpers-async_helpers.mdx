@@ -1,0 +1,34 @@
+---
+title: async_helpers
+sidebarTitle: async_helpers
+---
+
+# `mellea.helpers.async_helpers`
+
+
+Async helper functions.
+
+## Functions
+
+### `send_to_queue`
+
+```python
+send_to_queue(co: Coroutine[Any, Any, AsyncIterator | Any] | AsyncIterator, aqueue: asyncio.Queue) -> None
+```
+
+
+Processes the output of an async chat request by sending the output to an async queue.
+
+
+### `wait_for_all_mots`
+
+```python
+wait_for_all_mots(mots: list[ModelOutputThunk])
+```
+
+
+Helper function to make waiting for multiple ModelOutputThunks to be computed easier.
+
+All ModelOutputThunks must be from the same event loop. This should always be the case in sampling
+functions, session functions, and top-level mellea functions.
+

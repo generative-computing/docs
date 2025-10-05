@@ -1,0 +1,152 @@
+---
+title: huggingface
+sidebarTitle: huggingface
+---
+
+# `mellea.backends.huggingface`
+
+
+A backend that uses the Huggingface Transformers library.
+
+The purpose of the Hugginface backend is to provide a setting for implementing experimental features. If you want a performance local backend, and do not need experimental features such as Span-based context or ALoras, consider using Ollama backends instead.
+
+
+## Classes
+
+### `HFAloraCacheInfo`
+
+
+A dataclass for holding some KV cache and associated information.
+
+
+### `LocalHFBackend`
+
+
+The LocalHFBackend uses Huggingface's transformers library for inference, and uses a Formatter to convert `Component`s into prompts. This backend also supports Activated LoRAs (ALoras)](https://arxiv.org/pdf/2504.12397).
+
+This backend is designed for running an HF model for small-scale inference locally on your machine.
+
+This backend is NOT designed for inference scaling on CUDA-enabled hardware.
+
+
+**Methods:**
+
+#### `alora_model`
+
+```python
+alora_model(self) -> 'aLoRAPeftModelForCausalLM | None'
+```
+
+The ALora model.
+
+
+#### `alora_model`
+
+```python
+alora_model(self, model: 'aLoRAPeftModelForCausalLM | None')
+```
+
+Sets the ALora model. This should only happen once in a backend's lifetime.
+
+
+#### `generate_from_context`
+
+```python
+generate_from_context(self, action: Component | CBlock, ctx: Context)
+```
+
+Generate using the huggingface model.
+
+
+#### `processing`
+
+```python
+processing(self, mot: ModelOutputThunk, chunk: str | GenerateDecoderOnlyOutput, input_ids)
+```
+
+Process the returned chunks or the complete response.
+
+
+#### `post_processing`
+
+```python
+post_processing(self, mot: ModelOutputThunk, conversation: list[dict], format: type[BaseModelSubclass] | None, tool_calls: bool, tools: dict[str, Callable], seed, input_ids)
+```
+
+Called when generation is done.
+
+
+#### `cache_get`
+
+```python
+cache_get(self, id: str) -> HFAloraCacheInfo | None
+```
+
+Retrieve from cache.
+
+
+#### `cache_put`
+
+```python
+cache_put(self, id: str, v: HFAloraCacheInfo)
+```
+
+Put into cache.
+
+
+#### `add_alora`
+
+```python
+add_alora(self, alora: HFAlora)
+```
+
+Loads an ALora for this backend.
+
+**Args:**
+- `alora`: identifier for the ALora adapter
+
+
+#### `get_alora`
+
+```python
+get_alora(self, alora_name: str) -> Alora | None
+```
+
+Returns the ALora by name, or None if that ALora isn't loaded.
+
+
+#### `get_aloras`
+
+```python
+get_aloras(self) -> list[Alora]
+```
+
+Returns a list of all loaded ALora adapters.
+
+
+### `HFAlora`
+
+
+ALoras that work with the local huggingface backend.
+
+
+### `HFProcessRewardModel`
+
+
+A Process Reward Model that works with a huggingface backend.
+
+
+**Methods:**
+
+#### `stepify`
+
+```python
+stepify(self, content: str, step_separator: str) -> list[str]
+```
+
+Splits the assistant response into steps to score.
+
+**Args:**
+- `content`: assistant response to score
+- `step_separator`: string on which to separate the content into steps
+
