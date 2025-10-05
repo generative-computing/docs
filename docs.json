@@ -60,6 +60,64 @@
             ]
           },
           {
+            "group": "Core-Library",
+            "pages": [
+              "api-reference/core-library/index"
+            ]
+          },
+          {
+            "group": "Core-Library \u203a Stdlib",
+            "pages": [
+              "api-reference/core-library/stdlib/index",
+              "api-reference/core-library/stdlib/mellea-stdlib-base",
+              "api-reference/core-library/stdlib/mellea-stdlib-session",
+              "api-reference/core-library/stdlib/mellea-stdlib-instruction",
+              "api-reference/core-library/stdlib/mellea-stdlib-genslot",
+              "api-reference/core-library/stdlib/mellea-stdlib-docs-richdocument",
+              "api-reference/core-library/stdlib/mellea-stdlib-chat",
+              "api-reference/core-library/stdlib/mellea-stdlib-funcs",
+              "api-reference/core-library/stdlib/mellea-stdlib-mify",
+              "api-reference/core-library/stdlib/mellea-stdlib-mobject",
+              "api-reference/core-library/stdlib/mellea-stdlib-requirement",
+              "api-reference/core-library/stdlib/mellea-stdlib-sampling-base",
+              "api-reference/core-library/stdlib/mellea-stdlib-sampling-types",
+              "api-reference/core-library/stdlib/mellea-stdlib-rewards-prm_scorer",
+              "api-reference/core-library/stdlib/mellea-stdlib-sampling-best_of_n",
+              "api-reference/core-library/stdlib/mellea-stdlib-safety-guardian"
+
+            ]
+          },
+          {
+            "group": "Core-Library \u203a Backends",
+            "pages": [
+              "api-reference/core-library/backends/index",
+              "api-reference/core-library/backends/mellea-backends-huggingface",
+              "api-reference/core-library/backends/mellea-backends-litellm",
+              "api-reference/core-library/backends/mellea-backends-ollama",
+              "api-reference/core-library/backends/mellea-backends-openai",
+              "api-reference/core-library/backends/mellea-backends-watsonx",
+              "api-reference/core-library/backends/mellea-backends-dummy",
+              "api-reference/core-library/backends/mellea-backends-model_ids",
+              "api-reference/core-library/backends/mellea-backends-cache",
+              "api-reference/core-library/backends/mellea-backends-formatter",
+              "api-reference/core-library/backends/mellea-backends-process_reward_models-huggingface-prms",
+              "api-reference/core-library/backends/mellea-backends-tools",
+              "api-reference/core-library/backends/mellea-backends-types",
+              "api-reference/core-library/backends/mellea-backends-aloras-__init__",
+              "api-reference/core-library/backends/mellea-backends-aloras-huggingface-granite_aloras",
+              "api-reference/core-library/backends/mellea-backends-aloras-openai-granite_aloras"
+            ]
+          },
+          {
+            "group": "Core-Library \u203a Helpers",
+            "pages": [
+              "api-reference/core-library/helpers/index",
+              "api-reference/core-library/helpers/mellea-helpers-async_helpers",
+              "api-reference/core-library/helpers/mellea-helpers-fancy_logger",
+              "api-reference/core-library/helpers/mellea-helpers-openai_compatible_helpers"
+            ]
+          },
+          {
             "group": "CLI",
             "pages": [
               "api-reference/cli/index",
@@ -80,80 +138,7 @@
             "pages": [
               "api-reference/cli/decompose/index",
               "api-reference/cli/decompose/cli-decompose-decompose",
-              "api-reference/cli/decompose/cli-decompose-pipeline",
-              "api-reference/cli/decompose/cli-decompose-prompt_modules-__init__",
-              "api-reference/cli/decompose/cli-decompose-prompt_modules-constraint_extractor-__init__",
-              "api-reference/cli/decompose/cli-decompose-prompt_modules-subtask_constraint_assign-__init__",
-              "api-reference/cli/decompose/cli-decompose-prompt_modules-subtask_list-__init__",
-              "api-reference/cli/decompose/cli-decompose-prompt_modules-subtask_prompt_generator-__init__"
-            ]
-          },
-          {
-            "group": "Core-Library",
-            "pages": [
-              "api-reference/core-library/index"
-            ]
-          },
-          {
-            "group": "Core-Library \u203a Helpers",
-            "pages": [
-              "api-reference/core-library/helpers/index",
-              "api-reference/core-library/helpers/mellea-helpers-async_helpers",
-              "api-reference/core-library/helpers/mellea-helpers-fancy_logger",
-              "api-reference/core-library/helpers/mellea-helpers-openai_compatible_helpers"
-            ]
-          },
-          {
-            "group": "Core-Library \u203a Stdlib",
-            "pages": [
-              "api-reference/core-library/stdlib/index",
-              "api-reference/core-library/stdlib/mellea-stdlib-base",
-              "api-reference/core-library/stdlib/mellea-stdlib-chat",
-              "api-reference/core-library/stdlib/mellea-stdlib-docs-__init__",
-              "api-reference/core-library/stdlib/mellea-stdlib-docs-richdocument",
-              "api-reference/core-library/stdlib/mellea-stdlib-funcs",
-              "api-reference/core-library/stdlib/mellea-stdlib-genslot",
-              "api-reference/core-library/stdlib/mellea-stdlib-instruction",
-              "api-reference/core-library/stdlib/mellea-stdlib-mify",
-              "api-reference/core-library/stdlib/mellea-stdlib-mobject",
-              "api-reference/core-library/stdlib/mellea-stdlib-requirement",
-              "api-reference/core-library/stdlib/mellea-stdlib-rewards-__init__",
-              "api-reference/core-library/stdlib/mellea-stdlib-rewards-prm_scorer",
-              "api-reference/core-library/stdlib/mellea-stdlib-safety-__init__",
-              "api-reference/core-library/stdlib/mellea-stdlib-safety-guardian",
-              "api-reference/core-library/stdlib/mellea-stdlib-sampling-__init__",
-              "api-reference/core-library/stdlib/mellea-stdlib-sampling-base",
-              "api-reference/core-library/stdlib/mellea-stdlib-sampling-best_of_n",
-              "api-reference/core-library/stdlib/mellea-stdlib-sampling-types",
-              "api-reference/core-library/stdlib/mellea-stdlib-session"
-
-            ]
-          },
-          {
-            "group": "Core-Library \u203a backends",
-            "pages": [
-              "api-reference/core-library/backends/index",
-              "api-reference/core-library/backends/mellea-backends-aloras-__init__",
-              "api-reference/core-library/backends/mellea-backends-aloras-huggingface-__init__",
-              "api-reference/core-library/backends/mellea-backends-aloras-huggingface-granite_aloras",
-              "api-reference/core-library/backends/mellea-backends-aloras-openai-__init__",
-              "api-reference/core-library/backends/mellea-backends-aloras-openai-granite_aloras",
-              "api-reference/core-library/backends/mellea-backends-cache",
-              "api-reference/core-library/backends/mellea-backends-dummy",
-              "api-reference/core-library/backends/mellea-backends-formatter",
-              "api-reference/core-library/backends/mellea-backends-huggingface",
-              "api-reference/core-library/backends/mellea-backends-litellm",
-              "api-reference/core-library/backends/mellea-backends-model_ids",
-              "api-reference/core-library/backends/mellea-backends-ollama",
-              "api-reference/core-library/backends/mellea-backends-openai",
-              "api-reference/core-library/backends/mellea-backends-process_reward_models-__init__",
-              "api-reference/core-library/backends/mellea-backends-process_reward_models-huggingface-__init__",
-              "api-reference/core-library/backends/mellea-backends-process_reward_models-huggingface-prms",
-              "api-reference/core-library/backends/mellea-backends-tools",
-              "api-reference/core-library/backends/mellea-backends-types",
-              "api-reference/core-library/backends/mellea-backends-watsonx"
-
-
+              "api-reference/cli/decompose/cli-decompose-pipeline"
             ]
           }
         ]

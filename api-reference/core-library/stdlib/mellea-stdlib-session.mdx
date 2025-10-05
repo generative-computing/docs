@@ -68,7 +68,7 @@ to the backend (e.g., temperature, max_tokens, etc.).
 - or called directly with session methods.
 
 **Examples:**
-
+```
 # Basic usage with default settings
 with start_session() as session:
     response = instruct("Explain quantum computing")
@@ -87,7 +87,7 @@ with start_session("hf", "microsoft/DialoGPT-medium", ctx=ChatContext()):
 session = start_session()
 response = session.instruct("Explain quantum computing")
 session.cleanup()
-
+```
 
 ## Classes
 

@@ -1,6 +1,6 @@
 ---
-title: __init__
-sidebarTitle: __init__
+title: aloras
+sidebarTitle: aloras
 ---
 
 # `mellea.backends.aloras`
@@ -13,7 +13,7 @@ Abstract interfaces for Backends that implement Activated LoRAs.
 ### `Alora`
 
 
-Activated LoRAs (Aloras)](https://arxiv.org/pdf/2504.12397) are are [low-rank adapters](https://arxiv.org/abs/2106.09685) that can reuse KV cache from their underlying model.
+Activated LoRAs [Aloras](https://arxiv.org/pdf/2504.12397) are are [low-rank adapters](https://arxiv.org/abs/2106.09685) that can reuse KV cache from their underlying model.
 
 This class should not be directly subclassed by a specific ALora. Each backend that supports ALora should provide a backend-specific abstract class that subclasses `ALora`. Individual ALoras should then be defined by subclassing the model-specific backend.
 
