@@ -1,0 +1,60 @@
+---
+title: openai granite_aloras
+sidebarTitle: openai granite_aloras
+---
+
+# `mellea.backends.aloras.openai.granite_aloras`
+
+
+OpenAI implementations for IBM's "starter pack" of Activated LoRAs.
+
+## Functions
+
+### `processing`
+
+```python
+processing(mot: ModelOutputThunk, chunk: Completion)
+```
+
+
+Called to process the incoming chunks.
+
+
+### `post_processing`
+
+```python
+post_processing(backend: OpenAIBackend, mot: ModelOutputThunk)
+```
+
+
+Called after all data has been received.
+
+
+### `add_granite_aloras`
+
+```python
+add_granite_aloras(backend: OpenAIBackend)
+```
+
+
+Adds the IBM Granite "starter pack" ALoras to a backend.
+
+
+## Classes
+
+### `OpenAIConstraintAlora`
+
+
+The [Requirement Checking ALora for Granite 3.2 8B](https://huggingface.co/ibm-granite/granite-3.2-8b-alora-requirement-check) checks if the specified requirement was satisfied by the most recent model generation. Only one requirement is checked at a time.
+
+
+**Methods:**
+
+#### `generate_using_strings`
+
+```python
+generate_using_strings(self, input: str, response: str, constraint: str, force_yn: bool = True, stream: bool = False) -> ModelOutputThunk
+```
+
+Generates a constraint response from the ALora. Must be run in a running event loop.
+

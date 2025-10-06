@@ -1,0 +1,62 @@
+---
+title: huggingface granite_aloras
+sidebarTitle: huggingface granite_aloras
+---
+
+# `mellea.backends.aloras.huggingface.granite_aloras`
+
+
+Huggingface implementations for IBM's "starter pack" of Activated LoRAs.
+
+## Functions
+
+### `processing`
+
+```python
+processing(mot: ModelOutputThunk, chunk: GenerateDecoderOnlyOutput, backend: LocalHFBackend, force_yn: bool, gen_prompt: str)
+```
+
+
+Called to process the incoming chunks.
+
+
+### `post_processing`
+
+```python
+post_processing(mot: ModelOutputThunk, backend: LocalHFBackend)
+```
+
+
+Called after all data has been received.
+
+
+### `add_granite_aloras`
+
+```python
+add_granite_aloras(backend: LocalHFBackend)
+```
+
+
+Adds the IBM Granite "starter pack" ALoras to a backend.
+
+
+## Classes
+
+### `HFConstraintAlora`
+
+
+The Requirement Checking ALora for Granite checks if the specified requirement was satisfied by the most recent model generation. Only one requirement is checked at a time.
+
+Currently supports [Granite 3.2 8B](https://huggingface.co/ibm-granite/granite-3.2-8b-alora-requirement-check) and [Granite 3.3 8B](https://huggingface.co/ibm-granite/granite-3.3-8b-alora-requirement-check) by default.
+
+
+**Methods:**
+
+#### `generate_using_strings`
+
+```python
+generate_using_strings(self, input: str, response: str, constraint: str, force_yn: bool = True, stream: bool = False) -> ModelOutputThunk
+```
+
+Generates a constraint response from the ALora. Must be run in a running event loop.
+

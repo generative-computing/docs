@@ -1,0 +1,81 @@
+---
+title: cache
+sidebarTitle: cache
+---
+
+# `mellea.backends.cache`
+
+
+Caching strategies.
+
+## Classes
+
+### `Cache`
+
+
+A Cache for storing model state (e.g., kv cache).
+
+
+**Methods:**
+
+#### `put`
+
+```python
+put(self, key: str, value: Any)
+```
+
+Inserts into the cache. May result in eviction of other cached values.
+
+
+#### `get`
+
+```python
+get(self, key: str) -> Any | None
+```
+
+Retrieves a value from the cache. Returns `None` if the `id` has no cached value. May impact which cache values are evicted.
+
+
+#### `current_size`
+
+```python
+current_size(self) -> int
+```
+
+Returns the number of things currently in the cache. Mostly useful for debugging.
+
+
+### `SimpleLRUCache`
+
+
+A simple [LRU](https://en.wikipedia.org/wiki/Cache_replacement_policies#Least_Recently_Used_(LRU)) cache.
+
+
+**Methods:**
+
+#### `current_size`
+
+```python
+current_size(self)
+```
+
+Just return the size of the key set. This isn't necessarily safe.
+
+
+#### `get`
+
+```python
+get(self, key: str) -> Any | None
+```
+
+Gets a value from the cache.
+
+
+#### `put`
+
+```python
+put(self, key: str, value: Any)
+```
+
+Put a value into the cache.
+

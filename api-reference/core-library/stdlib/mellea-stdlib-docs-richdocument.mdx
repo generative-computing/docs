@@ -1,0 +1,173 @@
+---
+title: richdocument
+sidebarTitle: richdocument
+---
+
+# `mellea.stdlib.docs.richdocument`
+
+
+Representations of Docling Documents.
+
+## Classes
+
+### `RichDocument`
+
+
+A `RichDocument` is a block of content with an underlying DoclingDocument.
+
+It has helper functions for working with the document and extracting parts of it.
+
+
+**Methods:**
+
+#### `parts`
+
+```python
+parts(self) -> list[Component | CBlock]
+```
+
+A `RichDocument` has no parts.
+
+
+#### `format_for_llm`
+
+```python
+format_for_llm(self) -> TemplateRepresentation | str
+```
+
+Return Document content as Markdown.
+
+No template needed here.
+
+
+#### `docling`
+
+```python
+docling(self) -> DoclingDocument
+```
+
+Get the underlying Docling Document.
+
+
+#### `to_markdown`
+
+```python
+to_markdown(self)
+```
+
+Get the full text of the document as markdown.
+
+
+#### `get_tables`
+
+```python
+get_tables(self) -> list[Table]
+```
+
+Return the `Table`s that are a part of this document.
+
+
+#### `save`
+
+```python
+save(self, filename: str | Path) -> None
+```
+
+Save the underlying DoclingDocument for reuse later.
+
+
+#### `load`
+
+```python
+load(cls, filename: str | Path) -> RichDocument
+```
+
+Load a DoclingDocument from a file. The file must already be a DoclingDocument.
+
+
+#### `from_document_file`
+
+```python
+from_document_file(cls, source: str | Path | DocumentStream) -> RichDocument
+```
+
+Process a document with Docling.
+
+
+### `TableQuery`
+
+
+Table-specific query.
+
+
+**Methods:**
+
+#### `format_for_llm`
+
+```python
+format_for_llm(self) -> TemplateRepresentation
+```
+
+Template arguments for Formatter.
+
+
+### `TableTransform`
+
+
+Table-specific transform.
+
+
+**Methods:**
+
+#### `format_for_llm`
+
+```python
+format_for_llm(self) -> TemplateRepresentation
+```
+
+Template arguments for Formatter.
+
+
+### `Table`
+
+
+A `Table` represents a single table within a larger Docling Document.
+
+
+**Methods:**
+
+#### `from_markdown`
+
+```python
+from_markdown(cls, md: str) -> Table | None
+```
+
+Creates a fake document from the markdown and attempts to extract the first table found.
+
+
+#### `to_markdown`
+
+```python
+to_markdown(self) -> str
+```
+
+Get the `Table` as markdown.
+
+
+#### `transpose`
+
+```python
+transpose(self) -> Table | None
+```
+
+Transposes the table. Will return a new transposed `Table` if successful.
+
+
+#### `format_for_llm`
+
+```python
+format_for_llm(self) -> TemplateRepresentation | str
+```
+
+Return Table representation for Formatter.
+

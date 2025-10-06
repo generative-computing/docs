@@ -1,0 +1,70 @@
+---
+title: types
+sidebarTitle: types
+---
+
+# `mellea.backends.types`
+
+Useful type definitions for models, formatters, and backends.
+
+## Classes
+
+### `ModelOption`
+
+A type that wraps around model options.
+
+Uses sentinel values (wrapped by @@@) to provide backend and model-agnostic keys for common model options.
+
+Create a dictionary containing model options like this:
+
+```python
+from mellea.backends.types import ModelOption
+model_options = { ModelOption.TEMPERATURE : 0.0, ModelOption.SYSTEM_PROMPT : "You are a helpful assistant" }
+```
+
+**Methods:**
+
+#### `replace_keys`
+
+```python
+replace_keys(options: dict, from_to: dict[str, str]) -> dict[str, Any]
+```
+
+Returns a new dict with the keys in `options` replaced with the corresponding value for that key in `from_to`.
+
+- Any key with value == None is treated the same as the key missing.
+
+- If the destination key already exists in `options`, the original value is kept in the output.
+
+- Regardless of the presence of the destination key in `options`,
+  the source key is always absent in the output.
+
+Example:
+
+```python
+>>> options = {"k1": "v1", "k2": "v2", "M1": "m1"}
+>>> from_to = {"k1": "M1", "k2": "M2"}
+
+>>> new_options = replace_keys(options, from_to)
+>>> print(new_options)
+... {"M1": "m1", "M2": "v2"}
+```
+
+- Notice that "M1" keeps the original value "m1", rather than "v1".
+- Notice that both "k1" and "k2" are absent in the output.
+
+#### `remove_special_keys`
+
+```python
+remove_special_keys(model_options) -> dict[str, Any]
+```
+
+Removes all sentiel-valued keys (i.e., those that start with @@@).
+
+#### `merge_model_options`
+
+```python
+merge_model_options(persistent_opts: dict[str, Any], overwrite_opts: dict[str, Any] | None) -> dict[str, Any]
+```
+
+Creates a new dict that contains all keys and values from persistent opts and overwrite opts. If there are duplicate keys, overwrite opts key value pairs will be used.

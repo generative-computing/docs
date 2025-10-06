@@ -1,0 +1,23 @@
+---
+title: upload
+sidebarTitle: upload
+---
+
+# `cli.alora.upload`
+
+## Functions
+
+### `upload_model`
+
+```python
+upload_model(weight_path: str, model_name: str, private: bool = True)
+```
+
+
+Upload a trained adapter (LoRA/aLoRA) to Hugging Face Hub.
+
+**Args:**
+- `weight_path`: Directory containing adapter weights (from save_pretrained).
+- `model_name`: Target model repo name (e.g., "acme/carbchecker-alora").
+- `private`: Whether the repo should be private. Default\: True.
+

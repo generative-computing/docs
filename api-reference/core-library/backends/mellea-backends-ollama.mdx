@@ -1,0 +1,94 @@
+---
+title: ollama
+sidebarTitle: ollama
+---
+
+# `mellea.backends.ollama`
+
+
+A model backend wrapping the Ollama Python SDK.
+
+## Functions
+
+### `chat_response_delta_merge`
+
+```python
+chat_response_delta_merge(mot: ModelOutputThunk, delta: ollama.ChatResponse)
+```
+
+
+Merges the individual ChatResponse chunks from a streaming response into a single ChatResponse.
+
+**Args:**
+- `mot`: the ModelOutputThunk that the deltas are being used to populated.
+- `delta`: the most recent ollama ChatResponse.
+
+
+## Classes
+
+### `OllamaModelBackend`
+
+
+A model that uses the Ollama Python SDK for local inference.
+
+
+**Methods:**
+
+#### `is_model_available`
+
+```python
+is_model_available(self, model_name)
+```
+
+Checks if a specific Ollama model is available locally.
+
+**Args:**
+- `model_name`: The name of the model to check for (e.g., "llama2").
+
+**Returns:**
+- True if the model is available, False otherwise.
+
+
+#### `generate_from_context`
+
+```python
+generate_from_context(self, action: Component | CBlock, ctx: Context)
+```
+
+See `generate_from_chat_context`.
+
+
+#### `generate_from_chat_context`
+
+```python
+generate_from_chat_context(self, action: Component | CBlock, ctx: Context) -> ModelOutputThunk
+```
+
+Generates a ModelOutputThunk. The final value for this object can be awaited.
+
+The new completion is generated from the provided Context using this backend's `Formatter`.
+
+This implementation treats the `Context` as a chat history, and uses the  `ollama.Client.chat()` interface to generate a completion.
+This will not always work, because sometimes we want to use non-chat models.
+
+**Raises:**
+- `RuntimeError`: If not called from a thread with a running event loop.
+
+
+#### `processing`
+
+```python
+processing(self, mot: ModelOutputThunk, chunk: ollama.ChatResponse, tools: dict[str, Callable])
+```
+
+Called during generation to add information from a single ChatResponse to the ModelOutputThunk.
+
+
+#### `post_processing`
+
+```python
+post_processing(self, mot: ModelOutputThunk, conversation: list[dict], tools: dict[str, Callable], format)
+```
+
+Called when generation is done.
+

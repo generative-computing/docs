@@ -1,0 +1,415 @@
+---
+title: base
+sidebarTitle: base
+---
+
+# `mellea.stdlib.base`
+
+
+Basic stdlib data structures.
+
+## Functions
+
+### `get_images_from_component`
+
+```python
+get_images_from_component(c: Component) -> None | list[ImageBlock]
+```
+
+
+Gets images from a `Component` if they are present and a non-empty list, otherwise returns None.
+
+
+### `blockify`
+
+```python
+blockify(s: str | CBlock | Component) -> CBlock | Component
+```
+
+
+`blockify` is a helper function that turns raw strings into CBlocks.
+
+
+## Classes
+
+### `CBlock`
+
+
+A `CBlock` is a block of content that can serve as input to or output from an LLM.
+
+
+**Methods:**
+
+#### `value`
+
+```python
+value(self) -> str | None
+```
+
+Gets the value of the block.
+
+
+#### `value`
+
+```python
+value(self, v: str)
+```
+
+Sets the value of the block.
+
+
+### `ImageBlock`
+
+
+A `ImageBlock` represents an image (as base64 PNG).
+
+
+**Methods:**
+
+#### `is_valid_base64_png`
+
+```python
+is_valid_base64_png(s: str) -> bool
+```
+
+Checks if a string is a valid base64 string [AIA PAI Nc Hin R v1.0].
+
+
+#### `pil_to_base64`
+
+```python
+pil_to_base64(image: PILImage.Image) -> str
+```
+
+Converts a PIL image to a base64 string representation.
+
+
+#### `from_pil_image`
+
+```python
+from_pil_image(cls, image: PILImage.Image, meta: dict[str, Any] | None = None) -> ImageBlock
+```
+
+Converts a PIL image to a base64 string representation.
+
+
+### `Component`
+
+
+A `Component` is a composite data structure that is intended to be represented to an LLM.
+
+
+**Methods:**
+
+#### `parts`
+
+```python
+parts(self) -> list[Component | CBlock]
+```
+
+The set of all the constituent parts of the `Component`.
+
+
+#### `format_for_llm`
+
+```python
+format_for_llm(self) -> TemplateRepresentation | str
+```
+
+Formats the `Component` into a `TemplateRepresentation` or string.
+
+Returns: a `TemplateRepresentation` or string
+
+
+### `GenerateType`
+
+
+Used to track what functions can be used to extract a value from a ModelOutputThunk.
+
+
+### `ModelOutputThunk`
+
+
+A `ModelOutputThunk` is a special type of `CBlock` that we know came from a model's output. It is possible to instantiate one without the output being computed yet.
+
+
+**Methods:**
+
+#### `is_computed`
+
+```python
+is_computed(self)
+```
+
+Returns true only if this Thunk has already been filled.
+
+
+#### `value`
+
+```python
+value(self) -> str | None
+```
+
+Gets the value of the block.
+
+
+#### `value`
+
+```python
+value(self, v: str)
+```
+
+Sets the value of the block.
+
+
+#### `avalue`
+
+```python
+avalue(self) -> str
+```
+
+Returns the value of the ModelOutputThunk. Can be used for both async streaming and async non-streaming.
+
+**Raises:**
+- `Exception`: Propagates any errors from the underlying inference engine api request.
+- `RuntimeError`: If called when the ModelOutputThunk's generate function is not async compatible.
+
+
+#### `astream`
+
+```python
+astream(self) -> str
+```
+
+Returns the ModelOutputThunk's partial value including the next chunk(s). Can be used for both async streaming and async non-streaming.
+
+Returns the value of the ModelOutputThunk if streaming is done.
+
+**Note**: Be careful with calling this function. Only call it from one location at a time. This means you shouldn't pass a ModelOutputThunk to
+multiple coroutines/tasks and call astream from those coroutines/tasks simultaneously. We have considered solutions to this but are waiting until
+we see this error happen in a real use case.
+
+**Raises:**
+- `Exception`: Propagates any errors from the underlying inference engine api request.
+- `RuntimeError`: If called when the ModelOutputThunk's generate function is not async compatible.
+
+
+### `ContextTurn`
+
+
+A turn of model input and model output.
+
+
+### `Context`
+
+
+A `Context` is used to track the state of a `MelleaSession`.
+
+A context is immutable. Every alteration leads to a new context.
+
+
+**Methods:**
+
+#### `from_previous`
+
+```python
+from_previous(cls: type[ContextT], previous: Context, data: Component | CBlock) -> ContextT
+```
+
+Constructs a new context from an existing context.
+
+
+#### `reset_to_new`
+
+```python
+reset_to_new(cls: type[ContextT]) -> ContextT
+```
+
+Returns an empty context for convenience.
+
+
+#### `is_root_node`
+
+```python
+is_root_node(self) -> bool
+```
+
+Returns whether this context is the root context node.
+
+
+#### `previous_node`
+
+```python
+previous_node(self) -> Context | None
+```
+
+Returns the context node from which this context node was created.
+
+Internal use: Users should not need to use this property.
+
+
+#### `node_data`
+
+```python
+node_data(self) -> Component | CBlock | None
+```
+
+Returns the data associated with this context node.
+
+Internal use: Users should not need to use this property.
+
+
+#### `is_chat_context`
+
+```python
+is_chat_context(self) -> bool
+```
+
+Returns whether this context is a chat context.
+
+
+#### `as_list`
+
+```python
+as_list(self, last_n_components: int | None = None) -> list[Component | CBlock]
+```
+
+Returns a list of the last n components in the context sorted from FIRST TO LAST.
+
+If `last_n_components` is `None`, then all components are returned.
+
+
+#### `actions_for_available_tools`
+
+```python
+actions_for_available_tools(self) -> list[Component | CBlock] | None
+```
+
+Provides a list of actions to extract tools from for use with during generation, or None if that's not possible.
+
+Can be used to make the available tools differ from the tools of all the actions in the context. Can be overwritten by subclasses.
+
+
+#### `last_output`
+
+```python
+last_output(self, check_last_n_components: int = 3) -> ModelOutputThunk | None
+```
+
+The last output thunk of the context.
+
+
+#### `last_turn`
+
+```python
+last_turn(self)
+```
+
+The last input/output turn of the context.
+
+This can be partial. If the last event is an input, then the output is None.
+
+
+#### `add`
+
+```python
+add(self, c: Component | CBlock) -> Context
+```
+
+Returns a new context obtained by adding `c` to this context.
+
+
+#### `view_for_generation`
+
+```python
+view_for_generation(self) -> list[Component | CBlock] | None
+```
+
+Provides a linear list of context components to use for generation, or None if that is not possible to construct.
+
+
+### `ChatContext`
+
+
+Initializes a chat context with unbounded window_size and is_chat=True by default.
+
+
+**Methods:**
+
+#### `add`
+
+```python
+add(self, c: Component | CBlock) -> ChatContext
+```
+
+Add a new component/cblock to the context. Returns the new context.
+
+
+#### `view_for_generation`
+
+```python
+view_for_generation(self) -> list[Component | CBlock] | None
+```
+
+Returns the context in a linearized form. Uses the window_size set during initialization.
+
+
+### `SimpleContext`
+
+
+A `SimpleContext` is a context in which each interaction is a separate and independent turn. The history of all previous turns is NOT saved..
+
+
+**Methods:**
+
+#### `add`
+
+```python
+add(self, c: Component | CBlock) -> SimpleContext
+```
+
+Add a new component/cblock to the context. Returns the new context.
+
+
+#### `view_for_generation`
+
+```python
+view_for_generation(self) -> list[Component | CBlock] | None
+```
+
+Returns an empty list.
+
+
+### `TemplateRepresentation`
+
+
+Representing a component as a set of important attributes that can be consumed by the formatter.
+
+
+### `GenerateLog`
+
+
+A dataclass for capturing log entries.
+
+GenerateLog provides a structured way to include various details in log entries, making it useful for maintaining detailed
+records of events or operations where context and additional data are significant.
+
+
+### `ModelToolCall`
+
+
+A dataclass for capturing the tool calls a model wants to make.
+
+Provides a unified way to call tools post generation.
+
+
+**Methods:**
+
+#### `call_func`
+
+```python
+call_func(self) -> Any
+```
+
+A helper function for calling the function/tool represented by this object.
+

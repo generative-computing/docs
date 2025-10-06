@@ -1,0 +1,81 @@
+---
+title: best_of_n
+sidebarTitle: best_of_n
+---
+
+# `mellea.stdlib.sampling.best_of_n`
+
+
+Best of N Sampling Strategy.
+
+## Classes
+
+### `BestofNSamplingStrategy`
+
+
+Sampling strategy that selects the best response from a set of samples as given by a Requirement Scorer.
+
+
+**Methods:**
+
+#### `sample`
+
+```python
+sample(self, action: Component, context: Context, backend: Backend, requirements: list[Requirement] | None) -> SamplingResult
+```
+
+This method performs a sampling operation based on the given instruction.
+
+**Args:**
+- `action `: The action object to be sampled.
+- `context`: The context to be passed to the sampling strategy.
+- `backend`: The backend used for generating samples.
+- `requirements`: List of requirements to test against (merged with global requirements).
+- `validation_ctx`: Optional context to use for validation. If None, validation_ctx = ctx.
+- `format`: output format for structured outputs.
+- `model_options`: model options to pass to the backend during generation / validation.
+- `tool_calls`: True if tool calls should be used during this sampling strategy.
+- `show_progress`: if true, a tqdm progress bar is used. Otherwise, messages will still be sent to flog.
+
+**Returns:**
+- A result object indicating the success or failure of the sampling process.
+
+**Raises:**
+- `AssertionError`: Asserts that all required components (repair, select_from_failure, validate, and generate) are provided before proceeding with the sampling.
+
+
+#### `select_from_failure`
+
+```python
+select_from_failure(sampled_actions: list[Component], sampled_results: list[ModelOutputThunk], sampled_val: list[list[tuple[Requirement, ValidationResult]]]) -> int
+```
+
+Selects the attempt with the highest score.
+
+**Args:**
+- `sampled_actions`: List of actions that have been executed (without success).
+- `sampled_results`: List of (unsuccessful) generation results for these actions.
+- `sampled_val`: List of validation results for the results.
+
+**Returns:**
+- The index of the result that should be selected as `.value`.
+
+
+#### `repair`
+
+```python
+repair(old_ctx: Context, new_ctx: Context, past_actions: list[Component], past_results: list[ModelOutputThunk], past_val: list[list[tuple[Requirement, ValidationResult]]]) -> tuple[Component, Context]
+```
+
+Adds a description of the requirements that failed to a copy of the original instruction.
+
+**Args:**
+- `old_ctx`: The context WITHOUT the last action + output.
+- `new_ctx`: The context including the last action + output.
+- `past_actions`: List of actions that have been executed (without success).
+- `past_results`: List of (unsuccessful) generation results for these actions.
+- `past_val`: List of validation results for the results.
+
+**Returns:**
+- The next action component and context to be used for the next generation attempt.
+

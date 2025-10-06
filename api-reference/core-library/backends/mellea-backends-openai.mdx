@@ -1,0 +1,142 @@
+---
+title: openai
+sidebarTitle: openai
+---
+
+# `mellea.backends.openai`
+
+
+A generic OpenAI compatible backend that wraps around the openai python sdk.
+
+## Classes
+
+### `OpenAIBackend`
+
+
+A generic OpenAI compatible backend.
+
+
+**Methods:**
+
+#### `filter_openai_client_kwargs`
+
+```python
+filter_openai_client_kwargs(**kwargs) -> dict
+```
+
+Filter kwargs to only include valid OpenAI client parameters.
+
+
+#### `filter_chat_completions_kwargs`
+
+```python
+filter_chat_completions_kwargs(self, model_options: dict) -> dict
+```
+
+Filter kwargs to only include valid OpenAI chat.completions.create parameters.
+
+https://platform.openai.com/docs/api-reference/chat/create
+
+
+#### `filter_completions_kwargs`
+
+```python
+filter_completions_kwargs(self, model_options: dict) -> dict
+```
+
+Filter kwargs to only include valid OpenAI completions.create parameters.
+
+https://platform.openai.com/docs/api-reference/completions
+
+
+#### `generate_from_context`
+
+```python
+generate_from_context(self, action: Component | CBlock, ctx: Context)
+```
+
+See `generate_from_chat_context`.
+
+
+#### `generate_from_chat_context`
+
+```python
+generate_from_chat_context(self, action: Component | CBlock, ctx: Context) -> ModelOutputThunk
+```
+
+Generates a new completion from the provided Context using this backend's `Formatter`.
+
+
+#### `message_to_openai_message`
+
+```python
+message_to_openai_message(msg: Message)
+```
+
+Serializes a mellea Message object to the message format required by OpenAI compatible api providers.
+
+
+#### `processing`
+
+```python
+processing(self, mot: ModelOutputThunk, chunk: ChatCompletion | ChatCompletionChunk)
+```
+
+Called during generation to add information from a single ChatCompletion or ChatCompletionChunk to the ModelOutputThunk.
+
+For OpenAI, tool call parsing is handled in the post processing step.
+
+
+#### `post_processing`
+
+```python
+post_processing(self, mot: ModelOutputThunk, tools: dict[str, Callable], conversation: list[dict], thinking, seed, format)
+```
+
+Called when generation is done.
+
+
+#### `add_alora`
+
+```python
+add_alora(self, alora: 'OpenAIAlora')
+```
+
+Loads an ALora for this backend.
+
+**Args:**
+- `alora`: identifier for the ALora adapter
+
+
+#### `get_alora`
+
+```python
+get_alora(self, alora_name: str) -> Alora | None
+```
+
+Returns the ALora by name, or None if that ALora isn't loaded.
+
+
+#### `get_aloras`
+
+```python
+get_aloras(self) -> list[Alora]
+```
+
+Returns a list of all loaded ALora adapters.
+
+
+#### `apply_chat_template`
+
+```python
+apply_chat_template(self, chat: list[dict[str, str]])
+```
+
+Apply the chat template for the model, if such a model is available (e.g., when it can deduce the huggingface model id).
+
+
+### `OpenAIAlora`
+
+
+ALoras that work with OpenAI backend.
+

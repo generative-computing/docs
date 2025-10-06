@@ -1,0 +1,48 @@
+---
+title: train
+sidebarTitle: train
+---
+
+# `cli.alora.train`
+
+## Functions
+
+### `load_dataset_from_json`
+
+```python
+load_dataset_from_json(json_path, tokenizer, invocation_prompt)
+```
+
+### `formatting_prompts_func`
+
+```python
+formatting_prompts_func(example)
+```
+
+### `train_model`
+
+```python
+train_model(dataset_path: str, base_model: str, output_file: str, prompt_file: str | None = None, adapter: str = 'alora', run_name: str = 'multiclass_run', epochs: int = 6, learning_rate: float = 6e-06, batch_size: int = 2, max_length: int = 1024, grad_accum: int = 4)
+```
+
+## Classes
+
+### `SaveBestModelCallback`
+
+**Methods:**
+
+#### `on_evaluate`
+
+```python
+on_evaluate(self, args, state, control, **kwargs)
+```
+
+### `SafeSaveTrainer`
+
+**Methods:**
+
+#### `save_model`
+
+```python
+save_model(self, output_dir: str | None = None, _internal_call: bool = False)
+```
