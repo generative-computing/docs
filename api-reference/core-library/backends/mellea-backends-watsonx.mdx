@@ -1,16 +1,17 @@
 ---
-title: watsonx
+title: mellea.backends.watsonx
+description: A generic WatsonX.ai compatible backend that wraps around the watson_machine_learning library.
 sidebarTitle: watsonx
 ---
 
-# `mellea.backends.watsonx`
 
 
-A generic WatsonX.ai compatible backend that wraps around the watson_machine_learning library.
 
 ## Classes
+---
 
-### `WatsonxAIBackend`
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#4ADE8033]/20 text-[#15803D]">CLASS</span> `WatsonxAIBackend`
+---
 
 
 A generic backend class for watsonx SDK.
@@ -18,7 +19,8 @@ A generic backend class for watsonx SDK.
 
 **Methods:**
 
-#### `filter_chat_completions_kwargs`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `filter_chat_completions_kwargs`
+---
 
 ```python
 filter_chat_completions_kwargs(self, model_options: dict) -> dict
@@ -27,7 +29,8 @@ filter_chat_completions_kwargs(self, model_options: dict) -> dict
 Filter kwargs to only include valid watsonx chat.completions.create parameters.
 
 
-#### `generate_from_context`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `generate_from_context`
+---
 
 ```python
 generate_from_context(self, action: Component | CBlock, ctx: Context)
@@ -36,7 +39,8 @@ generate_from_context(self, action: Component | CBlock, ctx: Context)
 See `generate_from_chat_context`.
 
 
-#### `generate_from_chat_context`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `generate_from_chat_context`
+---
 
 ```python
 generate_from_chat_context(self, action: Component | CBlock, ctx: Context) -> ModelOutputThunk
@@ -45,7 +49,8 @@ generate_from_chat_context(self, action: Component | CBlock, ctx: Context) -> Mo
 Generates a new completion from the provided Context using this backend's `Formatter`.
 
 
-#### `processing`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `processing`
+---
 
 ```python
 processing(self, mot: ModelOutputThunk, chunk: dict)
@@ -56,7 +61,8 @@ Called during generation to add information from a single ChatCompletion or Chat
 For OpenAI-like APIs, tool call parsing is handled in the post processing step.
 
 
-#### `post_processing`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `post_processing`
+---
 
 ```python
 post_processing(self, mot: ModelOutputThunk, conversation: list[dict], tools: dict[str, Callable], seed, format)
@@ -64,3 +70,4 @@ post_processing(self, mot: ModelOutputThunk, conversation: list[dict], tools: di
 
 Called when generation is done.
 
+---

@@ -1,16 +1,17 @@
 ---
-title: chat
+title: mellea.stdlib.chat
+description: Chat primitives.
 sidebarTitle: chat
 ---
 
-# `mellea.stdlib.chat`
 
 
-Chat primitives.
 
 ## Functions
+---
 
-### `as_chat_history`
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `as_chat_history`
+---
 
 ```python
 as_chat_history(ctx: Context) -> list[Message]
@@ -21,8 +22,10 @@ Returns a list of Messages corresponding to a Context.
 
 
 ## Classes
+---
 
-### `Message`
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#4ADE8033]/20 text-[#15803D]">CLASS</span> `Message`
+---
 
 
 A single Message in a Chat history.
@@ -30,7 +33,8 @@ A single Message in a Chat history.
 
 **Methods:**
 
-#### `images`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `images`
+---
 
 ```python
 images(self) -> None | list[str]
@@ -39,7 +43,8 @@ images(self) -> None | list[str]
 Returns the images associated with this message as list of base 64 strings.
 
 
-#### `parts`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `parts`
+---
 
 ```python
 parts(self)
@@ -48,7 +53,8 @@ parts(self)
 Returns all of the constituent parts of an Instruction.
 
 
-#### `format_for_llm`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `format_for_llm`
+---
 
 ```python
 format_for_llm(self) -> TemplateRepresentation
@@ -60,7 +66,8 @@ Formats the content for a Language Model.
 - The formatted output suitable for language models.
 
 
-### `ToolMessage`
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#4ADE8033]/20 text-[#15803D]">CLASS</span> `ToolMessage`
+---
 
 
 Adds the name field for function name.
@@ -68,7 +75,8 @@ Adds the name field for function name.
 
 **Methods:**
 
-#### `format_for_llm`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `format_for_llm`
+---
 
 ```python
 format_for_llm(self) -> TemplateRepresentation
@@ -76,3 +84,4 @@ format_for_llm(self) -> TemplateRepresentation
 
 The same representation as Message with a name field added to args.
 
+---

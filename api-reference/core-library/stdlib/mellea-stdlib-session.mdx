@@ -1,16 +1,14 @@
 ---
-title: session
+title: mellea.stdlib.session
+description: Mellea Sessions.
 sidebarTitle: session
 ---
 
-# `mellea.stdlib.session`
-
-
-Mellea Sessions.
-
 ## Functions
+---
 
-### `get_session`
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `get_session`
+---
 
 ```python
 get_session() -> MelleaSession
@@ -23,7 +21,8 @@ Get the current session from context.
 - `RuntimeError`: If no session is currently active.
 
 
-### `backend_name_to_class`
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `backend_name_to_class`
+---
 
 ```python
 backend_name_to_class(name: str) -> Any
@@ -33,7 +32,8 @@ backend_name_to_class(name: str) -> Any
 Resolves backend names to Backend classes.
 
 
-### `start_session`
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `start_session`
+---
 
 ```python
 start_session(backend_name: Literal['ollama', 'hf', 'openai', 'watsonx', 'litellm'] = 'ollama', model_id: str | ModelIdentifier = IBM_GRANITE_4_MICRO_3B, ctx: Context | None = None, **backend_kwargs) -> MelleaSession
@@ -68,7 +68,7 @@ to the backend (e.g., temperature, max_tokens, etc.).
 - or called directly with session methods.
 
 **Examples:**
-```
+```python
 # Basic usage with default settings
 with start_session() as session:
     response = instruct("Explain quantum computing")
@@ -90,8 +90,10 @@ session.cleanup()
 ```
 
 ## Classes
+---
 
-### `MelleaSession`
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#4ADE8033]/20 text-[#15803D]">CLASS</span> `MelleaSession`
+---
 
 
 Mellea sessions are a THIN wrapper around `m` convenience functions with NO special semantics.
@@ -109,7 +111,8 @@ Note: we put the `instruct`, `validate`, and other convenience functions here in
 
 **Methods:**
 
-#### `reset`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `reset`
+---
 
 ```python
 reset(self)
@@ -118,7 +121,8 @@ reset(self)
 Reset the context state.
 
 
-#### `cleanup`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `cleanup`
+---
 
 ```python
 cleanup(self) -> None
@@ -127,19 +131,22 @@ cleanup(self) -> None
 Clean up session resources.
 
 
-#### `act`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `act`
+---
 
 ```python
 act(self, action: Component) -> ModelOutputThunk
 ```
 
-#### `act`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `act`
+---
 
 ```python
 act(self, action: Component) -> SamplingResult
 ```
 
-#### `act`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `act`
+---
 
 ```python
 act(self, action: Component, **kwargs) -> ModelOutputThunk | SamplingResult
@@ -160,19 +167,22 @@ Runs a generic action, and adds both the action and the result to the context.
 - A ModelOutputThunk if `return_sampling_results` is `False`, else returns a `SamplingResult`.
 
 
-#### `instruct`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `instruct`
+---
 
 ```python
 instruct(self, description: str) -> ModelOutputThunk
 ```
 
-#### `instruct`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `instruct`
+---
 
 ```python
 instruct(self, description: str) -> SamplingResult
 ```
 
-#### `instruct`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `instruct`
+---
 
 ```python
 instruct(self, description: str, **kwargs) -> ModelOutputThunk | SamplingResult
@@ -196,7 +206,8 @@ Generates from an instruction.
 - `images`: A list of images to be used in the instruction or None if none.
 
 
-#### `chat`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `chat`
+---
 
 ```python
 chat(self, content: str, role: Message.Role = 'user') -> Message
@@ -205,7 +216,8 @@ chat(self, content: str, role: Message.Role = 'user') -> Message
 Sends a simple chat message and returns the response. Adds both messages to the Context.
 
 
-#### `validate`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `validate`
+---
 
 ```python
 validate(self, reqs: Requirement | list[Requirement]) -> list[ValidationResult]
@@ -214,7 +226,8 @@ validate(self, reqs: Requirement | list[Requirement]) -> list[ValidationResult]
 Validates a set of requirements over the output (if provided) or the current context (if the output is not provided).
 
 
-#### `query`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `query`
+---
 
 ```python
 query(self, obj: Any, query: str) -> ModelOutputThunk
@@ -233,7 +246,8 @@ Query method for retrieving information from an object.
 - The result of the query as processed by the backend.
 
 
-#### `transform`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `transform`
+---
 
 ```python
 transform(self, obj: Any, transformation: str) -> ModelOutputThunk | Any
@@ -253,7 +267,8 @@ Transform method for creating a new object with the transformation applied.
 - of the function called, usually the type of the object passed in.
 
 
-#### `last_prompt`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `last_prompt`
+---
 
 ```python
 last_prompt(self) -> str | list[dict] | None
@@ -264,3 +279,4 @@ Returns the last prompt that has been called from the session context.
 **Returns:**
 - A string if the last prompt was a raw call to the model OR a list of messages (as role-msg-dicts). Is None if none could be found.
 
+---

@@ -1,16 +1,17 @@
 ---
-title: litellm
+title: mellea.backends.litellm
+description: A generic LiteLLM compatible backend that wraps around the openai python sdk.
 sidebarTitle: litellm
 ---
 
-# `mellea.backends.litellm`
 
 
-A generic LiteLLM compatible backend that wraps around the openai python sdk.
 
 ## Classes
+---
 
-### `LiteLLMBackend`
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#4ADE8033]/20 text-[#15803D]">CLASS</span> `LiteLLMBackend`
+---
 
 
 A generic LiteLLM compatible backend.
@@ -18,7 +19,8 @@ A generic LiteLLM compatible backend.
 
 **Methods:**
 
-#### `generate_from_context`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `generate_from_context`
+---
 
 ```python
 generate_from_context(self, action: Component | CBlock, ctx: Context)
@@ -27,7 +29,8 @@ generate_from_context(self, action: Component | CBlock, ctx: Context)
 See `generate_from_chat_context`.
 
 
-#### `processing`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `processing`
+---
 
 ```python
 processing(self, mot: ModelOutputThunk, chunk: litellm.ModelResponse | litellm.ModelResponseStream)
@@ -38,7 +41,8 @@ Called during generation to add information from a single ModelResponse or a chu
 For LiteLLM, tool call parsing is handled in the post processing step.
 
 
-#### `post_processing`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `post_processing`
+---
 
 ```python
 post_processing(self, mot: ModelOutputThunk, conversation: list[dict], tools: dict[str, Callable], thinking, format)
@@ -46,3 +50,4 @@ post_processing(self, mot: ModelOutputThunk, conversation: list[dict], tools: di
 
 Called when generation is done.
 
+---

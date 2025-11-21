@@ -1,46 +1,52 @@
 ---
-title: base
+title: mellea.stdlib.base
+description: Basic stdlib data structures.
 sidebarTitle: base
 ---
 
-# `mellea.stdlib.base`
+import { SidebarFix } from "/snippets/SidebarFix.mdx";
 
-
-Basic stdlib data structures.
+<SidebarFix />
 
 ## Functions
 
-### `get_images_from_component`
+---
+
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `get_images_from_component`
+
+---
 
 ```python
 get_images_from_component(c: Component) -> None | list[ImageBlock]
 ```
 
-
 Gets images from a `Component` if they are present and a non-empty list, otherwise returns None.
 
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `blockify`
 
-### `blockify`
+---
 
 ```python
 blockify(s: str | CBlock | Component) -> CBlock | Component
 ```
 
-
 `blockify` is a helper function that turns raw strings into CBlocks.
-
 
 ## Classes
 
-### `CBlock`
+---
 
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#4ADE8033]/20 text-[#15803D]">CLASS</span> `CBlock`
+
+---
 
 A `CBlock` is a block of content that can serve as input to or output from an LLM.
 
-
 **Methods:**
 
-#### `value`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `value`
+
+---
 
 ```python
 value(self) -> str | None
@@ -48,8 +54,9 @@ value(self) -> str | None
 
 Gets the value of the block.
 
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `value`
 
-#### `value`
+---
 
 ```python
 value(self, v: str)
@@ -57,16 +64,17 @@ value(self, v: str)
 
 Sets the value of the block.
 
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#4ADE8033]/20 text-[#15803D]">CLASS</span> `ImageBlock`
 
-### `ImageBlock`
-
+---
 
 A `ImageBlock` represents an image (as base64 PNG).
 
-
 **Methods:**
 
-#### `is_valid_base64_png`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `is_valid_base64_png`
+
+---
 
 ```python
 is_valid_base64_png(s: str) -> bool
@@ -74,8 +82,9 @@ is_valid_base64_png(s: str) -> bool
 
 Checks if a string is a valid base64 string [AIA PAI Nc Hin R v1.0].
 
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `pil_to_base64`
 
-#### `pil_to_base64`
+---
 
 ```python
 pil_to_base64(image: PILImage.Image) -> str
@@ -83,8 +92,9 @@ pil_to_base64(image: PILImage.Image) -> str
 
 Converts a PIL image to a base64 string representation.
 
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `from_pil_image`
 
-#### `from_pil_image`
+---
 
 ```python
 from_pil_image(cls, image: PILImage.Image, meta: dict[str, Any] | None = None) -> ImageBlock
@@ -92,16 +102,17 @@ from_pil_image(cls, image: PILImage.Image, meta: dict[str, Any] | None = None) -
 
 Converts a PIL image to a base64 string representation.
 
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#4ADE8033]/20 text-[#15803D]">CLASS</span> `Component`
 
-### `Component`
-
+---
 
 A `Component` is a composite data structure that is intended to be represented to an LLM.
 
-
 **Methods:**
 
-#### `parts`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `parts`
+
+---
 
 ```python
 parts(self) -> list[Component | CBlock]
@@ -109,8 +120,9 @@ parts(self) -> list[Component | CBlock]
 
 The set of all the constituent parts of the `Component`.
 
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `format_for_llm`
 
-#### `format_for_llm`
+---
 
 ```python
 format_for_llm(self) -> TemplateRepresentation | str
@@ -120,22 +132,23 @@ Formats the `Component` into a `TemplateRepresentation` or string.
 
 Returns: a `TemplateRepresentation` or string
 
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#4ADE8033]/20 text-[#15803D]">CLASS</span> `GenerateType`
 
-### `GenerateType`
-
+---
 
 Used to track what functions can be used to extract a value from a ModelOutputThunk.
 
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#4ADE8033]/20 text-[#15803D]">CLASS</span> `ModelOutputThunk`
 
-### `ModelOutputThunk`
-
+---
 
 A `ModelOutputThunk` is a special type of `CBlock` that we know came from a model's output. It is possible to instantiate one without the output being computed yet.
 
-
 **Methods:**
 
-#### `is_computed`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `is_computed`
+
+---
 
 ```python
 is_computed(self)
@@ -143,8 +156,9 @@ is_computed(self)
 
 Returns true only if this Thunk has already been filled.
 
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `value`
 
-#### `value`
+---
 
 ```python
 value(self) -> str | None
@@ -152,8 +166,9 @@ value(self) -> str | None
 
 Gets the value of the block.
 
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `value`
 
-#### `value`
+---
 
 ```python
 value(self, v: str)
@@ -161,8 +176,9 @@ value(self, v: str)
 
 Sets the value of the block.
 
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `avalue`
 
-#### `avalue`
+---
 
 ```python
 avalue(self) -> str
@@ -171,11 +187,13 @@ avalue(self) -> str
 Returns the value of the ModelOutputThunk. Can be used for both async streaming and async non-streaming.
 
 **Raises:**
+
 - `Exception`: Propagates any errors from the underlying inference engine api request.
 - `RuntimeError`: If called when the ModelOutputThunk's generate function is not async compatible.
 
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `astream`
 
-#### `astream`
+---
 
 ```python
 astream(self) -> str
@@ -190,27 +208,29 @@ multiple coroutines/tasks and call astream from those coroutines/tasks simultane
 we see this error happen in a real use case.
 
 **Raises:**
+
 - `Exception`: Propagates any errors from the underlying inference engine api request.
 - `RuntimeError`: If called when the ModelOutputThunk's generate function is not async compatible.
 
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#4ADE8033]/20 text-[#15803D]">CLASS</span> `ContextTurn`
 
-### `ContextTurn`
-
+---
 
 A turn of model input and model output.
 
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#4ADE8033]/20 text-[#15803D]">CLASS</span> `Context`
 
-### `Context`
-
+---
 
 A `Context` is used to track the state of a `MelleaSession`.
 
 A context is immutable. Every alteration leads to a new context.
 
-
 **Methods:**
 
-#### `from_previous`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `from_previous`
+
+---
 
 ```python
 from_previous(cls: type[ContextT], previous: Context, data: Component | CBlock) -> ContextT
@@ -218,8 +238,9 @@ from_previous(cls: type[ContextT], previous: Context, data: Component | CBlock) 
 
 Constructs a new context from an existing context.
 
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `reset_to_new`
 
-#### `reset_to_new`
+---
 
 ```python
 reset_to_new(cls: type[ContextT]) -> ContextT
@@ -227,8 +248,9 @@ reset_to_new(cls: type[ContextT]) -> ContextT
 
 Returns an empty context for convenience.
 
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `is_root_node`
 
-#### `is_root_node`
+---
 
 ```python
 is_root_node(self) -> bool
@@ -236,8 +258,9 @@ is_root_node(self) -> bool
 
 Returns whether this context is the root context node.
 
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `previous_node`
 
-#### `previous_node`
+---
 
 ```python
 previous_node(self) -> Context | None
@@ -247,8 +270,9 @@ Returns the context node from which this context node was created.
 
 Internal use: Users should not need to use this property.
 
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `node_data`
 
-#### `node_data`
+---
 
 ```python
 node_data(self) -> Component | CBlock | None
@@ -258,8 +282,9 @@ Returns the data associated with this context node.
 
 Internal use: Users should not need to use this property.
 
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `is_chat_context`
 
-#### `is_chat_context`
+---
 
 ```python
 is_chat_context(self) -> bool
@@ -267,8 +292,9 @@ is_chat_context(self) -> bool
 
 Returns whether this context is a chat context.
 
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `as_list`
 
-#### `as_list`
+---
 
 ```python
 as_list(self, last_n_components: int | None = None) -> list[Component | CBlock]
@@ -278,8 +304,9 @@ Returns a list of the last n components in the context sorted from FIRST TO LAST
 
 If `last_n_components` is `None`, then all components are returned.
 
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `actions_for_available_tools`
 
-#### `actions_for_available_tools`
+---
 
 ```python
 actions_for_available_tools(self) -> list[Component | CBlock] | None
@@ -289,8 +316,9 @@ Provides a list of actions to extract tools from for use with during generation,
 
 Can be used to make the available tools differ from the tools of all the actions in the context. Can be overwritten by subclasses.
 
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `last_output`
 
-#### `last_output`
+---
 
 ```python
 last_output(self, check_last_n_components: int = 3) -> ModelOutputThunk | None
@@ -298,8 +326,9 @@ last_output(self, check_last_n_components: int = 3) -> ModelOutputThunk | None
 
 The last output thunk of the context.
 
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `last_turn`
 
-#### `last_turn`
+---
 
 ```python
 last_turn(self)
@@ -309,8 +338,9 @@ The last input/output turn of the context.
 
 This can be partial. If the last event is an input, then the output is None.
 
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `add`
 
-#### `add`
+---
 
 ```python
 add(self, c: Component | CBlock) -> Context
@@ -318,8 +348,9 @@ add(self, c: Component | CBlock) -> Context
 
 Returns a new context obtained by adding `c` to this context.
 
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `view_for_generation`
 
-#### `view_for_generation`
+---
 
 ```python
 view_for_generation(self) -> list[Component | CBlock] | None
@@ -327,16 +358,17 @@ view_for_generation(self) -> list[Component | CBlock] | None
 
 Provides a linear list of context components to use for generation, or None if that is not possible to construct.
 
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#4ADE8033]/20 text-[#15803D]">CLASS</span> `ChatContext`
 
-### `ChatContext`
-
+---
 
 Initializes a chat context with unbounded window_size and is_chat=True by default.
 
-
 **Methods:**
 
-#### `add`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `add`
+
+---
 
 ```python
 add(self, c: Component | CBlock) -> ChatContext
@@ -344,8 +376,9 @@ add(self, c: Component | CBlock) -> ChatContext
 
 Add a new component/cblock to the context. Returns the new context.
 
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `view_for_generation`
 
-#### `view_for_generation`
+---
 
 ```python
 view_for_generation(self) -> list[Component | CBlock] | None
@@ -353,16 +386,17 @@ view_for_generation(self) -> list[Component | CBlock] | None
 
 Returns the context in a linearized form. Uses the window_size set during initialization.
 
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#4ADE8033]/20 text-[#15803D]">CLASS</span> `SimpleContext`
 
-### `SimpleContext`
-
+---
 
 A `SimpleContext` is a context in which each interaction is a separate and independent turn. The history of all previous turns is NOT saved..
 
-
 **Methods:**
 
-#### `add`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `add`
+
+---
 
 ```python
 add(self, c: Component | CBlock) -> SimpleContext
@@ -370,8 +404,9 @@ add(self, c: Component | CBlock) -> SimpleContext
 
 Add a new component/cblock to the context. Returns the new context.
 
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `view_for_generation`
 
-#### `view_for_generation`
+---
 
 ```python
 view_for_generation(self) -> list[Component | CBlock] | None
@@ -379,33 +414,34 @@ view_for_generation(self) -> list[Component | CBlock] | None
 
 Returns an empty list.
 
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#4ADE8033]/20 text-[#15803D]">CLASS</span> `TemplateRepresentation`
 
-### `TemplateRepresentation`
-
+---
 
 Representing a component as a set of important attributes that can be consumed by the formatter.
 
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#4ADE8033]/20 text-[#15803D]">CLASS</span> `GenerateLog`
 
-### `GenerateLog`
-
+---
 
 A dataclass for capturing log entries.
 
 GenerateLog provides a structured way to include various details in log entries, making it useful for maintaining detailed
 records of events or operations where context and additional data are significant.
 
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#4ADE8033]/20 text-[#15803D]">CLASS</span> `ModelToolCall`
 
-### `ModelToolCall`
-
+---
 
 A dataclass for capturing the tool calls a model wants to make.
 
 Provides a unified way to call tools post generation.
 
-
 **Methods:**
 
-#### `call_func`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `call_func`
+
+---
 
 ```python
 call_func(self) -> Any
@@ -413,3 +449,4 @@ call_func(self) -> Any
 
 A helper function for calling the function/tool represented by this object.
 
+---

@@ -1,16 +1,17 @@
 ---
-title: ollama
+title: mellea.backends.ollama
+description: A model backend wrapping the Ollama Python SDK.
 sidebarTitle: ollama
 ---
 
-# `mellea.backends.ollama`
 
 
-A model backend wrapping the Ollama Python SDK.
 
 ## Functions
+---
 
-### `chat_response_delta_merge`
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `chat_response_delta_merge`
+---
 
 ```python
 chat_response_delta_merge(mot: ModelOutputThunk, delta: ollama.ChatResponse)
@@ -25,8 +26,10 @@ Merges the individual ChatResponse chunks from a streaming response into a singl
 
 
 ## Classes
+---
 
-### `OllamaModelBackend`
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#4ADE8033]/20 text-[#15803D]">CLASS</span> `OllamaModelBackend`
+---
 
 
 A model that uses the Ollama Python SDK for local inference.
@@ -34,7 +37,8 @@ A model that uses the Ollama Python SDK for local inference.
 
 **Methods:**
 
-#### `is_model_available`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `is_model_available`
+---
 
 ```python
 is_model_available(self, model_name)
@@ -49,7 +53,8 @@ Checks if a specific Ollama model is available locally.
 - True if the model is available, False otherwise.
 
 
-#### `generate_from_context`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `generate_from_context`
+---
 
 ```python
 generate_from_context(self, action: Component | CBlock, ctx: Context)
@@ -58,7 +63,8 @@ generate_from_context(self, action: Component | CBlock, ctx: Context)
 See `generate_from_chat_context`.
 
 
-#### `generate_from_chat_context`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `generate_from_chat_context`
+---
 
 ```python
 generate_from_chat_context(self, action: Component | CBlock, ctx: Context) -> ModelOutputThunk
@@ -75,7 +81,8 @@ This will not always work, because sometimes we want to use non-chat models.
 - `RuntimeError`: If not called from a thread with a running event loop.
 
 
-#### `processing`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `processing`
+---
 
 ```python
 processing(self, mot: ModelOutputThunk, chunk: ollama.ChatResponse, tools: dict[str, Callable])
@@ -84,7 +91,8 @@ processing(self, mot: ModelOutputThunk, chunk: ollama.ChatResponse, tools: dict[
 Called during generation to add information from a single ChatResponse to the ModelOutputThunk.
 
 
-#### `post_processing`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `post_processing`
+---
 
 ```python
 post_processing(self, mot: ModelOutputThunk, conversation: list[dict], tools: dict[str, Callable], format)
@@ -92,3 +100,4 @@ post_processing(self, mot: ModelOutputThunk, conversation: list[dict], tools: di
 
 Called when generation is done.
 
+---

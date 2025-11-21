@@ -1,16 +1,17 @@
 ---
-title: fancy_logger
+title: mellea.helpers.fancy_logger
+description: Hendrik's Fancy Logger.
 sidebarTitle: fancy_logger
 ---
 
-# `mellea.helpers.fancy_logger`
 
 
-Hendrik's Fancy Logger.
 
 ## Classes
+---
 
-### `RESTHandler`
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#4ADE8033]/20 text-[#15803D]">CLASS</span> `RESTHandler`
+---
 
 
 RESTHandler for logging.
@@ -18,7 +19,8 @@ RESTHandler for logging.
 
 **Methods:**
 
-#### `emit`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `emit`
+---
 
 ```python
 emit(self, record)
@@ -27,7 +29,8 @@ emit(self, record)
 Attempts to emit a record to FLOG, or silently fails.
 
 
-### `JsonFormatter`
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#4ADE8033]/20 text-[#15803D]">CLASS</span> `JsonFormatter`
+---
 
 
 Logging formatter for JSON.
@@ -35,7 +38,8 @@ Logging formatter for JSON.
 
 **Methods:**
 
-#### `format`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `format`
+---
 
 ```python
 format(self, record)
@@ -44,7 +48,8 @@ format(self, record)
 Formats record as a JSON serializable object.
 
 
-### `CustomFormatter`
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#4ADE8033]/20 text-[#15803D]">CLASS</span> `CustomFormatter`
+---
 
 
 A nice custom formatter copied from [https://stackoverflow.com/questions/384076/how-can-i-color-python-logging-output](Sergey Pleshakov's post on StackOvervlow).
@@ -52,7 +57,8 @@ A nice custom formatter copied from [https://stackoverflow.com/questions/384076/
 
 **Methods:**
 
-#### `format`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `format`
+---
 
 ```python
 format(self, record)
@@ -61,7 +67,8 @@ format(self, record)
 The format fn.
 
 
-### `FancyLogger`
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#4ADE8033]/20 text-[#15803D]">CLASS</span> `FancyLogger`
+---
 
 
 A fancy logger.
@@ -69,7 +76,8 @@ A fancy logger.
 
 **Methods:**
 
-#### `get_logger`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `get_logger`
+---
 
 ```python
 get_logger()
@@ -77,3 +85,4 @@ get_logger()
 
 Returns a FancyLogger.logger and sets level based upon env vars.
 
+---

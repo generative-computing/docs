@@ -1,16 +1,17 @@
 ---
-title: mify
+title: mellea.stdlib.mify
+description: Mify classes and objects.
 sidebarTitle: mify
 ---
 
-# `mellea.stdlib.mify`
 
 
-Mify classes and objects.
 
 ## Functions
+---
 
-### `mify`
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `mify`
+---
 
 ```python
 mify(*args, **kwargs)
@@ -67,8 +68,10 @@ the attributes and methods of the object/class necessary for it to be mified.
 
 
 ## Classes
+---
 
-### `MifiedProtocol`
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#4ADE8033]/20 text-[#15803D]">CLASS</span> `MifiedProtocol`
+---
 
 
 Adds additional functionality to the MObjectProtocol and modifies MObject functions so that mified objects can be more easily interacted with and modified.
@@ -78,7 +81,8 @@ See the mify decorator for more information.
 
 **Methods:**
 
-#### `parts`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `parts`
+---
 
 ```python
 parts(self) -> list[Component | CBlock]
@@ -89,7 +93,8 @@ Returns a list of parts for MObject.
 [no-index]
 
 
-#### `get_query_object`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `get_query_object`
+---
 
 ```python
 get_query_object(self, query: str) -> Query
@@ -103,7 +108,8 @@ Returns the instantiated query object.
 - `query `: The query string.
 
 
-#### `get_transform_object`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `get_transform_object`
+---
 
 ```python
 get_transform_object(self, transformation: str) -> Transform
@@ -117,7 +123,8 @@ Returns the instantiated transform object.
 - `transformation`: the transform string
 
 
-#### `content_as_string`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `content_as_string`
+---
 
 ```python
 content_as_string(self) -> str
@@ -130,7 +137,8 @@ Returns the content of the Mified object as a string.
 Will use the passed in stringify function if provided.
 
 
-#### `format_for_llm`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `format_for_llm`
+---
 
 ```python
 format_for_llm(self) -> TemplateRepresentation
@@ -145,3 +153,4 @@ specified during mify.
 
 See mify decorator for more details.
 
+---

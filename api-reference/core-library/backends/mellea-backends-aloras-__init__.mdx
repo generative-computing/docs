@@ -1,34 +1,36 @@
 ---
-title: aloras
+title: mellea.backends.aloras
+description: Abstract interfaces for Backends that implement Activated LoRAs.
 sidebarTitle: aloras
 ---
 
-# `mellea.backends.aloras`
-
-
-Abstract interfaces for Backends that implement Activated LoRAs.
-
 ## Classes
 
-### `Alora`
+---
 
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#4ADE8033]/20 text-[#15803D]">CLASS</span> `Alora`
 
-Activated LoRAs [Aloras](https://arxiv.org/pdf/2504.12397) are are [low-rank adapters](https://arxiv.org/abs/2106.09685) that can reuse KV cache from their underlying model.
+---
+
+Activated LoRAs (Aloras)](https://arxiv.org/pdf/2504.12397) are are [low-rank adapters](https://arxiv.org/abs/2106.09685) that can reuse KV cache from their underlying model.
 
 This class should not be directly subclassed by a specific ALora. Each backend that supports ALora should provide a backend-specific abstract class that subclasses `ALora`. Individual ALoras should then be defined by subclassing the model-specific backend.
 
 ALoras are always attached to an underlying model and use the following calling convention:
+
 1. The underlying model is prompted (without the Alora active). We call this the `input`.
 2. The underlying model generates some tokens from the `input` context (again, without the ALora active). We call this the `response`.
 3. Then the adapter is activated and generates some tokens. We call then the `alora_response`.
 
 **Args:**
-- `name`: An arbitrary name/label in the model serving engine (e.g. vllm, or local huggingface) to assign to an ALora. This is irrelevant from the alora's (huggingface) model id.
 
+- `name`: An arbitrary name/label in the model serving engine (e.g. vllm, or local huggingface) to assign to an ALora. This is irrelevant from the alora's (huggingface) model id.
 
 **Methods:**
 
-#### `generate_using_strings`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `generate_using_strings`
+
+---
 
 ```python
 generate_using_strings(self, *args, **kwargs) -> ModelOutputThunk
@@ -38,8 +40,9 @@ Generates from the ALora using raw strings as the interface for inputs. In most 
 
 This has a generic signature because each aLoRA has different parameters depending on its functionality and how it gets called.
 
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `generate_using_stdlib`
 
-#### `generate_using_stdlib`
+---
 
 ```python
 generate_using_stdlib(self, *args, **kwargs) -> CBlock
@@ -47,16 +50,17 @@ generate_using_stdlib(self, *args, **kwargs) -> CBlock
 
 Generates from the Alora using Span-based backends.
 
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#4ADE8033]/20 text-[#15803D]">CLASS</span> `AloraBackendMixin`
 
-### `AloraBackendMixin`
-
+---
 
 Mixin class for backends capable of aLoRA functionality.
 
-
 **Methods:**
 
-#### `add_alora`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `add_alora`
+
+---
 
 ```python
 add_alora(self, *args, **kwargs)
@@ -64,8 +68,9 @@ add_alora(self, *args, **kwargs)
 
 Loads an ALora.
 
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `get_alora`
 
-#### `get_alora`
+---
 
 ```python
 get_alora(self, alora_name: str) -> Alora | None
@@ -73,8 +78,9 @@ get_alora(self, alora_name: str) -> Alora | None
 
 Returns the ALora by name, or None of that ALora isn't loaded.
 
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `get_aloras`
 
-#### `get_aloras`
+---
 
 ```python
 get_aloras(self) -> list[Alora]
@@ -82,3 +88,4 @@ get_aloras(self) -> list[Alora]
 
 Returns a list of all loaded aLoRA adapters.
 
+---

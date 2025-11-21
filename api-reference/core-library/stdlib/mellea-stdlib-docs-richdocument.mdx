@@ -1,16 +1,17 @@
 ---
-title: richdocument
+title: mellea.stdlib.docs.richdocument
+description: Representations of Docling Documents.
 sidebarTitle: richdocument
 ---
 
-# `mellea.stdlib.docs.richdocument`
 
 
-Representations of Docling Documents.
 
 ## Classes
+---
 
-### `RichDocument`
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#4ADE8033]/20 text-[#15803D]">CLASS</span> `RichDocument`
+---
 
 
 A `RichDocument` is a block of content with an underlying DoclingDocument.
@@ -20,7 +21,8 @@ It has helper functions for working with the document and extracting parts of it
 
 **Methods:**
 
-#### `parts`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `parts`
+---
 
 ```python
 parts(self) -> list[Component | CBlock]
@@ -29,7 +31,8 @@ parts(self) -> list[Component | CBlock]
 A `RichDocument` has no parts.
 
 
-#### `format_for_llm`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `format_for_llm`
+---
 
 ```python
 format_for_llm(self) -> TemplateRepresentation | str
@@ -40,7 +43,8 @@ Return Document content as Markdown.
 No template needed here.
 
 
-#### `docling`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `docling`
+---
 
 ```python
 docling(self) -> DoclingDocument
@@ -49,7 +53,8 @@ docling(self) -> DoclingDocument
 Get the underlying Docling Document.
 
 
-#### `to_markdown`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `to_markdown`
+---
 
 ```python
 to_markdown(self)
@@ -58,7 +63,8 @@ to_markdown(self)
 Get the full text of the document as markdown.
 
 
-#### `get_tables`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `get_tables`
+---
 
 ```python
 get_tables(self) -> list[Table]
@@ -67,7 +73,8 @@ get_tables(self) -> list[Table]
 Return the `Table`s that are a part of this document.
 
 
-#### `save`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `save`
+---
 
 ```python
 save(self, filename: str | Path) -> None
@@ -76,7 +83,8 @@ save(self, filename: str | Path) -> None
 Save the underlying DoclingDocument for reuse later.
 
 
-#### `load`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `load`
+---
 
 ```python
 load(cls, filename: str | Path) -> RichDocument
@@ -85,7 +93,8 @@ load(cls, filename: str | Path) -> RichDocument
 Load a DoclingDocument from a file. The file must already be a DoclingDocument.
 
 
-#### `from_document_file`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `from_document_file`
+---
 
 ```python
 from_document_file(cls, source: str | Path | DocumentStream) -> RichDocument
@@ -94,7 +103,8 @@ from_document_file(cls, source: str | Path | DocumentStream) -> RichDocument
 Process a document with Docling.
 
 
-### `TableQuery`
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#4ADE8033]/20 text-[#15803D]">CLASS</span> `TableQuery`
+---
 
 
 Table-specific query.
@@ -102,7 +112,8 @@ Table-specific query.
 
 **Methods:**
 
-#### `format_for_llm`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `format_for_llm`
+---
 
 ```python
 format_for_llm(self) -> TemplateRepresentation
@@ -111,7 +122,8 @@ format_for_llm(self) -> TemplateRepresentation
 Template arguments for Formatter.
 
 
-### `TableTransform`
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#4ADE8033]/20 text-[#15803D]">CLASS</span> `TableTransform`
+---
 
 
 Table-specific transform.
@@ -119,7 +131,8 @@ Table-specific transform.
 
 **Methods:**
 
-#### `format_for_llm`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `format_for_llm`
+---
 
 ```python
 format_for_llm(self) -> TemplateRepresentation
@@ -128,7 +141,8 @@ format_for_llm(self) -> TemplateRepresentation
 Template arguments for Formatter.
 
 
-### `Table`
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#4ADE8033]/20 text-[#15803D]">CLASS</span> `Table`
+---
 
 
 A `Table` represents a single table within a larger Docling Document.
@@ -136,7 +150,8 @@ A `Table` represents a single table within a larger Docling Document.
 
 **Methods:**
 
-#### `from_markdown`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `from_markdown`
+---
 
 ```python
 from_markdown(cls, md: str) -> Table | None
@@ -145,7 +160,8 @@ from_markdown(cls, md: str) -> Table | None
 Creates a fake document from the markdown and attempts to extract the first table found.
 
 
-#### `to_markdown`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `to_markdown`
+---
 
 ```python
 to_markdown(self) -> str
@@ -154,7 +170,8 @@ to_markdown(self) -> str
 Get the `Table` as markdown.
 
 
-#### `transpose`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `transpose`
+---
 
 ```python
 transpose(self) -> Table | None
@@ -163,7 +180,8 @@ transpose(self) -> Table | None
 Transposes the table. Will return a new transposed `Table` if successful.
 
 
-#### `format_for_llm`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `format_for_llm`
+---
 
 ```python
 format_for_llm(self) -> TemplateRepresentation | str
@@ -171,3 +189,4 @@ format_for_llm(self) -> TemplateRepresentation | str
 
 Return Table representation for Formatter.
 
+---

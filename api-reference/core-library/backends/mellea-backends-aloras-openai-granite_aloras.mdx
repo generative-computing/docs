@@ -1,56 +1,58 @@
 ---
-title: openai granite_aloras
+title: mellea.backends.aloras.openai.granite_aloras
+description: OpenAI implementations for IBM's "starter pack" of Activated LoRAs.
 sidebarTitle: openai granite_aloras
 ---
 
-# `mellea.backends.aloras.openai.granite_aloras`
-
-
-OpenAI implementations for IBM's "starter pack" of Activated LoRAs.
-
 ## Functions
 
-### `processing`
+---
+
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `processing`
+
+---
 
 ```python
 processing(mot: ModelOutputThunk, chunk: Completion)
 ```
 
-
 Called to process the incoming chunks.
 
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `post_processing`
 
-### `post_processing`
+---
 
 ```python
 post_processing(backend: OpenAIBackend, mot: ModelOutputThunk)
 ```
 
-
 Called after all data has been received.
 
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `add_granite_aloras`
 
-### `add_granite_aloras`
+---
 
 ```python
 add_granite_aloras(backend: OpenAIBackend)
 ```
 
-
 Adds the IBM Granite "starter pack" ALoras to a backend.
-
 
 ## Classes
 
-### `OpenAIConstraintAlora`
+---
 
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#4ADE8033]/20 text-[#15803D]">CLASS</span> `OpenAIConstraintAlora`
+
+---
 
 The [Requirement Checking ALora for Granite 3.2 8B](https://huggingface.co/ibm-granite/granite-3.2-8b-alora-requirement-check) checks if the specified requirement was satisfied by the most recent model generation. Only one requirement is checked at a time.
 
-
 **Methods:**
 
-#### `generate_using_strings`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `generate_using_strings`
+
+---
 
 ```python
 generate_using_strings(self, input: str, response: str, constraint: str, force_yn: bool = True, stream: bool = False) -> ModelOutputThunk
@@ -58,3 +60,4 @@ generate_using_strings(self, input: str, response: str, constraint: str, force_y
 
 Generates a constraint response from the ALora. Must be run in a running event loop.
 
+---

@@ -1,16 +1,17 @@
 ---
-title: genslot
+title: mellea.stdlib.genslot
+description: A method to generate outputs based on python functions and a Generative Slot function.
 sidebarTitle: genslot
 ---
 
-# `mellea.stdlib.genslot`
 
 
-A method to generate outputs based on python functions and a Generative Slot function.
 
 ## Functions
+---
 
-### `create_response_format`
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `create_response_format`
+---
 
 ```python
 create_response_format(func: Callable[..., R]) -> type[FunctionResponse[R]]
@@ -26,7 +27,8 @@ Create a Pydantic response format class for a given function.
 - A Pydantic model class that inherits from FunctionResponse[T]
 
 
-### `describe_function`
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `describe_function`
+---
 
 ```python
 describe_function(func: Callable) -> FunctionDict
@@ -42,7 +44,8 @@ Generates a FunctionDict given a function.
 - Function dict of the passed function.
 
 
-### `get_annotation`
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `get_annotation`
+---
 
 ```python
 get_annotation(func: Callable, key: str, val: Any) -> str
@@ -60,7 +63,8 @@ Returns a annotated list of arguments for a given function and list of arguments
 - An annotated string for a given func.
 
 
-### `bind_function_arguments`
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `bind_function_arguments`
+---
 
 ```python
 bind_function_arguments(func: Callable[P, R], *args: P.args, **kwargs: P.kwargs) -> dict[str, Any]
@@ -78,7 +82,8 @@ Bind arguments to function parameters and return as dictionary.
 - Dictionary mapping parameter names to bound values with defaults applied.
 
 
-### `generative`
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `generative`
+---
 
 ```python
 generative(func: Callable[P, R]) -> GenerativeSlot[P, R]
@@ -106,8 +111,7 @@ function definition, the better the AI will understand and imitate it.
 - original function's signature and docstring.
 
 **Examples:**
-
-```
+```python
 >>> from mellea import generative, start_session
 >>> session = start_session()
 >>> @generative
@@ -182,38 +186,45 @@ function definition, the better the AI will understand and imitate it.
 ```
 
 ## Classes
+---
 
-### `FunctionResponse`
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#4ADE8033]/20 text-[#15803D]">CLASS</span> `FunctionResponse`
+---
 
 
 Generic base class for function response formats.
 
 
-### `FunctionDict`
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#4ADE8033]/20 text-[#15803D]">CLASS</span> `FunctionDict`
+---
 
 
 Return Type for a Function Component.
 
 
-### `ArgumentDict`
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#4ADE8033]/20 text-[#15803D]">CLASS</span> `ArgumentDict`
+---
 
 
 Return Type for a Argument Component.
 
 
-### `Argument`
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#4ADE8033]/20 text-[#15803D]">CLASS</span> `Argument`
+---
 
 
 An Argument Component.
 
 
-### `Function`
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#4ADE8033]/20 text-[#15803D]">CLASS</span> `Function`
+---
 
 
 A Function Component.
 
 
-### `GenerativeSlot`
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#4ADE8033]/20 text-[#15803D]">CLASS</span> `GenerativeSlot`
+---
 
 
 A generative slot component.
@@ -221,7 +232,8 @@ A generative slot component.
 
 **Methods:**
 
-#### `parts`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `parts`
+---
 
 ```python
 parts(self)
@@ -230,7 +242,8 @@ parts(self)
 Not implemented.
 
 
-#### `format_for_llm`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `format_for_llm`
+---
 
 ```python
 format_for_llm(self) -> TemplateRepresentation
@@ -238,3 +251,4 @@ format_for_llm(self) -> TemplateRepresentation
 
 Formats the instruction for Formatter use.
 
+---

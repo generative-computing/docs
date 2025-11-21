@@ -1,16 +1,17 @@
 ---
-title: requirement
+title: mellea.stdlib.requirement
+description: Requirements are a special type of Component used as input to the "validate" step in Instruct/Validate/Repair design patterns.
 sidebarTitle: requirement
 ---
 
-# `mellea.stdlib.requirement`
 
 
-Requirements are a special type of Component used as input to the "validate" step in Instruct/Validate/Repair design patterns.
 
 ## Functions
+---
 
-### `default_output_to_bool`
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `default_output_to_bool`
+---
 
 ```python
 default_output_to_bool(x: CBlock | str) -> bool
@@ -23,7 +24,8 @@ Checks if the output is exactly equal to "yes" or "y" (case-insensitive). If not
 check if any of the words in the output are "yes" (case-insensitive).
 
 
-### `reqify`
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `reqify`
+---
 
 ```python
 reqify(r: str | Requirement) -> Requirement
@@ -35,7 +37,8 @@ Maps strings to Requirements.
 This is a utility method for functions that allow you to pass in Requirements as either explicit Requirement objects or strings that you intend to be interpreted as requirements.
 
 
-### `req`
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `req`
+---
 
 ```python
 req(*args, **kwargs) -> Requirement
@@ -45,7 +48,8 @@ req(*args, **kwargs) -> Requirement
 Shorthand for Requirement.__init__.
 
 
-### `check`
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `check`
+---
 
 ```python
 check(*args, **kwargs) -> Requirement
@@ -55,7 +59,8 @@ check(*args, **kwargs) -> Requirement
 Shorthand for Requirement.__init__(..., check_only=True).
 
 
-### `simple_validate`
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `simple_validate`
+---
 
 ```python
 simple_validate(fn: Callable[[str], Any]) -> Callable[[Context], ValidationResult]
@@ -76,8 +81,10 @@ Validation functions operate over `Context`. Often you do not care about the ent
 
 
 ## Classes
+---
 
-### `ValidationResult`
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#4ADE8033]/20 text-[#15803D]">CLASS</span> `ValidationResult`
+---
 
 
 ValidationResults store the output of a Requirement's validation. They can be used to return additional info from validation functions, which is useful for sampling/repairing.
@@ -85,7 +92,8 @@ ValidationResults store the output of a Requirement's validation. They can be us
 
 **Methods:**
 
-#### `reason`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `reason`
+---
 
 ```python
 reason(self) -> str | None
@@ -94,7 +102,8 @@ reason(self) -> str | None
 Reason for the validation result.
 
 
-#### `score`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `score`
+---
 
 ```python
 score(self) -> float | None
@@ -103,7 +112,8 @@ score(self) -> float | None
 An optional score for the validation result.
 
 
-#### `thunk`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `thunk`
+---
 
 ```python
 thunk(self) -> ModelOutputThunk | None
@@ -112,7 +122,8 @@ thunk(self) -> ModelOutputThunk | None
 The ModelOutputThunk associated with the validation func if an llm was used to generate the final result.
 
 
-#### `as_bool`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `as_bool`
+---
 
 ```python
 as_bool(self) -> bool
@@ -121,7 +132,8 @@ as_bool(self) -> bool
 Return a boolean value based on the result.
 
 
-### `Requirement`
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#4ADE8033]/20 text-[#15803D]">CLASS</span> `Requirement`
+---
 
 
 Requirements are a special type of Component used as input to the Validate step in Instruct/Validate/Repair patterns.
@@ -129,7 +141,8 @@ Requirements are a special type of Component used as input to the Validate step 
 
 **Methods:**
 
-#### `validate`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `validate`
+---
 
 ```python
 validate(self, backend: Backend, ctx: Context) -> ValidationResult
@@ -138,7 +151,8 @@ validate(self, backend: Backend, ctx: Context) -> ValidationResult
 Chooses the appropriate validation strategy and applies that strategy.
 
 
-#### `parts`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `parts`
+---
 
 ```python
 parts(self)
@@ -147,7 +161,8 @@ parts(self)
 Returns all of the constituent parts of a Requirement.
 
 
-#### `format_for_llm`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `format_for_llm`
+---
 
 ```python
 format_for_llm(self) -> TemplateRepresentation | str
@@ -156,19 +171,22 @@ format_for_llm(self) -> TemplateRepresentation | str
 Some object protocol magic happens here with management of the output.
 
 
-### `LLMaJRequirement`
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#4ADE8033]/20 text-[#15803D]">CLASS</span> `LLMaJRequirement`
+---
 
 
 A requirement that always uses LLM-as-a-Judge. Any available constraint ALoRA will be ignored.
 
 
-### `ALoraRequirement`
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#4ADE8033]/20 text-[#15803D]">CLASS</span> `ALoraRequirement`
+---
 
 
 A requirement that always uses an (possibly specified) ALora. If an exception is thrown during the ALora execution path, `mellea` will fall back to LLMaJ. But that is the only case where LLMaJ will be used.
 
 
-### `ScorerRequirement`
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#4ADE8033]/20 text-[#15803D]">CLASS</span> `ScorerRequirement`
+---
 
 
 A requirement that always returns a non-None score. The scorer must also define a preference ordering to indicate whether the goal is to maximize or minimize the score.
@@ -176,7 +194,8 @@ A requirement that always returns a non-None score. The scorer must also define 
 
 **Methods:**
 
-#### `validate`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `validate`
+---
 
 ```python
 validate(self, backend: Backend, ctx: Context) -> ValidationResult
@@ -184,3 +203,4 @@ validate(self, backend: Backend, ctx: Context) -> ValidationResult
 
 Chooses the appropriate validation strategy and applies that strategy. Asserts that the returned ValidationResult has a valid score.
 
+---

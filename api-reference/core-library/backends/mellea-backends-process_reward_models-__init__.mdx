@@ -1,16 +1,17 @@
 ---
-title: __init__
+title: mellea.backends.process_reward_models
+description: Abstract interfaces for Backends that implement Process Reward Models (can be adapted to include other scorers).
 sidebarTitle: __init__
 ---
 
-# `mellea.backends.process_reward_models`
 
 
-Abstract interfaces for Backends that implement Process Reward Models (can be adapted to include other scorers).
 
 ## Classes
+---
 
-### `PRM`
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#4ADE8033]/20 text-[#15803D]">CLASS</span> `PRM`
+---
 
 
 Mixin for Process Reward Model Backends.
@@ -18,7 +19,8 @@ Mixin for Process Reward Model Backends.
 
 **Methods:**
 
-#### `score`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `score`
+---
 
 ```python
 score(self, query: str, response: str) -> tuple[list[float], list[list[float]]]
@@ -27,7 +29,8 @@ score(self, query: str, response: str) -> tuple[list[float], list[list[float]]]
 Returns a final score and per-step score to the input of the model.
 
 
-#### `stepify`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `stepify`
+---
 
 ```python
 stepify(self, response: str, step_separator: str) -> list[str]
@@ -39,3 +42,4 @@ Splits the assistant response into steps to score.
 - `response`: assistant response to score
 - `step_separator`: string on which to separate the response into steps
 
+---

@@ -1,16 +1,17 @@
 ---
-title: best_of_n
+title: mellea.stdlib.sampling.best_of_n
+description: Best of N Sampling Strategy.
 sidebarTitle: best_of_n
 ---
 
-# `mellea.stdlib.sampling.best_of_n`
 
 
-Best of N Sampling Strategy.
 
 ## Classes
+---
 
-### `BestofNSamplingStrategy`
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#4ADE8033]/20 text-[#15803D]">CLASS</span> `BestofNSamplingStrategy`
+---
 
 
 Sampling strategy that selects the best response from a set of samples as given by a Requirement Scorer.
@@ -18,7 +19,8 @@ Sampling strategy that selects the best response from a set of samples as given 
 
 **Methods:**
 
-#### `sample`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `sample`
+---
 
 ```python
 sample(self, action: Component, context: Context, backend: Backend, requirements: list[Requirement] | None) -> SamplingResult
@@ -44,7 +46,8 @@ This method performs a sampling operation based on the given instruction.
 - `AssertionError`: Asserts that all required components (repair, select_from_failure, validate, and generate) are provided before proceeding with the sampling.
 
 
-#### `select_from_failure`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `select_from_failure`
+---
 
 ```python
 select_from_failure(sampled_actions: list[Component], sampled_results: list[ModelOutputThunk], sampled_val: list[list[tuple[Requirement, ValidationResult]]]) -> int
@@ -61,7 +64,8 @@ Selects the attempt with the highest score.
 - The index of the result that should be selected as `.value`.
 
 
-#### `repair`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `repair`
+---
 
 ```python
 repair(old_ctx: Context, new_ctx: Context, past_actions: list[Component], past_results: list[ModelOutputThunk], past_val: list[list[tuple[Requirement, ValidationResult]]]) -> tuple[Component, Context]
@@ -79,3 +83,4 @@ Adds a description of the requirements that failed to a copy of the original ins
 **Returns:**
 - The next action component and context to be used for the next generation attempt.
 
+---

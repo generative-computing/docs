@@ -1,16 +1,17 @@
 ---
-title: mobject
+title: mellea.stdlib.mobject
+description: MObject.
 sidebarTitle: mobject
 ---
 
-# `mellea.stdlib.mobject`
 
 
-MObject.
 
 ## Classes
+---
 
-### `Query`
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#4ADE8033]/20 text-[#15803D]">CLASS</span> `Query`
+---
 
 
 A Query component.
@@ -18,7 +19,8 @@ A Query component.
 
 **Methods:**
 
-#### `parts`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `parts`
+---
 
 ```python
 parts(self) -> list[Component | CBlock]
@@ -27,7 +29,8 @@ parts(self) -> list[Component | CBlock]
 Get the parts of the query.
 
 
-#### `format_for_llm`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `format_for_llm`
+---
 
 ```python
 format_for_llm(self) -> TemplateRepresentation | str
@@ -36,7 +39,8 @@ format_for_llm(self) -> TemplateRepresentation | str
 Format the query for llm.
 
 
-### `Transform`
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#4ADE8033]/20 text-[#15803D]">CLASS</span> `Transform`
+---
 
 
 A Transform component.
@@ -44,7 +48,8 @@ A Transform component.
 
 **Methods:**
 
-#### `parts`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `parts`
+---
 
 ```python
 parts(self) -> list[Component | CBlock]
@@ -53,7 +58,8 @@ parts(self) -> list[Component | CBlock]
 Get the parts of the transform.
 
 
-#### `format_for_llm`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `format_for_llm`
+---
 
 ```python
 format_for_llm(self) -> TemplateRepresentation | str
@@ -62,7 +68,8 @@ format_for_llm(self) -> TemplateRepresentation | str
 Format the transform for llm.
 
 
-### `MObjectProtocol`
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#4ADE8033]/20 text-[#15803D]">CLASS</span> `MObjectProtocol`
+---
 
 
 Protocol to describe the necessary functionality of a MObject. Implementers should prefer inheriting from MObject than MObjectProtocol.
@@ -70,7 +77,8 @@ Protocol to describe the necessary functionality of a MObject. Implementers shou
 
 **Methods:**
 
-#### `parts`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `parts`
+---
 
 ```python
 parts(self) -> list[Component | CBlock]
@@ -79,7 +87,8 @@ parts(self) -> list[Component | CBlock]
 Returns a list of parts for MObject.
 
 
-#### `get_query_object`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `get_query_object`
+---
 
 ```python
 get_query_object(self, query: str) -> Query
@@ -91,7 +100,8 @@ Returns the instantiated query object.
 - `query `: The query string.
 
 
-#### `get_transform_object`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `get_transform_object`
+---
 
 ```python
 get_transform_object(self, transformation: str) -> Transform
@@ -103,7 +113,8 @@ Returns the instantiated transform object.
 - `transformation`: the transform string
 
 
-#### `content_as_string`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `content_as_string`
+---
 
 ```python
 content_as_string(self) -> str
@@ -115,7 +126,8 @@ The default value is just `str(self)`.
 Subclasses should override this method.
 
 
-#### `format_for_llm`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `format_for_llm`
+---
 
 ```python
 format_for_llm(self) -> TemplateRepresentation | str
@@ -128,7 +140,8 @@ parsing for tools and fields. The content is retrieved
 from `content_as_string()`.
 
 
-### `MObject`
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#4ADE8033]/20 text-[#15803D]">CLASS</span> `MObject`
+---
 
 
 An extension of `Component` for adding query and transform operations.
@@ -136,7 +149,8 @@ An extension of `Component` for adding query and transform operations.
 
 **Methods:**
 
-#### `parts`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `parts`
+---
 
 ```python
 parts(self) -> list[Component | CBlock]
@@ -145,7 +159,8 @@ parts(self) -> list[Component | CBlock]
 Returns a list of parts for MObject.
 
 
-#### `get_query_object`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `get_query_object`
+---
 
 ```python
 get_query_object(self, query: str) -> Query
@@ -157,7 +172,8 @@ Returns the instantiated query object.
 - `query `: The query string.
 
 
-#### `get_transform_object`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `get_transform_object`
+---
 
 ```python
 get_transform_object(self, transformation: str) -> Transform
@@ -169,7 +185,8 @@ Returns the instantiated transform object.
 - `transformation`: the transform string
 
 
-#### `content_as_string`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `content_as_string`
+---
 
 ```python
 content_as_string(self) -> str
@@ -181,7 +198,8 @@ The default value is just `str(self)`.
 Subclasses should override this method.
 
 
-#### `format_for_llm`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `format_for_llm`
+---
 
 ```python
 format_for_llm(self) -> TemplateRepresentation | str
@@ -193,3 +211,4 @@ The default `TemplateRepresentation` uses an automatic
 parsing for tools and fields. The content is retrieved
 from `content_as_string()`.
 
+---

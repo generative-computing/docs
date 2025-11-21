@@ -1,16 +1,17 @@
 ---
-title: funcs
+title: mellea.stdlib.funcs
+description: Functions for Mellea operations like Instruct, Chat, etc...
 sidebarTitle: funcs
 ---
 
-# `mellea.stdlib.funcs`
 
 
-Functions for Mellea operations like Instruct, Chat, etc...
 
 ## Functions
+---
 
-### `act`
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `act`
+---
 
 ```python
 act(action: Component, context: Context, backend: Backend) -> tuple[ModelOutputThunk, Context] | SamplingResult
@@ -34,7 +35,8 @@ Runs a generic action, and adds both the action and the result to the context.
 - A ModelOutputThunk if `return_sampling_results` is `False`, else returns a `SamplingResult`.
 
 
-### `instruct`
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `instruct`
+---
 
 ```python
 instruct(description: str, context: Context, backend: Backend) -> tuple[ModelOutputThunk, Context] | SamplingResult
@@ -61,7 +63,8 @@ Generates from an instruction.
 - `images`: A list of images to be used in the instruction or None if none.
 
 
-### `chat`
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `chat`
+---
 
 ```python
 chat(content: str, context: Context, backend: Backend) -> tuple[Message, Context]
@@ -71,7 +74,8 @@ chat(content: str, context: Context, backend: Backend) -> tuple[Message, Context
 Sends a simple chat message and returns the response. Adds both messages to the Context.
 
 
-### `validate`
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `validate`
+---
 
 ```python
 validate(reqs: Requirement | list[Requirement], context: Context, backend: Backend) -> list[ValidationResult]
@@ -81,7 +85,8 @@ validate(reqs: Requirement | list[Requirement], context: Context, backend: Backe
 Validates a set of requirements over the output (if provided) or the current context (if the output is not provided).
 
 
-### `query`
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `query`
+---
 
 ```python
 query(obj: Any, query: str, context: Context, backend: Backend) -> tuple[ModelOutputThunk, Context]
@@ -103,7 +108,8 @@ Query method for retrieving information from an object.
 - The result of the query as processed by the backend.
 
 
-### `transform`
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `transform`
+---
 
 ```python
 transform(obj: Any, transformation: str, context: Context, backend: Backend) -> tuple[ModelOutputThunk | Any, Context]
@@ -125,3 +131,4 @@ Transform method for creating a new object with the transformation applied.
 - the return type will be always be ModelOutputThunk. If a tool was called, the return type will be the return type
 - of the function called, usually the type of the object passed in.
 
+---

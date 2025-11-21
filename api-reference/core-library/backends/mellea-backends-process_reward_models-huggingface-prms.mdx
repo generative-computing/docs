@@ -1,16 +1,17 @@
 ---
-title: prms
+title: mellea.backends.process_reward_models.huggingface.prms
+description: PRM Implementations for Local HuggingFace Backends.
 sidebarTitle: prms
 ---
 
-# `mellea.backends.process_reward_models.huggingface.prms`
 
 
-PRM Implementations for Local HuggingFace Backends.
 
 ## Classes
+---
 
-### `HFGenerativePRM`
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#4ADE8033]/20 text-[#15803D]">CLASS</span> `HFGenerativePRM`
+---
 
 
 A Generative PRM that works with a huggingface backend.
@@ -18,7 +19,8 @@ A Generative PRM that works with a huggingface backend.
 
 **Methods:**
 
-#### `score`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `score`
+---
 
 ```python
 score(self, query: str, response: str) -> tuple[list[float], list[list[float]]]
@@ -31,7 +33,8 @@ Returns a final and per-step score for a given input query and response.
 - `response`: Assistant Response to score
 
 
-#### `prepare_inputs`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `prepare_inputs`
+---
 
 ```python
 prepare_inputs(self, user_content: str, steps: list[str]) -> BatchEncoding
@@ -44,7 +47,8 @@ Prepare the inputs for inference with the model.
 - `steps`: assistant response, broken down into steps
 
 
-### `HFRegressionPRM`
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#4ADE8033]/20 text-[#15803D]">CLASS</span> `HFRegressionPRM`
+---
 
 
 A Regression PRM that works with a huggingface backend.
@@ -52,7 +56,8 @@ A Regression PRM that works with a huggingface backend.
 
 **Methods:**
 
-#### `score`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `score`
+---
 
 ```python
 score(self, query: str, response: str) -> tuple[list[float], list[list[float]]]
@@ -65,7 +70,8 @@ Returns a final and per-step score for a given input query and response.
 - `response`: Assistant Response to score
 
 
-#### `prepare_inputs`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `prepare_inputs`
+---
 
 ```python
 prepare_inputs(self, user_content: str, steps: list[str]) -> BatchEncoding
@@ -77,3 +83,4 @@ Prepare the inputs for inference with the model.
 - `user_content`: the user query
 - `steps`: assistant response, broken down into steps
 
+---

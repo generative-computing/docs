@@ -1,16 +1,17 @@
 ---
-title: tools
+title: mellea.backends.tools
+description: Utilities for dealing with tools.
 sidebarTitle: tools
 ---
 
-# `mellea.backends.tools`
 
 
-Utilities for dealing with tools.
 
 ## Functions
+---
 
-### `add_tools_from_model_options`
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `add_tools_from_model_options`
+---
 
 ```python
 add_tools_from_model_options(tools_dict: dict[str, Callable], model_options: dict[str, Any])
@@ -20,7 +21,8 @@ add_tools_from_model_options(tools_dict: dict[str, Callable], model_options: dic
 If model_options has tools, add those tools to the tools_dict.
 
 
-### `add_tools_from_context_actions`
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `add_tools_from_context_actions`
+---
 
 ```python
 add_tools_from_context_actions(tools_dict: dict[str, Callable], ctx_actions: list[Component | CBlock] | None)
@@ -30,7 +32,8 @@ add_tools_from_context_actions(tools_dict: dict[str, Callable], ctx_actions: lis
 If any of the actions in ctx_actions have tools in their template_representation, add those to the tools_dict.
 
 
-### `convert_tools_to_json`
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `convert_tools_to_json`
+---
 
 ```python
 convert_tools_to_json(tools: dict[str, Callable]) -> list[dict]
@@ -45,7 +48,8 @@ Notes:
 - OpenAI uses the same format / schema.
 
 
-### `json_extraction`
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `json_extraction`
+---
 
 ```python
 json_extraction(text: str) -> Generator[dict, None, None]
@@ -55,7 +59,8 @@ json_extraction(text: str) -> Generator[dict, None, None]
 Yields the next valid json object in a given string.
 
 
-### `find_func`
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `find_func`
+---
 
 ```python
 find_func(d) -> tuple[str | None, Mapping | None]
@@ -67,7 +72,8 @@ Find the first function in a json-like dictionary.
 Most llms output tool requests in the form `...{"name": string, "arguments": {}}...`
 
 
-### `parse_tools`
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `parse_tools`
+---
 
 ```python
 parse_tools(llm_response: str) -> list[tuple[str, Mapping]]
@@ -76,3 +82,4 @@ parse_tools(llm_response: str) -> list[tuple[str, Mapping]]
 
 A simple parser that will scan a string for tools and attempt to extract them.
 
+---

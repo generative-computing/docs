@@ -1,16 +1,17 @@
 ---
-title: types
-sidebarTitle: sampling types
+title: mellea.stdlib.sampling.types
+description: Base types for sampling.
+sidebarTitle: types
 ---
 
-# `mellea.stdlib.sampling.types`
 
 
-Base types for sampling.
 
 ## Classes
+---
 
-### `SamplingResult`
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#4ADE8033]/20 text-[#15803D]">CLASS</span> `SamplingResult`
+---
 
 
 Stores the results from a sampling operation. This includes successful and failed samplings.
@@ -18,7 +19,8 @@ Stores the results from a sampling operation. This includes successful and faile
 
 **Methods:**
 
-#### `result`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `result`
+---
 
 ```python
 result(self) -> ModelOutputThunk
@@ -27,7 +29,8 @@ result(self) -> ModelOutputThunk
 The final output or result from applying the sampling strategy.
 
 
-#### `result_ctx`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `result_ctx`
+---
 
 ```python
 result_ctx(self) -> Context
@@ -36,7 +39,8 @@ result_ctx(self) -> Context
 The context of the final output or result from applying the sampling strategy.
 
 
-#### `result_action`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `result_action`
+---
 
 ```python
 result_action(self) -> Component
@@ -45,7 +49,8 @@ result_action(self) -> Component
 The action that generated the final output or result from applying the sampling strategy.
 
 
-#### `result_validations`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `result_validations`
+---
 
 ```python
 result_validations(self) -> list[tuple[Requirement, ValidationResult]]
@@ -54,7 +59,8 @@ result_validations(self) -> list[tuple[Requirement, ValidationResult]]
 The validation results associated with the final output or result from applying the sampling strategy.
 
 
-### `SamplingStrategy`
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#4ADE8033]/20 text-[#15803D]">CLASS</span> `SamplingStrategy`
+---
 
 
 A SamplingStrategy class defines an abstract base class for implementing various sampling strategies.
@@ -65,7 +71,8 @@ It allows setting custom validation and generation functions through properties.
 
 **Methods:**
 
-#### `sample`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `sample`
+---
 
 ```python
 sample(self, action: Component, context: Context, backend: Backend, requirements: list[Requirement] | None) -> SamplingResult
@@ -88,3 +95,4 @@ It must be implemented by any concrete subclasses to provide specific sampling l
 **Returns:**
 - A result object indicating the success or failure of the sampling process.
 
+---

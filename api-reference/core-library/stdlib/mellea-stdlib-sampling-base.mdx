@@ -1,16 +1,17 @@
 ---
-title: sampling
-sidebarTitle: sampling
+title: mellea.stdlib.sampling.base
+description: Base Sampling Strategies.
+sidebarTitle: base
 ---
 
-# `mellea.stdlib.sampling.base`
 
 
-Base Sampling Strategies.
 
 ## Classes
+---
 
-### `BaseSamplingStrategy`
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#4ADE8033]/20 text-[#15803D]">CLASS</span> `BaseSamplingStrategy`
+---
 
 
 Base class for multiple strategies that rejects samples based on given instructions.
@@ -18,7 +19,8 @@ Base class for multiple strategies that rejects samples based on given instructi
 
 **Methods:**
 
-#### `repair`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `repair`
+---
 
 ```python
 repair(old_ctx: Context, new_ctx: Context, past_actions: list[Component], past_results: list[ModelOutputThunk], past_val: list[list[tuple[Requirement, ValidationResult]]]) -> tuple[Component, Context]
@@ -37,7 +39,8 @@ Repair function that is being invoked if not all requirements are fulfilled. It 
 - The next action component and context to be used for the next generation attempt.
 
 
-#### `select_from_failure`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `select_from_failure`
+---
 
 ```python
 select_from_failure(sampled_actions: list[Component], sampled_results: list[ModelOutputThunk], sampled_val: list[list[tuple[Requirement, ValidationResult]]]) -> int
@@ -54,7 +57,8 @@ This function returns the index of the result that should be selected as `.value
 - The index of the result that should be selected as `.value`.
 
 
-#### `sample`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `sample`
+---
 
 ```python
 sample(self, action: Component, context: Context, backend: Backend, requirements: list[Requirement] | None) -> SamplingResult
@@ -80,7 +84,8 @@ This method performs a sampling operation based on the given instruction.
 - `AssertionError`: Asserts that all required components (repair, select_from_failure, validate, and generate) are provided before proceeding with the sampling.
 
 
-### `RejectionSamplingStrategy`
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#4ADE8033]/20 text-[#15803D]">CLASS</span> `RejectionSamplingStrategy`
+---
 
 
 Simple rejection sampling strategy that just repeats the same call on failure.
@@ -88,7 +93,8 @@ Simple rejection sampling strategy that just repeats the same call on failure.
 
 **Methods:**
 
-#### `select_from_failure`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `select_from_failure`
+---
 
 ```python
 select_from_failure(sampled_actions: list[Component], sampled_results: list[ModelOutputThunk], sampled_val: list[list[tuple[Requirement, ValidationResult]]]) -> int
@@ -105,7 +111,8 @@ Always returns the 0th index.
 - The index of the result that should be selected as `.value`.
 
 
-#### `repair`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `repair`
+---
 
 ```python
 repair(old_ctx: Context, new_ctx: Context, past_actions: list[Component], past_results: list[ModelOutputThunk], past_val: list[list[tuple[Requirement, ValidationResult]]]) -> tuple[Component, Context]
@@ -124,7 +131,8 @@ Always returns the unedited, last action.
 - The next action component and context to be used for the next generation attempt.
 
 
-### `RepairTemplateStrategy`
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#4ADE8033]/20 text-[#15803D]">CLASS</span> `RepairTemplateStrategy`
+---
 
 
 A sampling strategy that adds a repair string to the instruction object.
@@ -132,7 +140,8 @@ A sampling strategy that adds a repair string to the instruction object.
 
 **Methods:**
 
-#### `select_from_failure`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `select_from_failure`
+---
 
 ```python
 select_from_failure(sampled_actions: list[Component], sampled_results: list[ModelOutputThunk], sampled_val: list[list[tuple[Requirement, ValidationResult]]]) -> int
@@ -149,7 +158,8 @@ Always returns the 0th index.
 - The index of the result that should be selected as `.value`.
 
 
-#### `repair`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `repair`
+---
 
 ```python
 repair(old_ctx: Context, new_ctx: Context, past_actions: list[Component], past_results: list[ModelOutputThunk], past_val: list[list[tuple[Requirement, ValidationResult]]]) -> tuple[Component, Context]
@@ -168,7 +178,8 @@ Adds a description of the requirements that failed to a copy of the original ins
 - The next action component and context to be used for the next generation attempt.
 
 
-### `MultiTurnStrategy`
+### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#4ADE8033]/20 text-[#15803D]">CLASS</span> `MultiTurnStrategy`
+---
 
 
 Rejection sampling strategy with (agentic) multi-turn repair.
@@ -176,7 +187,8 @@ Rejection sampling strategy with (agentic) multi-turn repair.
 
 **Methods:**
 
-#### `select_from_failure`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `select_from_failure`
+---
 
 ```python
 select_from_failure(sampled_actions: list[Component], sampled_results: list[ModelOutputThunk], sampled_val: list[list[tuple[Requirement, ValidationResult]]])
@@ -193,7 +205,8 @@ Always returns the last index. The last message from the model will always be re
 - The index of the result that should be selected as `.value`.
 
 
-#### `repair`
+#### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `repair`
+---
 
 ```python
 repair(old_ctx: Context, new_ctx: Context, past_actions: list[Component], past_results: list[ModelOutputThunk], past_val: list[list[tuple[Requirement, ValidationResult]]]) -> tuple[Component, Context]
@@ -211,3 +224,4 @@ Returns a Message with a description of the failed requirements.
 **Returns:**
 - The next action component and context to be used for the next generation attempt.
 
+---
