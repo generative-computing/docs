@@ -4,22 +4,24 @@ description: Abstract interfaces for Formatters.
 sidebarTitle: formatter
 ---
 
+import { SidebarFix } from "/snippets/SidebarFix.mdx";
 
-
+<SidebarFix />
 
 ## Classes
+
 ---
 
 ### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#4ADE8033]/20 text-[#15803D]">CLASS</span> `Formatter`
+
 ---
 
-
 A Formatter converts `Component`s into strings and parses `ModelOutputThunk`s into `Component`s (or `CBlock`s).
-
 
 **Methods:**
 
 #### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `print`
+
 ---
 
 ```python
@@ -28,8 +30,8 @@ print(self, c: Component | CBlock) -> str
 
 Renders a component for input to a model.
 
-
 #### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `parse`
+
 ---
 
 ```python
@@ -40,8 +42,8 @@ Parses the output from a model and sets the parsed_repr of the result ModelOutpu
 
 Returns the ModelOutputThunk that was passed in.
 
-
 #### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `to_chat_messages`
+
 ---
 
 ```python
@@ -50,17 +52,16 @@ to_chat_messages(self, cs: list[Component | CBlock]) -> list[Message]
 
 Helper method that converts a linearized chat history into a list of messages. The purpose of this helper is to prepare a sequence of Messages for input to a chat endpoint.
 
-
 ### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#4ADE8033]/20 text-[#15803D]">CLASS</span> `TemplateFormatter`
+
 ---
 
-
 Formatter that uses jinja2 templates.
-
 
 **Methods:**
 
 #### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `parse`
+
 ---
 
 ```python
@@ -69,8 +70,8 @@ parse(self, source_component: Component | CBlock, result: ModelOutputThunk) -> M
 
 Parses the output and updates the result's parsed_repr.
 
-
 #### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `print`
+
 ---
 
 ```python
@@ -79,10 +80,9 @@ print(self, c: Component | CBlock) -> str
 
 Uses a jinja2 template to pretty-print components.
 
-
 ### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#4ADE8033]/20 text-[#15803D]">CLASS</span> `FormatterBackend`
----
 
+---
 
 `FormatterBackend`s support legacy model types.
 

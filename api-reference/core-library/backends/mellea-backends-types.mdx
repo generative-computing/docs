@@ -4,21 +4,24 @@ description: Useful type definitions for models, formatters, and backends.
 sidebarTitle: types
 ---
 
+import { SidebarFix } from "/snippets/SidebarFix.mdx";
 
-
+<SidebarFix />
 
 ## Classes
+
 ---
 
 ### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#4ADE8033]/20 text-[#15803D]">CLASS</span> `ModelOption`
----
 
+---
 
 A type that wraps around model options.
 
 Uses sentinel values (wrapped by @@@) to provide backend and model-agnostic keys for common model options.
 
 Create a dictionary containing model options like this:
+
 ```python
 from mellea.backends.types import ModelOption
 model_options = { ModelOption.TEMPERATURE : 0.0, ModelOption.SYSTEM_PROMPT : "You are a helpful assistant" }
@@ -27,6 +30,7 @@ model_options = { ModelOption.TEMPERATURE : 0.0, ModelOption.SYSTEM_PROMPT : "Yo
 **Methods:**
 
 #### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `replace_keys`
+
 ---
 
 ```python
@@ -35,14 +39,15 @@ replace_keys(options: dict, from_to: dict[str, str]) -> dict[str, Any]
 
 Returns a new dict with the keys in `options` replaced with the corresponding value for that key in `from_to`.
 
-* Any key with value == None is treated the same as the key missing.
+- Any key with value == None is treated the same as the key missing.
 
-* If the destination key already exists in `options`, the original value is kept in the output.
+- If the destination key already exists in `options`, the original value is kept in the output.
 
-* Regardless of the presence of the destination key in `options`,
+- Regardless of the presence of the destination key in `options`,
   the source key is always absent in the output.
 
 Example:
+
 ```python
 >>> options = {"k1": "v1", "k2": "v2", "M1": "m1"}
 >>> from_to = {"k1": "M1", "k2": "M2"}
@@ -52,11 +57,11 @@ Example:
 ... {"M1": "m1", "M2": "v2"}
 ```
 
-* Notice that "M1" keeps the original value "m1", rather than "v1".
-* Notice that both "k1" and "k2" are absent in the output.
-
+- Notice that "M1" keeps the original value "m1", rather than "v1".
+- Notice that both "k1" and "k2" are absent in the output.
 
 #### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `remove_special_keys`
+
 ---
 
 ```python
@@ -65,8 +70,8 @@ remove_special_keys(model_options) -> dict[str, Any]
 
 Removes all sentiel-valued keys (i.e., those that start with @@@).
 
-
 #### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `merge_model_options`
+
 ---
 
 ```python

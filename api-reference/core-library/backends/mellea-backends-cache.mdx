@@ -4,22 +4,24 @@ description: Caching strategies.
 sidebarTitle: cache
 ---
 
+import { SidebarFix } from "/snippets/SidebarFix.mdx";
 
-
+<SidebarFix />
 
 ## Classes
+
 ---
 
 ### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#4ADE8033]/20 text-[#15803D]">CLASS</span> `Cache`
+
 ---
 
-
 A Cache for storing model state (e.g., kv cache).
-
 
 **Methods:**
 
 #### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `put`
+
 ---
 
 ```python
@@ -28,8 +30,8 @@ put(self, key: str, value: Any)
 
 Inserts into the cache. May result in eviction of other cached values.
 
-
 #### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `get`
+
 ---
 
 ```python
@@ -38,8 +40,8 @@ get(self, key: str) -> Any | None
 
 Retrieves a value from the cache. Returns `None` if the `id` has no cached value. May impact which cache values are evicted.
 
-
 #### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `current_size`
+
 ---
 
 ```python
@@ -48,17 +50,16 @@ current_size(self) -> int
 
 Returns the number of things currently in the cache. Mostly useful for debugging.
 
-
 ### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#4ADE8033]/20 text-[#15803D]">CLASS</span> `SimpleLRUCache`
+
 ---
 
-
-A simple [LRU](https://en.wikipedia.org/wiki/Cache_replacement_policies#Least_Recently_Used_(LRU)) cache.
-
+A simple [LRU](<https://en.wikipedia.org/wiki/Cache_replacement_policies#Least_Recently_Used_(LRU)>) cache.
 
 **Methods:**
 
 #### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `current_size`
+
 ---
 
 ```python
@@ -67,8 +68,8 @@ current_size(self)
 
 Just return the size of the key set. This isn't necessarily safe.
 
-
 #### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `get`
+
 ---
 
 ```python
@@ -77,8 +78,8 @@ get(self, key: str) -> Any | None
 
 Gets a value from the cache.
 
-
 #### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `put`
+
 ---
 
 ```python

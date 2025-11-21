@@ -4,22 +4,24 @@ description: Hendrik's Fancy Logger.
 sidebarTitle: fancy_logger
 ---
 
+import { SidebarFix } from "/snippets/SidebarFix.mdx";
 
-
+<SidebarFix />
 
 ## Classes
+
 ---
 
 ### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#4ADE8033]/20 text-[#15803D]">CLASS</span> `RESTHandler`
+
 ---
 
-
 RESTHandler for logging.
-
 
 **Methods:**
 
 #### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `emit`
+
 ---
 
 ```python
@@ -28,17 +30,16 @@ emit(self, record)
 
 Attempts to emit a record to FLOG, or silently fails.
 
-
 ### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#4ADE8033]/20 text-[#15803D]">CLASS</span> `JsonFormatter`
+
 ---
 
-
 Logging formatter for JSON.
-
 
 **Methods:**
 
 #### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `format`
+
 ---
 
 ```python
@@ -47,17 +48,16 @@ format(self, record)
 
 Formats record as a JSON serializable object.
 
-
 ### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#4ADE8033]/20 text-[#15803D]">CLASS</span> `CustomFormatter`
+
 ---
 
-
 A nice custom formatter copied from [https://stackoverflow.com/questions/384076/how-can-i-color-python-logging-output](Sergey Pleshakov's post on StackOvervlow).
-
 
 **Methods:**
 
 #### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `format`
+
 ---
 
 ```python
@@ -66,17 +66,16 @@ format(self, record)
 
 The format fn.
 
-
 ### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#4ADE8033]/20 text-[#15803D]">CLASS</span> `FancyLogger`
+
 ---
 
-
 A fancy logger.
-
 
 **Methods:**
 
 #### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `get_logger`
+
 ---
 
 ```python

@@ -4,40 +4,43 @@ description: A model backend wrapping the Ollama Python SDK.
 sidebarTitle: ollama
 ---
 
+import { SidebarFix } from "/snippets/SidebarFix.mdx";
 
-
+<SidebarFix />
 
 ## Functions
+
 ---
 
 ### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `chat_response_delta_merge`
+
 ---
 
 ```python
 chat_response_delta_merge(mot: ModelOutputThunk, delta: ollama.ChatResponse)
 ```
 
-
 Merges the individual ChatResponse chunks from a streaming response into a single ChatResponse.
 
 **Args:**
+
 - `mot`: the ModelOutputThunk that the deltas are being used to populated.
 - `delta`: the most recent ollama ChatResponse.
 
-
 ## Classes
+
 ---
 
 ### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#4ADE8033]/20 text-[#15803D]">CLASS</span> `OllamaModelBackend`
+
 ---
 
-
 A model that uses the Ollama Python SDK for local inference.
-
 
 **Methods:**
 
 #### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `is_model_available`
+
 ---
 
 ```python
@@ -47,13 +50,15 @@ is_model_available(self, model_name)
 Checks if a specific Ollama model is available locally.
 
 **Args:**
+
 - `model_name`: The name of the model to check for (e.g., "llama2").
 
 **Returns:**
+
 - True if the model is available, False otherwise.
 
-
 #### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `generate_from_context`
+
 ---
 
 ```python
@@ -62,8 +67,8 @@ generate_from_context(self, action: Component | CBlock, ctx: Context)
 
 See `generate_from_chat_context`.
 
-
 #### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `generate_from_chat_context`
+
 ---
 
 ```python
@@ -74,14 +79,15 @@ Generates a ModelOutputThunk. The final value for this object can be awaited.
 
 The new completion is generated from the provided Context using this backend's `Formatter`.
 
-This implementation treats the `Context` as a chat history, and uses the  `ollama.Client.chat()` interface to generate a completion.
+This implementation treats the `Context` as a chat history, and uses the `ollama.Client.chat()` interface to generate a completion.
 This will not always work, because sometimes we want to use non-chat models.
 
 **Raises:**
+
 - `RuntimeError`: If not called from a thread with a running event loop.
 
-
 #### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `processing`
+
 ---
 
 ```python
@@ -90,8 +96,8 @@ processing(self, mot: ModelOutputThunk, chunk: ollama.ChatResponse, tools: dict[
 
 Called during generation to add information from a single ChatResponse to the ModelOutputThunk.
 
-
 #### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `post_processing`
+
 ---
 
 ```python

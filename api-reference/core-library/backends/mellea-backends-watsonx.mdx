@@ -4,22 +4,24 @@ description: A generic WatsonX.ai compatible backend that wraps around the watso
 sidebarTitle: watsonx
 ---
 
+import { SidebarFix } from "/snippets/SidebarFix.mdx";
 
-
+<SidebarFix />
 
 ## Classes
+
 ---
 
 ### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#4ADE8033]/20 text-[#15803D]">CLASS</span> `WatsonxAIBackend`
+
 ---
 
-
 A generic backend class for watsonx SDK.
-
 
 **Methods:**
 
 #### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `filter_chat_completions_kwargs`
+
 ---
 
 ```python
@@ -28,8 +30,8 @@ filter_chat_completions_kwargs(self, model_options: dict) -> dict
 
 Filter kwargs to only include valid watsonx chat.completions.create parameters.
 
-
 #### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `generate_from_context`
+
 ---
 
 ```python
@@ -38,8 +40,8 @@ generate_from_context(self, action: Component | CBlock, ctx: Context)
 
 See `generate_from_chat_context`.
 
-
 #### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `generate_from_chat_context`
+
 ---
 
 ```python
@@ -48,8 +50,8 @@ generate_from_chat_context(self, action: Component | CBlock, ctx: Context) -> Mo
 
 Generates a new completion from the provided Context using this backend's `Formatter`.
 
-
 #### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `processing`
+
 ---
 
 ```python
@@ -60,8 +62,8 @@ Called during generation to add information from a single ChatCompletion or Chat
 
 For OpenAI-like APIs, tool call parsing is handled in the post processing step.
 
-
 #### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `post_processing`
+
 ---
 
 ```python

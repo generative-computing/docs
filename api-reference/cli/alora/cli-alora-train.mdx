@@ -3,11 +3,16 @@ title: cli.alora.train
 sidebarTitle: train
 ---
 
+import { SidebarFix } from "/snippets/SidebarFix.mdx";
+
+<SidebarFix />
 
 ## Functions
+
 ---
 
 ### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `load_dataset_from_json`
+
 ---
 
 ```python
@@ -15,6 +20,7 @@ load_dataset_from_json(json_path, tokenizer, invocation_prompt)
 ```
 
 ### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `formatting_prompts_func`
+
 ---
 
 ```python
@@ -22,6 +28,7 @@ formatting_prompts_func(example)
 ```
 
 ### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `train_model`
+
 ---
 
 ```python
@@ -29,14 +36,17 @@ train_model(dataset_path: str, base_model: str, output_file: str, prompt_file: s
 ```
 
 ## Classes
+
 ---
 
 ### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#4ADE8033]/20 text-[#15803D]">CLASS</span> `SaveBestModelCallback`
+
 ---
 
 **Methods:**
 
 #### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `on_evaluate`
+
 ---
 
 ```python
@@ -44,14 +54,17 @@ on_evaluate(self, args, state, control, **kwargs)
 ```
 
 ### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#4ADE8033]/20 text-[#15803D]">CLASS</span> `SafeSaveTrainer`
+
 ---
 
 **Methods:**
 
 #### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `save_model`
+
 ---
 
 ```python
 save_model(self, output_dir: str | None = None, _internal_call: bool = False)
 ```
+
 ---

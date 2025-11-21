@@ -4,22 +4,24 @@ description: A generic OpenAI compatible backend that wraps around the openai py
 sidebarTitle: openai
 ---
 
+import { SidebarFix } from "/snippets/SidebarFix.mdx";
 
-
+<SidebarFix />
 
 ## Classes
+
 ---
 
 ### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#4ADE8033]/20 text-[#15803D]">CLASS</span> `OpenAIBackend`
+
 ---
 
-
 A generic OpenAI compatible backend.
-
 
 **Methods:**
 
 #### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `filter_openai_client_kwargs`
+
 ---
 
 ```python
@@ -28,8 +30,8 @@ filter_openai_client_kwargs(**kwargs) -> dict
 
 Filter kwargs to only include valid OpenAI client parameters.
 
-
 #### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `filter_chat_completions_kwargs`
+
 ---
 
 ```python
@@ -40,8 +42,8 @@ Filter kwargs to only include valid OpenAI chat.completions.create parameters.
 
 https://platform.openai.com/docs/api-reference/chat/create
 
-
 #### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `filter_completions_kwargs`
+
 ---
 
 ```python
@@ -52,8 +54,8 @@ Filter kwargs to only include valid OpenAI completions.create parameters.
 
 https://platform.openai.com/docs/api-reference/completions
 
-
 #### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `generate_from_context`
+
 ---
 
 ```python
@@ -62,8 +64,8 @@ generate_from_context(self, action: Component | CBlock, ctx: Context)
 
 See `generate_from_chat_context`.
 
-
 #### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `generate_from_chat_context`
+
 ---
 
 ```python
@@ -72,8 +74,8 @@ generate_from_chat_context(self, action: Component | CBlock, ctx: Context) -> Mo
 
 Generates a new completion from the provided Context using this backend's `Formatter`.
 
-
 #### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `message_to_openai_message`
+
 ---
 
 ```python
@@ -82,8 +84,8 @@ message_to_openai_message(msg: Message)
 
 Serializes a mellea Message object to the message format required by OpenAI compatible api providers.
 
-
 #### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `processing`
+
 ---
 
 ```python
@@ -94,8 +96,8 @@ Called during generation to add information from a single ChatCompletion or Chat
 
 For OpenAI, tool call parsing is handled in the post processing step.
 
-
 #### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `post_processing`
+
 ---
 
 ```python
@@ -104,8 +106,8 @@ post_processing(self, mot: ModelOutputThunk, tools: dict[str, Callable], convers
 
 Called when generation is done.
 
-
 #### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `add_alora`
+
 ---
 
 ```python
@@ -115,10 +117,11 @@ add_alora(self, alora: 'OpenAIAlora')
 Loads an ALora for this backend.
 
 **Args:**
+
 - `alora`: identifier for the ALora adapter
 
-
 #### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `get_alora`
+
 ---
 
 ```python
@@ -127,8 +130,8 @@ get_alora(self, alora_name: str) -> Alora | None
 
 Returns the ALora by name, or None if that ALora isn't loaded.
 
-
 #### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `get_aloras`
+
 ---
 
 ```python
@@ -137,8 +140,8 @@ get_aloras(self) -> list[Alora]
 
 Returns a list of all loaded ALora adapters.
 
-
 #### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `apply_chat_template`
+
 ---
 
 ```python
@@ -147,10 +150,9 @@ apply_chat_template(self, chat: list[dict[str, str]])
 
 Apply the chat template for the model, if such a model is available (e.g., when it can deduce the huggingface model id).
 
-
 ### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#4ADE8033]/20 text-[#15803D]">CLASS</span> `OpenAIAlora`
----
 
+---
 
 ALoras that work with OpenAI backend.
 

@@ -4,68 +4,66 @@ description: Requirements are a special type of Component used as input to the "
 sidebarTitle: requirement
 ---
 
+import { SidebarFix } from "/snippets/SidebarFix.mdx";
 
-
+<SidebarFix />
 
 ## Functions
+
 ---
 
 ### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `default_output_to_bool`
+
 ---
 
 ```python
 default_output_to_bool(x: CBlock | str) -> bool
 ```
 
-
 Checks if a given output should be marked converted to `True`.
 
 Checks if the output is exactly equal to "yes" or "y" (case-insensitive). If not, it will also
 check if any of the words in the output are "yes" (case-insensitive).
 
-
 ### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `reqify`
+
 ---
 
 ```python
 reqify(r: str | Requirement) -> Requirement
 ```
 
-
 Maps strings to Requirements.
 
 This is a utility method for functions that allow you to pass in Requirements as either explicit Requirement objects or strings that you intend to be interpreted as requirements.
 
-
 ### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `req`
+
 ---
 
 ```python
 req(*args, **kwargs) -> Requirement
 ```
 
-
-Shorthand for Requirement.__init__.
-
+Shorthand for Requirement.**init**.
 
 ### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `check`
+
 ---
 
 ```python
 check(*args, **kwargs) -> Requirement
 ```
 
-
-Shorthand for Requirement.__init__(..., check_only=True).
-
+Shorthand for Requirement.**init**(..., check_only=True).
 
 ### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `simple_validate`
+
 ---
 
 ```python
 simple_validate(fn: Callable[[str], Any]) -> Callable[[Context], ValidationResult]
 ```
-
 
 Syntactic sugar for writing validation functions that only operate over the last output from the model (interpreted as a string).
 
@@ -76,23 +74,24 @@ This is useful when your validation logic only depends upon the most recent mode
 Validation functions operate over `Context`. Often you do not care about the entire context, and just want to consider the most recent output from the model.
 
 **Args:**
+
 - `fn`: the simple validation function that takes a string and returns either a bool or (bool, str)
 - `reason`: only used if the provided function returns a bool; if the validation function fails, a static reason for that failure to give to the llm when repairing
 
-
 ## Classes
+
 ---
 
 ### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#4ADE8033]/20 text-[#15803D]">CLASS</span> `ValidationResult`
+
 ---
 
-
 ValidationResults store the output of a Requirement's validation. They can be used to return additional info from validation functions, which is useful for sampling/repairing.
-
 
 **Methods:**
 
 #### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `reason`
+
 ---
 
 ```python
@@ -101,8 +100,8 @@ reason(self) -> str | None
 
 Reason for the validation result.
 
-
 #### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `score`
+
 ---
 
 ```python
@@ -111,8 +110,8 @@ score(self) -> float | None
 
 An optional score for the validation result.
 
-
 #### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `thunk`
+
 ---
 
 ```python
@@ -121,8 +120,8 @@ thunk(self) -> ModelOutputThunk | None
 
 The ModelOutputThunk associated with the validation func if an llm was used to generate the final result.
 
-
 #### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `as_bool`
+
 ---
 
 ```python
@@ -131,17 +130,16 @@ as_bool(self) -> bool
 
 Return a boolean value based on the result.
 
-
 ### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#4ADE8033]/20 text-[#15803D]">CLASS</span> `Requirement`
+
 ---
 
-
 Requirements are a special type of Component used as input to the Validate step in Instruct/Validate/Repair patterns.
-
 
 **Methods:**
 
 #### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `validate`
+
 ---
 
 ```python
@@ -150,8 +148,8 @@ validate(self, backend: Backend, ctx: Context) -> ValidationResult
 
 Chooses the appropriate validation strategy and applies that strategy.
 
-
 #### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `parts`
+
 ---
 
 ```python
@@ -160,8 +158,8 @@ parts(self)
 
 Returns all of the constituent parts of a Requirement.
 
-
 #### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `format_for_llm`
+
 ---
 
 ```python
@@ -170,31 +168,28 @@ format_for_llm(self) -> TemplateRepresentation | str
 
 Some object protocol magic happens here with management of the output.
 
-
 ### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#4ADE8033]/20 text-[#15803D]">CLASS</span> `LLMaJRequirement`
----
 
+---
 
 A requirement that always uses LLM-as-a-Judge. Any available constraint ALoRA will be ignored.
 
-
 ### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#4ADE8033]/20 text-[#15803D]">CLASS</span> `ALoraRequirement`
----
 
+---
 
 A requirement that always uses an (possibly specified) ALora. If an exception is thrown during the ALora execution path, `mellea` will fall back to LLMaJ. But that is the only case where LLMaJ will be used.
 
-
 ### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#4ADE8033]/20 text-[#15803D]">CLASS</span> `ScorerRequirement`
+
 ---
 
-
 A requirement that always returns a non-None score. The scorer must also define a preference ordering to indicate whether the goal is to maximize or minimize the score.
-
 
 **Methods:**
 
 #### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `validate`
+
 ---
 
 ```python

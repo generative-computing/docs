@@ -4,30 +4,31 @@ description: Async helper functions.
 sidebarTitle: async_helpers
 ---
 
+import { SidebarFix } from "/snippets/SidebarFix.mdx";
 
-
+<SidebarFix />
 
 ## Functions
+
 ---
 
 ### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `send_to_queue`
+
 ---
 
 ```python
 send_to_queue(co: Coroutine[Any, Any, AsyncIterator | Any] | AsyncIterator, aqueue: asyncio.Queue) -> None
 ```
 
-
 Processes the output of an async chat request by sending the output to an async queue.
 
-
 ### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `wait_for_all_mots`
+
 ---
 
 ```python
 wait_for_all_mots(mots: list[ModelOutputThunk])
 ```
-
 
 Helper function to make waiting for multiple ModelOutputThunks to be computed easier.
 

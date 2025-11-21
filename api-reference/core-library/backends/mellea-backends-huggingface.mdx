@@ -4,25 +4,25 @@ description: A backend that uses the Huggingface Transformers library.
 sidebarTitle: huggingface
 ---
 
+import { SidebarFix } from "/snippets/SidebarFix.mdx";
 
-
+<SidebarFix />
 
 The purpose of the Hugginface backend is to provide a setting for implementing experimental features. If you want a performance local backend, and do not need experimental features such as Span-based context or ALoras, consider using Ollama backends instead.
 
-
 ## Classes
+
 ---
 
 ### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#4ADE8033]/20 text-[#15803D]">CLASS</span> `HFAloraCacheInfo`
----
 
+---
 
 A dataclass for holding some KV cache and associated information.
 
-
 ### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#4ADE8033]/20 text-[#15803D]">CLASS</span> `LocalHFBackend`
----
 
+---
 
 The LocalHFBackend uses Huggingface's transformers library for inference, and uses a Formatter to convert `Component`s into prompts. This backend also supports Activated LoRAs (ALoras)](https://arxiv.org/pdf/2504.12397).
 
@@ -30,10 +30,10 @@ This backend is designed for running an HF model for small-scale inference local
 
 This backend is NOT designed for inference scaling on CUDA-enabled hardware.
 
-
 **Methods:**
 
 #### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `alora_model`
+
 ---
 
 ```python
@@ -42,8 +42,8 @@ alora_model(self) -> 'aLoRAPeftModelForCausalLM | None'
 
 The ALora model.
 
-
 #### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `alora_model`
+
 ---
 
 ```python
@@ -52,8 +52,8 @@ alora_model(self, model: 'aLoRAPeftModelForCausalLM | None')
 
 Sets the ALora model. This should only happen once in a backend's lifetime.
 
-
 #### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `generate_from_context`
+
 ---
 
 ```python
@@ -62,8 +62,8 @@ generate_from_context(self, action: Component | CBlock, ctx: Context)
 
 Generate using the huggingface model.
 
-
 #### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `processing`
+
 ---
 
 ```python
@@ -72,8 +72,8 @@ processing(self, mot: ModelOutputThunk, chunk: str | GenerateDecoderOnlyOutput, 
 
 Process the returned chunks or the complete response.
 
-
 #### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `post_processing`
+
 ---
 
 ```python
@@ -82,8 +82,8 @@ post_processing(self, mot: ModelOutputThunk, conversation: list[dict], format: t
 
 Called when generation is done.
 
-
 #### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `cache_get`
+
 ---
 
 ```python
@@ -92,8 +92,8 @@ cache_get(self, id: str) -> HFAloraCacheInfo | None
 
 Retrieve from cache.
 
-
 #### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `cache_put`
+
 ---
 
 ```python
@@ -102,8 +102,8 @@ cache_put(self, id: str, v: HFAloraCacheInfo)
 
 Put into cache.
 
-
 #### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `add_alora`
+
 ---
 
 ```python
@@ -113,10 +113,11 @@ add_alora(self, alora: HFAlora)
 Loads an ALora for this backend.
 
 **Args:**
+
 - `alora`: identifier for the ALora adapter
 
-
 #### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `get_alora`
+
 ---
 
 ```python
@@ -125,8 +126,8 @@ get_alora(self, alora_name: str) -> Alora | None
 
 Returns the ALora by name, or None if that ALora isn't loaded.
 
-
 #### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `get_aloras`
+
 ---
 
 ```python
@@ -135,24 +136,22 @@ get_aloras(self) -> list[Alora]
 
 Returns a list of all loaded ALora adapters.
 
-
 ### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#4ADE8033]/20 text-[#15803D]">CLASS</span> `HFAlora`
----
 
+---
 
 ALoras that work with the local huggingface backend.
 
-
 ### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#4ADE8033]/20 text-[#15803D]">CLASS</span> `HFProcessRewardModel`
+
 ---
 
-
 A Process Reward Model that works with a huggingface backend.
-
 
 **Methods:**
 
 #### <span className="ml-2 inline-flex items-center rounded-full px-2 py-1 text-[0.7rem] font-bold tracking-wide bg-[#3064E3]/20 text-[#1D4ED8]">FUNC</span> `stepify`
+
 ---
 
 ```python
@@ -162,6 +161,7 @@ stepify(self, content: str, step_separator: str) -> list[str]
 Splits the assistant response into steps to score.
 
 **Args:**
+
 - `content`: assistant response to score
 - `step_separator`: string on which to separate the content into steps
 
