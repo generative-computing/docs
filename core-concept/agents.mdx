@@ -22,9 +22,9 @@ The core idea of ReACT is to alternate between reasoning ("Thought") and acting 
 # Pseudocode
 while not done:
     get the model's next thought
-    take an action based upon the though
+    take an action based upon the thought
     choose arguments for the selection action
-    observe the toll output
+    observe the tool output
     check if a final answer can be obtained
 return the final answer
 ```
@@ -81,7 +81,7 @@ def react(
 
         print("### Action")
         act = m.chat(
-            "Choose your next action. Respond with a nothing other than a tool name.",
+            "Choose your next action. Respond with nothing other than a tool name.",
             format=react_toolbox.tool_name_schema(),
         )
         selected_tool: ReactTool = react_toolbox.get_tool_from_schema(act.content)
@@ -119,7 +119,7 @@ def react(
 
 </CodeGroup>
 
-The example implementation needs some helper classes which even allows tool calling:
+The example implementation needs some helper classes which allow tool calling:
 
 <CodeGroup>
 ```python Python
