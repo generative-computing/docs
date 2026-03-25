@@ -1,3 +1,5 @@
+> Note: Mellea documentation has moved to the main repo: https://github.com/generative-computing/mellea/tree/main/docs/docs
+
 # 📚 Mellea Documentation
 
 This repository contains the documentation for the [**Mellea**](https://github.com/generative-computing/mellea) project. It provides clear, developer-focused guides and reference materials for working with the Mellea platform.
